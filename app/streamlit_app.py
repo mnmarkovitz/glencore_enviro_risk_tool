@@ -37,19 +37,17 @@ GLENCORE_DEEP = "#005F73"
 
 # ---- Unified bucket colors (same palette everywhere: table pills, maps, charts, heatmap cells) ----
 BUCKET_COLORS = {
-    "Low":      "#4CAF50",   # green       — Overall 1–4
-    "Moderate": "#FFC107",   # amber       — Overall 5–9
-    "High":     "#FF9800",   # orange      — Overall 10–14
-    "Critical": "#7F0000",   # deep dark red — Overall 15–25
+    "Low":      "#4CAF50",   # green   — Overall 1–4
+    "Moderate": "#FFC107",   # amber   — Overall 5–9
+    "High":     "#FF9800",   # orange  — Overall 10–14
+    "Critical": "#E53935",   # red     — Overall 15–25
     "No data":  "#BDBDBD",
 }
-# Discrete-banded continuous scale for 1–25 range. Each band maps to a bucket;
-# sharp edges so a country's map color matches its bucket pill exactly.
 RISK_SCALE = [
     [0.00, "#4CAF50"], [4/25, "#4CAF50"],   # Low (1–4)
     [4/25, "#FFC107"], [9/25, "#FFC107"],   # Moderate (5–9)
     [9/25, "#FF9800"], [14/25, "#FF9800"],  # High (10–14)
-    [14/25, "#7F0000"], [1.00, "#7F0000"],  # Critical (15–25)
+    [14/25, "#E53935"], [1.00, "#E53935"],  # Critical (15–25)
 ]
 # Heatmap: same stops so every L×S cell is colored by its bucket
 HEAT_SCALE = RISK_SCALE
@@ -357,15 +355,22 @@ with tab_map:
         horizontal=True, index=0, key="basemap_choice",
     )
     st.markdown("**Map layers to overlay:**")
-    lay1, lay2, lay3, lay4 = st.columns(4)
+    lay0, lay1, lay2, lay3, lay4 = st.columns(5)
+    show_producers = lay0.checkbox("🌍 Top producer countries (USGS)",
+                                    value=True,
+                                    help="Country centroids for the top 10 producers of each selected commodity, "
+                                         "sized by global production share and colored by max Overall risk. "
+                                         "Source: USGS Mineral Commodity Summaries 2024.")
     show_glencore = lay1.checkbox("🏭 Glencore-owned assets",
-                                   value=True, help="Public Glencore industrial assets from their annual report.")
+                                   value=False, help="Public Glencore industrial assets from their annual report. "
+                                   f"Currently {len(GLENCORE_ASSETS)} rows in glencore_assets.csv.")
     show_suppliers = lay2.checkbox("🤝 My suppliers (local CSV)",
                                     value=False, help=f"Editable list in data/processed/glencore_suppliers.csv. "
-                                    f"Currently {len(GLENCORE_SUPPLIERS)} rows. Git-ignored — stays confidential.")
+                                    f"Currently {len(GLENCORE_SUPPLIERS)} rows (template is empty by default — "
+                                    f"Glencore's RS team fills it with their counterparty data). Git-ignored — "
+                                    f"stays confidential.")
     show_gem = lay3.checkbox("⛽ GEM sites (coal / oil-gas / iron ore / steel)",
-                              value=False, help=f"Global Energy Monitor trackers (coal mines, oil/gas extraction, "
-                              f"iron-ore mines, steel plants). Currently "
+                              value=False, help=f"Global Energy Monitor trackers. Currently "
                               f"{len(GEM_SITES)} rows — run scripts/06_fetch_gem.py to populate.")
     show_mrds = lay4.checkbox("⛏️ All known mines (USGS MRDS)",
                                value=False, help=f"USGS Mineral Resources Data System. Currently "
@@ -395,25 +400,26 @@ with tab_map:
                 mapbox_layers = []
 
             fig_p = go.Figure()
-            # Base producer bubbles
-            fig_p.add_trace(go.Scattermapbox(
-                lat=merged["lat"], lon=merged["lon"],
-                mode="markers",
-                marker=dict(
-                    size=merged["share_of_global_pct"].clip(3, 38),
-                    color=merged["overall_1_25"],
-                    colorscale=RISK_SCALE, cmin=1, cmax=25,
-                    colorbar=dict(title="Overall (1–25)"),
-                    opacity=0.85,
-                ),
-                text=[f"{c} ({cm})<br>Rank #{r} · {s:.1f}% · Overall {o:.2f}"
-                      for c, cm, r, s, o in zip(merged["country"], merged["commodity"],
-                                                  merged["producer_rank"],
-                                                  merged["share_of_global_pct"],
-                                                  merged["overall_1_25"])],
-                hovertemplate="%{text}<extra>Top-producer bubble</extra>",
-                name="Top producer (country centroid)",
-            ))
+            # Base producer bubbles (toggleable — USGS top-10 producer countries, not suppliers)
+            if show_producers:
+                fig_p.add_trace(go.Scattermapbox(
+                    lat=merged["lat"], lon=merged["lon"],
+                    mode="markers",
+                    marker=dict(
+                        size=merged["share_of_global_pct"].clip(3, 38),
+                        color=merged["overall_1_25"],
+                        colorscale=RISK_SCALE, cmin=1, cmax=25,
+                        colorbar=dict(title="Overall (1–25)"),
+                        opacity=0.85,
+                    ),
+                    text=[f"{c} ({cm})<br>Rank #{r} · {s:.1f}% · Overall {o:.2f}"
+                          for c, cm, r, s, o in zip(merged["country"], merged["commodity"],
+                                                      merged["producer_rank"],
+                                                      merged["share_of_global_pct"],
+                                                      merged["overall_1_25"])],
+                    hovertemplate="%{text}<extra>Top producer (USGS)</extra>",
+                    name="🌍 Top producer country",
+                ))
             # Layer 2 — Glencore-owned assets
             if show_glencore and len(GLENCORE_ASSETS):
                 ga = GLENCORE_ASSETS
