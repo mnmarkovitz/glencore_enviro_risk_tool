@@ -354,13 +354,11 @@ with tab_map:
         "Base map", ["🛰️ Satellite (ESRI World Imagery)", "🗺️ Streets (OpenStreetMap)", "🌑 Carto Dark"],
         horizontal=True, index=0, key="basemap_choice",
     )
-    st.markdown("**Map layers to overlay:**")
-    lay0, lay1, lay2, lay3, lay4 = st.columns(5)
-    show_producers = lay0.checkbox("🌍 Top producer countries (USGS)",
-                                    value=True,
-                                    help="Country centroids for the top 10 producers of each selected commodity, "
-                                         "sized by global production share and colored by max Overall risk. "
-                                         "Source: USGS Mineral Commodity Summaries 2024.")
+    st.caption("🌍 **Base layer (always on):** top producer countries (USGS MCS 2024) as bubbles sized by global "
+               "production share and colored by max Overall risk.")
+    st.markdown("**Optional overlays to add mine-site / facility pins:**")
+    show_producers = True  # always on — top producer country bubbles
+    lay1, lay2, lay3, lay4 = st.columns(4)
     show_glencore = lay1.checkbox("🏭 Glencore-owned assets",
                                    value=False, help="Public Glencore industrial assets from their annual report. "
                                    f"Currently {len(GLENCORE_ASSETS)} rows in glencore_assets.csv.")
