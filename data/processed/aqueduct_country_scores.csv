@@ -1,0 +1,190 @@
+gid_0,name_0,un_region,wb_region,bws_cat_0_4,drr_cat_0_4,rfr_cat_0_4
+AFG,Afghanistan,Asia,South Asia,3.0,2.0,4.0
+AGO,Angola,Africa,Sub-Saharan Africa,1.0,1.0,0.0
+ALB,Albania,Europe,Europe & Central Asia,3.0,2.0,2.0
+AND,Andorra,Europe,Europe & Central Asia,3.0,-9999.0,0.0
+ARE,United Arab Emirates,Asia,Middle East & North Africa,4.0,-9999.0,3.0
+ARG,Argentina,Americas,Latin America & Caribbean,1.0,2.0,1.0
+ARM,Armenia,Asia,Europe & Central Asia,2.0,2.0,2.0
+ATG,Antigua and Barbuda,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+AUS,Australia,Oceania,East Asia & Pacific,2.0,1.0,1.0
+AUT,Austria,Europe,Europe & Central Asia,0.0,2.0,0.0
+AZE,Azerbaijan,Asia,Europe & Central Asia,2.0,3.0,2.0
+BDI,Burundi,Africa,Sub-Saharan Africa,0.0,3.0,3.0
+BEL,Belgium,Europe,Europe & Central Asia,4.0,2.0,0.0
+BEN,Benin,Africa,Sub-Saharan Africa,0.0,2.0,3.0
+BFA,Burkina Faso,Africa,Sub-Saharan Africa,1.0,2.0,2.0
+BGD,Bangladesh,Asia,South Asia,2.0,3.0,4.0
+BGR,Bulgaria,Europe,Europe & Central Asia,1.0,3.0,0.0
+BHR,Bahrain,Asia,Middle East & North Africa,4.0,-9999.0,0.0
+BHS,Bahamas,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+BIH,Bosnia and Herzegovina,Europe,Europe & Central Asia,0.0,3.0,2.0
+BLR,Belarus,Europe,Europe & Central Asia,1.0,3.0,1.0
+BLZ,Belize,Americas,Latin America & Caribbean,0.0,-9999.0,3.0
+BOL,Bolivia,Americas,Latin America & Caribbean,0.0,1.0,2.0
+BRA,Brazil,Americas,Latin America & Caribbean,1.0,2.0,1.0
+BRB,Barbados,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+BRN,Brunei,Asia,East Asia & Pacific,0.0,-9999.0,1.0
+BTN,Bhutan,Asia,South Asia,0.0,1.0,3.0
+BWA,Botswana,Africa,Sub-Saharan Africa,4.0,2.0,0.0
+CAF,Central African Republic,Africa,Sub-Saharan Africa,0.0,1.0,3.0
+CAN,Canada,Americas,North America,1.0,-9999.0,2.0
+CHE,Switzerland,Europe,Europe & Central Asia,0.0,1.0,0.0
+CHL,Chile,Americas,Latin America & Caribbean,4.0,2.0,1.0
+CHN,China,Asia,East Asia & Pacific,2.0,3.0,1.0
+CIV,CÃ´te d'Ivoire,Africa,Sub-Saharan Africa,0.0,2.0,2.0
+CMR,Cameroon,Africa,Sub-Saharan Africa,0.0,1.0,2.0
+COD,Democratic Republic of the Congo,Africa,Sub-Saharan Africa,0.0,1.0,3.0
+COG,Republic of Congo,Africa,Sub-Saharan Africa,0.0,1.0,2.0
+COL,Colombia,Americas,Latin America & Caribbean,0.0,2.0,1.0
+COM,Comoros,Africa,Sub-Saharan Africa,-9999.0,-9999.0,-9999.0
+CPV,Cape Verde,Africa,Sub-Saharan Africa,-9999.0,-9999.0,
+CRI,Costa Rica,Americas,Latin America & Caribbean,0.0,1.0,1.0
+CUB,Cuba,Americas,Latin America & Caribbean,1.0,3.0,3.0
+CYP,Cyprus,Asia,Europe & Central Asia,4.0,2.0,0.0
+CZE,Czech Republic,Europe,Europe & Central Asia,1.0,3.0,0.0
+DEU,Germany,Europe,Europe & Central Asia,2.0,2.0,0.0
+DJI,Djibouti,Africa,Middle East & North Africa,3.0,1.0,4.0
+DMA,Dominica,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+DNK,Denmark,Europe,Europe & Central Asia,0.0,3.0,1.0
+DOM,Dominican Republic,Americas,Latin America & Caribbean,1.0,3.0,1.0
+DZA,Algeria,Africa,Middle East & North Africa,3.0,-9999.0,1.0
+ECU,Ecuador,Americas,Latin America & Caribbean,0.0,2.0,2.0
+EGY,Egypt,Africa,Middle East & North Africa,4.0,-9999.0,4.0
+ERI,Eritrea,Africa,Sub-Saharan Africa,3.0,2.0,3.0
+ESP,Spain,Europe,Europe & Central Asia,3.0,2.0,0.0
+EST,Estonia,Europe,Europe & Central Asia,1.0,2.0,1.0
+ETH,Ethiopia,Africa,Sub-Saharan Africa,0.0,2.0,3.0
+FIN,Finland,Europe,Europe & Central Asia,0.0,1.0,2.0
+FJI,Fiji,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+FRA,France,Europe,Europe & Central Asia,1.0,3.0,0.0
+FSM,Micronesia,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+GAB,Gabon,Africa,Sub-Saharan Africa,0.0,1.0,3.0
+GBR,United Kingdom,Europe,Europe & Central Asia,1.0,3.0,0.0
+GEO,Georgia,Asia,Europe & Central Asia,0.0,2.0,4.0
+GHA,Ghana,Africa,Sub-Saharan Africa,0.0,3.0,3.0
+GIN,Guinea,Africa,Sub-Saharan Africa,0.0,1.0,3.0
+GMB,Gambia,Africa,Sub-Saharan Africa,0.0,2.0,3.0
+GNB,Guinea-Bissau,Africa,Sub-Saharan Africa,0.0,2.0,4.0
+GNQ,Equatorial Guinea,Africa,Sub-Saharan Africa,0.0,1.0,2.0
+GRC,Greece,Europe,Europe & Central Asia,4.0,2.0,1.0
+GRD,Grenada,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+GTM,Guatemala,Americas,Latin America & Caribbean,1.0,2.0,3.0
+GUY,Guyana,Americas,Latin America & Caribbean,2.0,2.0,4.0
+HND,Honduras,Americas,Latin America & Caribbean,0.0,2.0,3.0
+HRV,Croatia,Europe,Europe & Central Asia,0.0,3.0,1.0
+HTI,Haiti,Americas,Latin America & Caribbean,1.0,3.0,0.0
+HUN,Hungary,Europe,Europe & Central Asia,0.0,3.0,2.0
+IDN,Indonesia,Asia,East Asia & Pacific,2.0,3.0,4.0
+IND,India,Asia,South Asia,4.0,3.0,3.0
+IRL,Ireland,Europe,Europe & Central Asia,0.0,2.0,1.0
+IRN,Iran,Asia,Middle East & North Africa,4.0,2.0,1.0
+IRQ,Iraq,Asia,Middle East & North Africa,4.0,-9999.0,3.0
+ISL,Iceland,Europe,Europe & Central Asia,0.0,0.0,1.0
+ISR,Israel,Asia,Middle East & North Africa,4.0,-9999.0,0.0
+ITA,Italy,Europe,Europe & Central Asia,3.0,3.0,1.0
+JAM,Jamaica,Americas,Latin America & Caribbean,0.0,2.0,0.0
+JOR,Jordan,Asia,Middle East & North Africa,4.0,-9999.0,0.0
+JPN,Japan,Asia,East Asia & Pacific,1.0,2.0,0.0
+KAZ,Kazakhstan,Asia,Europe & Central Asia,2.0,2.0,1.0
+KEN,Kenya,Africa,Sub-Saharan Africa,0.0,3.0,4.0
+KGZ,Kyrgyzstan,Asia,Europe & Central Asia,3.0,2.0,4.0
+KHM,Cambodia,Asia,East Asia & Pacific,1.0,3.0,4.0
+KNA,Saint Kitts and Nevis,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+KOR,South Korea,Asia,East Asia & Pacific,2.0,1.0,0.0
+KWT,Kuwait,Asia,Middle East & North Africa,4.0,-9999.0,2.0
+LAO,Laos,Asia,East Asia & Pacific,0.0,1.0,4.0
+LBN,Lebanon,Asia,Middle East & North Africa,4.0,3.0,4.0
+LBR,Liberia,Africa,Sub-Saharan Africa,0.0,1.0,4.0
+LBY,Libya,Africa,Middle East & North Africa,4.0,-9999.0,3.0
+LCA,Saint Lucia,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+LIE,Liechtenstein,Europe,Europe & Central Asia,0.0,-9999.0,3.0
+LKA,Sri Lanka,Asia,South Asia,2.0,3.0,4.0
+LSO,Lesotho,Africa,Sub-Saharan Africa,2.0,2.0,1.0
+LTU,Lithuania,Europe,Europe & Central Asia,2.0,3.0,0.0
+LUX,Luxembourg,Europe,Europe & Central Asia,2.0,1.0,0.0
+LVA,Latvia,Europe,Europe & Central Asia,0.0,2.0,1.0
+MAR,Morocco,Africa,Middle East & North Africa,3.0,3.0,3.0
+MDA,Moldova,Europe,Europe & Central Asia,1.0,4.0,2.0
+MDG,Madagascar,Africa,Sub-Saharan Africa,0.0,2.0,4.0
+MEX,Mexico,Americas,Latin America & Caribbean,3.0,2.0,2.0
+MKD,Macedonia,Europe,Europe & Central Asia,3.0,3.0,2.0
+MLI,Mali,Africa,Sub-Saharan Africa,0.0,-9999.0,4.0
+MLT,Malta,Europe,Middle East & North Africa,-9999.0,-9999.0,-9999.0
+MMR,Myanmar,Asia,East Asia & Pacific,2.0,-9999.0,4.0
+MNE,Montenegro,Europe,Europe & Central Asia,0.0,2.0,2.0
+MNG,Mongolia,Asia,East Asia & Pacific,3.0,2.0,3.0
+MOZ,Mozambique,Africa,Sub-Saharan Africa,0.0,2.0,4.0
+MRT,Mauritania,Africa,Sub-Saharan Africa,2.0,-9999.0,4.0
+MUS,Mauritius,Africa,Sub-Saharan Africa,-9999.0,-9999.0,
+MWI,Malawi,Africa,Sub-Saharan Africa,0.0,2.0,4.0
+MYS,Malaysia,Asia,East Asia & Pacific,1.0,2.0,2.0
+NAM,Namibia,Africa,Sub-Saharan Africa,4.0,1.0,1.0
+NER,Niger,Africa,Sub-Saharan Africa,3.0,-9999.0,3.0
+NGA,Nigeria,Africa,Sub-Saharan Africa,0.0,2.0,2.0
+NIC,Nicaragua,Americas,Latin America & Caribbean,0.0,3.0,2.0
+NLD,Netherlands,Europe,Europe & Central Asia,1.0,2.0,0.0
+NOR,Norway,Europe,Europe & Central Asia,0.0,0.0,2.0
+NPL,Nepal,Asia,South Asia,3.0,2.0,3.0
+NRU,Nauru,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+NZL,New Zealand,Oceania,East Asia & Pacific,0.0,2.0,2.0
+OMN,Oman,Asia,Middle East & North Africa,4.0,-9999.0,2.0
+PAK,Pakistan,Asia,South Asia,3.0,3.0,3.0
+PAN,Panama,Americas,Latin America & Caribbean,0.0,2.0,3.0
+PER,Peru,Americas,Latin America & Caribbean,3.0,2.0,2.0
+PHL,Philippines,Asia,East Asia & Pacific,2.0,2.0,3.0
+PLW,Palau,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+PNG,Papua New Guinea,Oceania,East Asia & Pacific,0.0,-9999.0,4.0
+POL,Poland,Europe,Europe & Central Asia,1.0,3.0,0.0
+PRK,North Korea,Asia,East Asia & Pacific,2.0,3.0,4.0
+PRT,Portugal,Europe,Europe & Central Asia,3.0,2.0,0.0
+PRY,Paraguay,Americas,Latin America & Caribbean,0.0,2.0,1.0
+QAT,Qatar,Asia,Middle East & North Africa,4.0,-9999.0,0.0
+ROU,Romania,Europe,Europe & Central Asia,1.0,3.0,2.0
+RUS,Russia,Europe,Europe & Central Asia,1.0,2.0,1.0
+RWA,Rwanda,Africa,Sub-Saharan Africa,0.0,3.0,4.0
+SAU,Saudi Arabia,Asia,Middle East & North Africa,4.0,-9999.0,0.0
+SDN,Sudan,Africa,Sub-Saharan Africa,1.0,-9999.0,3.0
+SEN,Senegal,Africa,Sub-Saharan Africa,2.0,0.0,3.0
+SGP,Singapore,Asia,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+SLB,Solomon Islands,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+SLE,Sierra Leone,Africa,Sub-Saharan Africa,0.0,1.0,4.0
+SLV,El Salvador,Americas,Latin America & Caribbean,1.0,2.0,2.0
+SMR,San Marino,Europe,Europe & Central Asia,4.0,-9999.0,0.0
+SOM,Somalia,Africa,Sub-Saharan Africa,1.0,2.0,4.0
+SRB,Serbia,Europe,Europe & Central Asia,1.0,3.0,2.0
+SSD,South Sudan,Africa,Sub-Saharan Africa,1.0,1.0,4.0
+STP,SÃ£o TomÃ© and PrÃ­ncipe,Africa,Sub-Saharan Africa,-9999.0,-9999.0,-9999.0
+SUR,Suriname,Americas,Latin America & Caribbean,1.0,1.0,4.0
+SVK,Slovakia,Europe,Europe & Central Asia,1.0,3.0,1.0
+SVN,Slovenia,Europe,Europe & Central Asia,0.0,2.0,1.0
+SWE,Sweden,Europe,Europe & Central Asia,0.0,1.0,2.0
+SWZ,Swaziland,Africa,Sub-Saharan Africa,0.0,2.0,2.0
+SYC,Seychelles,Africa,Sub-Saharan Africa,-9999.0,-9999.0,-9999.0
+SYR,Syria,Asia,Middle East & North Africa,4.0,3.0,3.0
+TCD,Chad,Africa,Sub-Saharan Africa,0.0,-9999.0,4.0
+TGO,Togo,Africa,Sub-Saharan Africa,0.0,3.0,3.0
+THA,Thailand,Asia,East Asia & Pacific,3.0,3.0,3.0
+TJK,Tajikistan,Asia,Europe & Central Asia,2.0,3.0,4.0
+TKM,Turkmenistan,Asia,Europe & Central Asia,3.0,2.0,1.0
+TLS,Timor-Leste,Asia,East Asia & Pacific,1.0,2.0,3.0
+TON,Tonga,Oceania,East Asia & Pacific,-9999.0,-9999.0,
+TTO,Trinidad and Tobago,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+TUN,Tunisia,Africa,Middle East & North Africa,4.0,3.0,2.0
+TUR,Turkey,Asia,Europe & Central Asia,3.0,3.0,2.0
+TUV,Tuvalu,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+TZA,Tanzania,Africa,Sub-Saharan Africa,1.0,2.0,3.0
+UGA,Uganda,Africa,Sub-Saharan Africa,0.0,2.0,2.0
+UKR,Ukraine,Europe,Europe & Central Asia,1.0,4.0,2.0
+URY,Uruguay,Americas,Latin America & Caribbean,1.0,2.0,0.0
+USA,United States,Americas,North America,2.0,1.0,0.0
+UZB,Uzbekistan,Asia,Europe & Central Asia,3.0,3.0,2.0
+VCT,Saint Vincent and the Grenadines,Americas,Latin America & Caribbean,-9999.0,-9999.0,-9999.0
+VEN,Venezuela,Americas,Latin America & Caribbean,1.0,2.0,1.0
+VNM,Vietnam,Asia,East Asia & Pacific,2.0,3.0,4.0
+VUT,Vanuatu,Oceania,East Asia & Pacific,-9999.0,-9999.0,-9999.0
+WSM,Samoa,Oceania,East Asia & Pacific,-9999.0,-9999.0,
+YEM,Yemen,Asia,Middle East & North Africa,4.0,-9999.0,4.0
+ZAF,South Africa,Africa,Sub-Saharan Africa,4.0,2.0,1.0
+ZMB,Zambia,Africa,Sub-Saharan Africa,0.0,2.0,1.0
+ZWE,Zimbabwe,Africa,Sub-Saharan Africa,2.0,2.0,1.0

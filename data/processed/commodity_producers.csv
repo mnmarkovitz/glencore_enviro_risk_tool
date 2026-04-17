@@ -1,0 +1,140 @@
+commodity,country,iso3,producer_rank,share_of_global_pct,source,critical_mineral,critical_source
+Aluminum,China,CHN,1,59.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,India,IND,2,5.6,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,Russia,RUS,3,5.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,Canada,CAN,4,4.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,United Arab Emirates,ARE,5,3.9,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,Australia,AUS,6,2.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,Bahrain,BHR,7,2.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,Norway,NOR,8,2.1,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,Iceland,ISL,9,1.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Aluminum,United States,USA,10,1.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Iron ore,Australia,AUS,1,35.0,USGS MCS 2024,N,
+Iron ore,Brazil,BRA,2,17.0,USGS MCS 2024,N,
+Iron ore,China,CHN,3,12.0,USGS MCS 2024,N,
+Iron ore,India,IND,4,11.0,USGS MCS 2024,N,
+Iron ore,Russia,RUS,5,3.7,USGS MCS 2024,N,
+Iron ore,South Africa,ZAF,6,2.6,USGS MCS 2024,N,
+Iron ore,Canada,CAN,7,2.2,USGS MCS 2024,N,
+Iron ore,Ukraine,UKR,8,1.9,USGS MCS 2024,N,
+Iron ore,United States,USA,9,1.8,USGS MCS 2024,N,
+Iron ore,Iran,IRN,10,1.5,USGS MCS 2024,N,
+Zinc,China,CHN,1,33.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Peru,PER,2,11.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Australia,AUS,3,10.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,India,IND,4,6.7,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,United States,USA,5,6.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Mexico,MEX,6,6.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Bolivia,BOL,7,4.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Kazakhstan,KAZ,8,3.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Canada,CAN,9,2.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Zinc,Russia,RUS,10,2.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Lead,China,CHN,1,44.0,USGS MCS 2024,N,
+Lead,Australia,AUS,2,11.0,USGS MCS 2024,N,
+Lead,Peru,PER,3,6.8,USGS MCS 2024,N,
+Lead,United States,USA,4,6.2,USGS MCS 2024,N,
+Lead,Mexico,MEX,5,5.7,USGS MCS 2024,N,
+Lead,Russia,RUS,6,4.5,USGS MCS 2024,N,
+Lead,India,IND,7,3.0,USGS MCS 2024,N,
+Lead,Bolivia,BOL,8,2.4,USGS MCS 2024,N,
+Lead,Sweden,SWE,9,1.9,USGS MCS 2024,N,
+Lead,Kazakhstan,KAZ,10,1.7,USGS MCS 2024,N,
+Nickel,Indonesia,IDN,1,48.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,Philippines,PHL,2,10.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,Russia,RUS,3,6.6,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,New Caledonia,NCL,4,6.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,Australia,AUS,5,5.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,Canada,CAN,6,4.7,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,China,CHN,7,3.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,Brazil,BRA,8,2.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,Cuba,CUB,9,1.6,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Nickel,United States,USA,10,1.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Democratic Republic of the Congo,COD,1,74.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Indonesia,IDN,2,7.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Russia,RUS,3,4.1,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Australia,AUS,4,2.7,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Philippines,PHL,5,2.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Canada,CAN,6,2.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Cuba,CUB,7,1.6,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Madagascar,MDG,8,1.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Papua New Guinea,PNG,9,1.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Cobalt,Turkey,TUR,10,1.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Copper,Chile,CHL,1,23.0,USGS MCS 2024,N,
+Copper,Peru,PER,2,10.0,USGS MCS 2024,N,
+Copper,Democratic Republic of the Congo,COD,3,13.0,USGS MCS 2024,N,
+Copper,China,CHN,4,8.0,USGS MCS 2024,N,
+Copper,United States,USA,5,5.0,USGS MCS 2024,N,
+Copper,Russia,RUS,6,4.5,USGS MCS 2024,N,
+Copper,Australia,AUS,7,3.9,USGS MCS 2024,N,
+Copper,Zambia,ZMB,8,3.6,USGS MCS 2024,N,
+Copper,Mexico,MEX,9,3.3,USGS MCS 2024,N,
+Copper,Indonesia,IDN,10,3.0,USGS MCS 2024,N,
+Gold,China,CHN,1,12.0,USGS MCS 2024,N,
+Gold,Australia,AUS,2,10.0,USGS MCS 2024,N,
+Gold,Russia,RUS,3,10.0,USGS MCS 2024,N,
+Gold,Canada,CAN,4,6.3,USGS MCS 2024,N,
+Gold,United States,USA,5,5.8,USGS MCS 2024,N,
+Gold,Ghana,GHA,6,3.6,USGS MCS 2024,N,
+Gold,Mexico,MEX,7,3.3,USGS MCS 2024,N,
+Gold,Indonesia,IDN,8,3.3,USGS MCS 2024,N,
+Gold,Peru,PER,9,3.0,USGS MCS 2024,N,
+Gold,Uzbekistan,UZB,10,3.0,USGS MCS 2024,N,
+Silver,Mexico,MEX,1,23.0,USGS MCS 2024,N,
+Silver,China,CHN,2,13.0,USGS MCS 2024,N,
+Silver,Peru,PER,3,12.0,USGS MCS 2024,N,
+Silver,Chile,CHL,4,5.6,USGS MCS 2024,N,
+Silver,Poland,POL,5,5.4,USGS MCS 2024,N,
+Silver,Russia,RUS,6,4.5,USGS MCS 2024,N,
+Silver,Australia,AUS,7,4.5,USGS MCS 2024,N,
+Silver,United States,USA,8,3.7,USGS MCS 2024,N,
+Silver,Bolivia,BOL,9,4.5,USGS MCS 2024,N,
+Silver,Argentina,ARG,10,3.5,USGS MCS 2024,N,
+Platinum,South Africa,ZAF,1,72.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Platinum,Russia,RUS,2,11.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Platinum,Zimbabwe,ZWE,3,8.3,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Platinum,Canada,CAN,4,3.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Platinum,United States,USA,5,2.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Platinum,Finland,FIN,6,0.9,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Platinum,Colombia,COL,7,0.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrovanadium,China,CHN,1,70.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrovanadium,Russia,RUS,2,17.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrovanadium,South Africa,ZAF,3,8.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrovanadium,Brazil,BRA,4,4.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrovanadium,United States,USA,5,0.7,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,South Africa,ZAF,1,36.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Gabon,GAB,2,23.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Australia,AUS,3,17.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,China,CHN,4,6.4,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Ghana,GHA,5,4.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,India,IND,6,3.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Brazil,BRA,7,1.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Ukraine,UKR,8,1.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Kazakhstan,KAZ,9,1.1,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Manganese alloys,Malaysia,MYS,10,0.9,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,South Africa,ZAF,1,44.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,Turkey,TUR,2,20.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,Kazakhstan,KAZ,3,17.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,India,IND,4,12.0,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,Finland,FIN,5,2.4,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,Iran,IRN,6,1.5,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Ferrochrome,Brazil,BRA,7,1.2,USGS MCS 2024,Y,USGS 2022 Critical Minerals List (https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals)
+Coal,China,CHN,1,51.0,BP Stats / IEA 2024,N,
+Coal,India,IND,2,12.0,BP Stats / IEA 2024,N,
+Coal,Indonesia,IDN,3,9.2,BP Stats / IEA 2024,N,
+Coal,United States,USA,4,6.5,BP Stats / IEA 2024,N,
+Coal,Australia,AUS,5,5.1,BP Stats / IEA 2024,N,
+Coal,Russia,RUS,6,5.1,BP Stats / IEA 2024,N,
+Coal,South Africa,ZAF,7,2.7,BP Stats / IEA 2024,N,
+Coal,Kazakhstan,KAZ,8,1.5,BP Stats / IEA 2024,N,
+Coal,Germany,DEU,9,1.2,BP Stats / IEA 2024,N,
+Coal,Poland,POL,10,1.2,BP Stats / IEA 2024,N,
+Oil and gas,United States,USA,1,20.0,EIA / BP Stats 2024,N,
+Oil and gas,Saudi Arabia,SAU,2,11.5,EIA / BP Stats 2024,N,
+Oil and gas,Russia,RUS,3,10.8,EIA / BP Stats 2024,N,
+Oil and gas,Canada,CAN,4,5.8,EIA / BP Stats 2024,N,
+Oil and gas,China,CHN,5,4.7,EIA / BP Stats 2024,N,
+Oil and gas,Iraq,IRQ,6,4.4,EIA / BP Stats 2024,N,
+Oil and gas,United Arab Emirates,ARE,7,4.1,EIA / BP Stats 2024,N,
+Oil and gas,Brazil,BRA,8,3.8,EIA / BP Stats 2024,N,
+Oil and gas,Iran,IRN,9,3.8,EIA / BP Stats 2024,N,
+Oil and gas,Kuwait,KWT,10,3.2,EIA / BP Stats 2024,N,

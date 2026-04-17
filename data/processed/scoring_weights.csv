@@ -1,0 +1,10 @@
+parameter,value,description
+likelihood_process_weight,0.4,"Weight on process-intrinsic risk (from risk_process_matrix.csv) in Likelihood formula. Higher weight = process mattering more than country."
+likelihood_country_weight,0.6,"Weight on country-level hazard indicator in Likelihood formula. Must sum to 1 with likelihood_process_weight."
+severity_eco_weight,0.5,"Weight on Ecological Sensitivity in Severity formula."
+severity_regulatory_weight,0.5,"Weight on Regulatory Strictness in Severity formula. Higher strictness = higher penalty exposure when incidents occur."
+non_applicable_likelihood_cap,1.5,"Likelihood cap for process/risk combos where risk_process_matrix.applies = N."
+bucket_low_max,4,"Overall (LxS) score at or below this is bucketed Low."
+bucket_moderate_max,9,"Overall score at or below this is bucketed Moderate."
+bucket_high_max,14,"Overall score at or below this is bucketed High."
+bucket_critical_max,25,"Overall score at or below this is bucketed Critical. Max possible is 25."

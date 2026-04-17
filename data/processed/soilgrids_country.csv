@@ -1,0 +1,81 @@
+iso3,country,soil_ph_0_5cm,soil_soc_g_per_kg,soil_cec_cmol_per_kg,soil_vulnerability_1_5,source_note
+AFG,Afghanistan,7.5,10,20,2.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+AGO,Angola,5.3,22,12,3.4,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ARG,Argentina,6.5,30,25,1.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+AUS,Australia,6.5,20,15,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+AZE,Azerbaijan,7.5,15,25,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+BHR,Bahrain,8.2,5,10,3.85,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+BGD,Bangladesh,6.5,18,25,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+BOL,Bolivia,6.5,20,20,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+BRA,Brazil,5.5,25,15,2.98,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+BFA,Burkina Faso,6.0,8,12,3.77,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+BDI,Burundi,5.0,25,15,3.2,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+CMR,Cameroon,5.3,25,12,3.4,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+CAN,Canada,6.0,40,20,2.43,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+CAF,Central African Republic,5.0,30,15,2.87,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+TCD,Chad,6.2,8,12,3.68,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+CHL,Chile,6.5,20,20,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+CHN,China,6.5,20,20,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+COL,Colombia,5.2,30,12,3.11,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+CUB,Cuba,6.0,30,20,2.43,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+COD,Democratic Republic of the Congo,5.0,25,10,3.53,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ERI,Eritrea,7.5,10,20,2.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SWZ,Eswatini,5.8,20,15,2.85,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ETH,Ethiopia,6.5,20,25,2.22,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+FIN,Finland,5.2,60,20,2.45,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+GBR,GBR,6.0,45,22,2.43,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+GAB,Gabon,4.9,40,15,2.91,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+DEU,Germany,6.5,30,25,1.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+GHA,Ghana,5.5,20,10,3.32,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+GIN,Guinea,5.0,35,12,3.2,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+HTI,Haiti,6.0,20,20,2.77,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+HND,Honduras,6.0,25,18,2.77,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+IRL,IRL,5.5,60,25,1.98,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ISL,Iceland,5.2,50,25,2.11,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+IND,India,6.8,15,20,2.75,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+IDN,Indonesia,5.3,30,12,3.07,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+IRN,Iran,7.8,8,20,3.35,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+IRQ,Iraq,7.8,8,20,3.35,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+KAZ,Kazakhstan,7.2,20,25,2.09,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+KWT,Kuwait,8.2,5,10,3.85,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+LBR,LBR,5.0,30,12,3.2,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+LBN,Lebanon,7.0,15,25,2.33,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+LBY,Libya,8.2,5,15,3.52,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+MDG,Madagascar,5.2,20,10,3.45,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+MYS,Malaysia,5.0,40,15,2.87,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+MLI,Mali,6.0,8,12,3.77,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+MEX,Mexico,7.0,15,20,2.67,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+MOZ,Mozambique,5.5,18,12,3.65,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+MMR,Myanmar,5.5,25,15,2.98,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+NCL,New Caledonia,5.5,25,15,2.98,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+NER,Niger,6.0,6,10,3.77,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+NGA,Nigeria,5.4,20,12,3.36,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PRK,North Korea,6.0,25,20,2.77,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+NOR,Norway,5.0,60,20,2.53,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PAK,Pakistan,7.5,10,20,2.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PSE,Palestine,7.3,15,20,2.8,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PNG,Papua New Guinea,5.2,40,20,2.78,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PER,Peru,5.5,30,15,2.65,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PHL,Philippines,5.5,25,12,3.32,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+POL,Poland,6.2,25,22,2.68,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+COG,Republic of the Congo,5.1,28,14,3.49,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+RUS,Russia,5.8,40,25,2.19,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+RWA,Rwanda,5.0,25,15,3.2,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SAU,Saudi Arabia,8.0,5,15,3.43,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SOM,Somalia,7.8,8,20,3.35,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SSD,South Sudan,6.5,15,15,2.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SDN,Sudan,7.5,10,20,2.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SWE,Sweden,5.3,55,22,2.4,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+SYR,Syria,7.3,12,20,2.8,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+TZA,Tanzania,6.0,15,15,3.1,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+TUR,Turkey,7.0,18,20,2.67,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+TKM,Turkmenistan,7.8,8,20,3.35,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+UGA,Uganda,5.8,20,15,2.85,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+UKR,Ukraine,6.8,35,30,1.75,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ARE,United Arab Emirates,8.2,5,10,3.85,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+USA,United States,6.5,30,25,1.88,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+UZB,Uzbekistan,7.5,10,25,2.55,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+VEN,Venezuela,5.0,25,12,3.53,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+YEM,Yemen,8.0,5,15,3.43,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ZMB,Zambia,5.5,20,12,3.32,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+ZWE,Zimbabwe,5.8,15,15,3.19,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.

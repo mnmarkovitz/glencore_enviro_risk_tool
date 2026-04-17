@@ -1,0 +1,79 @@
+iso3,country,epi_overall_2024,epi_ecosystem_vitality,epi_biodiversity_habitat,epi_air_quality,epi_waste_management,epi_heavy_metals,who_pm25_annual_ugm3,wb_co2_t_per_capita,gfw_tree_cover_loss_pct_2023,iucn_threatened_species,wdpa_protected_pct,tsf_count,tsf_max_very_high_or_extreme,wb_wgi_gov_effectiveness,wb_wgi_regulatory_quality,unesco_heritage_sites,unesco_heritage_in_danger,inform_risk_2024,basel_hazwaste_kt_per_yr,source_note,cahra_flag,cahra_regions
+AFG,Afghanistan,19.0,25.0,32.0,18.0,15.0,22.0,53.2,0.29,0.4,107,0.4,0,0,-1.73,-1.74,2,0,8.3,,EPI/WHO/WB public,Y,All regions
+AGO,Angola,30.0,45.0,52.0,25.0,20.0,27.0,29.3,0.9,0.95,180,13.2,2,0,-1.11,-1.05,1,0,4.9,,EPI/WHO/WB public,Y,All regions
+ARG,Argentina,52.0,56.0,62.0,58.0,50.0,55.0,13.6,3.74,0.32,176,8.8,12,1,0.05,-0.63,12,0,3.4,,EPI/WHO/WB public,N,
+AUS,Australia,60.1,63.0,71.0,68.0,72.0,70.0,6.4,15.22,0.7,1540,19.6,227,1,1.62,1.82,20,0,3.5,9500.0,EPI/WHO/WB/GTP public,N,
+AZE,Azerbaijan,42.0,45.0,52.0,45.0,40.0,42.0,21.3,3.7,0.05,66,11.8,5,0,-0.12,-0.16,3,0,4.1,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+BHR,Bahrain,42.0,38.0,40.0,45.0,60.0,58.0,61.0,21.6,0.0,63,4.6,0,0,0.67,0.86,3,0,1.8,,EPI/WHO/WB public,N,
+BGD,Bangladesh,27.0,30.0,35.0,18.0,22.0,26.0,65.8,0.6,0.05,110,4.6,0,0,-0.68,-0.93,3,0,5.9,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+BOL,Bolivia,32.3,48.0,58.0,30.0,22.0,28.0,16.6,1.65,1.2,150,29.3,8,1,-0.7,-1.19,7,0,5.0,,EPI/WHO/WB public,Y,All regions
+BRA,Brazil,47.0,52.0,58.0,53.0,46.0,50.0,12.3,2.24,1.45,1250,29.4,247,2,-0.5,-0.19,23,1,4.1,2800.0,EPI/WHO/WB/GTP public,N,
+BFA,Burkina Faso,28.0,32.0,40.0,22.0,20.0,24.0,38.7,0.18,0.2,50,14.8,2,0,-0.87,-0.71,3,0,6.5,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+BDI,Burundi,25.0,30.0,38.0,20.0,18.0,22.0,34.6,0.04,0.95,55,7.0,0,0,-1.21,-1.04,1,0,5.9,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+CMR,Cameroon,32.0,42.0,50.0,30.0,24.0,28.0,65.2,0.37,0.8,240,11.0,1,0,-1.09,-0.97,2,0,6.5,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+CAN,Canada,60.3,65.0,73.0,79.0,65.0,70.0,7.3,14.2,0.85,770,13.6,170,1,1.75,1.53,22,0,3.0,7200.0,EPI/WHO/WB/GTP public,N,
+CAF,Central African Republic,28.0,40.0,52.0,22.0,18.0,22.0,45.0,0.07,1.3,48,17.9,0,0,-1.63,-1.39,2,2,7.8,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+TCD,Chad,22.0,30.0,42.0,18.0,15.0,18.0,47.9,0.07,0.2,55,17.7,0,0,-1.5,-1.27,2,0,7.9,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+CHL,Chile,53.5,58.0,66.0,62.0,52.0,58.0,22.8,4.61,0.85,430,21.3,101,1,0.91,1.25,7,0,4.3,,EPI/WHO/WB/GTP public,N,
+CHN,China,39.1,42.0,45.0,33.0,44.0,35.0,32.5,7.98,0.2,1250,16.1,800,1,0.5,-0.2,57,0,4.6,53000.0,EPI/WHO/WB/GTP public,Y,Xinjiang
+COL,Colombia,44.6,52.0,60.0,46.0,38.0,44.0,16.3,1.54,0.8,820,16.8,12,1,0.0,0.42,9,1,5.3,,EPI/WHO/WB public,Y,Antioquia; Valle del Cauca; Cauca; Nariño; Norte de Santander; Arauca
+CUB,Cuba,50.0,56.0,63.0,52.0,42.0,48.0,17.3,2.0,0.1,240,19.9,3,0,-0.01,-1.4,9,0,4.5,,EPI/WHO/WB public,N,
+COD,Democratic Republic of the Congo,27.3,44.0,60.0,18.0,12.0,15.0,34.4,0.03,1.5,590,14.3,45,1,-1.67,-1.41,5,2,7.9,,EPI/WHO/WB/GTP public,Y,All regions
+ERI,Eritrea,25.0,32.0,40.0,22.0,18.0,22.0,37.0,0.17,0.2,50,4.9,0,0,-1.52,-1.91,1,0,6.5,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+SWZ,Eswatini,38.0,42.0,48.0,40.0,32.0,36.0,14.9,0.92,0.3,35,3.5,3,0,-0.35,-0.63,0,0,3.3,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+ETH,Ethiopia,32.0,40.0,45.0,28.0,24.0,28.0,29.0,0.11,0.35,160,18.8,0,0,-0.67,-0.93,9,0,7.0,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,Āmara; Oromiya
+FIN,Finland,75.3,78.0,82.0,90.0,82.0,85.0,5.2,7.36,0.5,110,16.0,55,0,1.82,1.97,7,0,1.6,2200.0,EPI/WHO/WB/GTP public,N,
+GAB,Gabon,34.0,58.0,72.0,30.0,22.0,28.0,29.8,1.65,0.2,110,22.2,0,0,-0.59,-0.73,2,0,3.0,,EPI/WHO/WB public,N,
+DEU,Germany,62.5,65.0,72.0,75.0,78.0,80.0,9.6,7.73,0.4,150,37.6,4,0,1.53,1.66,54,0,2.0,21000.0,EPI/WHO/WB/GTP public,N,
+GHA,Ghana,33.6,42.0,50.0,32.0,28.0,30.0,28.0,0.6,1.2,200,14.7,12,1,-0.15,-0.02,2,0,4.3,,EPI/WHO/WB public,N,
+GIN,Guinea,30.0,40.0,48.0,28.0,22.0,26.0,45.2,0.2,0.8,90,22.2,3,0,-0.92,-0.85,1,0,5.9,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+HTI,Haiti,28.0,35.0,42.0,28.0,22.0,26.0,15.5,0.34,0.3,130,1.1,0,0,-1.69,-1.07,0,0,5.9,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+HND,Honduras,35.0,42.0,48.0,38.0,28.0,32.0,24.0,1.04,0.9,220,25.5,6,0,-0.72,-0.55,2,0,5.0,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+ISL,Iceland,70.0,72.0,75.0,92.0,80.0,82.0,4.7,9.0,0.05,30,30.1,0,0,1.62,1.55,3,0,0.8,,EPI/WHO/WB public,N,
+IND,India,27.6,35.0,42.0,20.0,24.0,26.0,50.1,1.91,0.65,1030,5.9,90,2,0.22,-0.24,43,0,5.7,7500.0,EPI/WHO/WB/GTP public,Y,Chhattisgarh; Jammu and Kashmir
+IDN,Indonesia,34.7,44.0,52.0,32.0,25.0,30.0,34.1,2.4,1.3,780,12.7,87,1,0.25,0.14,9,1,5.3,3500.0,EPI/WHO/WB/GTP public,Y,All regions
+IRN,Iran,35.0,40.0,45.0,32.0,30.0,35.0,31.2,8.69,0.15,170,10.1,7,0,-0.65,-1.45,27,0,4.5,,EPI/WHO/WB public,Y,All regions
+IRQ,Iraq,30.0,32.0,35.0,28.0,22.0,25.0,40.9,4.9,0.2,80,0.3,6,0,-1.28,-1.3,6,3,7.1,,EPI/WHO/WB public,Y,All regions
+KAZ,Kazakhstan,40.9,46.0,52.0,45.0,36.0,42.0,15.1,13.2,0.2,110,7.8,45,1,0.04,-0.03,5,0,3.6,,EPI/WHO/WB/GTP public,N,
+KWT,Kuwait,32.0,28.0,32.0,30.0,50.0,48.0,55.9,21.7,0.0,48,5.8,0,0,0.05,-0.11,0,0,2.1,,EPI/WHO/WB public,N,
+LBN,Lebanon,45.0,45.0,50.0,48.0,38.0,42.0,27.2,3.4,0.3,160,3.1,0,0,-0.93,-0.62,6,1,3.8,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+LBY,Libya,30.0,32.0,38.0,30.0,32.0,34.0,35.8,8.95,0.0,45,0.3,0,0,-1.96,-1.67,5,5,6.4,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+MDG,Madagascar,26.0,38.0,50.0,22.0,16.0,20.0,16.0,0.14,1.2,830,7.3,2,0,-1.08,-0.75,5,0,5.3,,EPI/WHO/WB public,N,
+MYS,Malaysia,45.0,50.0,58.0,46.0,45.0,48.0,17.8,7.6,0.55,830,13.2,8,0,0.97,0.76,4,0,3.7,,EPI/WHO/WB public,N,
+MLI,Mali,28.0,32.0,40.0,22.0,18.0,22.0,40.7,0.17,0.4,90,8.2,1,0,-1.34,-1.03,4,1,7.4,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+MEX,Mexico,45.5,48.0,53.0,50.0,42.0,45.0,16.7,3.6,0.4,1050,17.1,44,1,-0.19,0.21,35,0,4.7,1800.0,EPI/WHO/WB/GTP public,Y,Baja California; Chihuahua; Colima; Guanajuato; Jalisco; México; Michoacán; San Luis Potosi; Sonora; Sinaloa; Zacatecas
+MOZ,Mozambique,32.0,45.0,58.0,28.0,22.0,26.0,18.9,0.3,1.4,290,26.4,7,0,-0.96,-0.8,0,0,5.8,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,Cabo Delgado
+MMR,Myanmar,28.0,35.0,45.0,24.0,20.0,24.0,30.2,0.65,1.15,290,6.2,2,0,-1.58,-1.41,2,0,6.1,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+NCL,New Caledonia,52.0,58.0,65.0,62.0,48.0,54.0,10.0,18.0,0.3,130,5.4,12,1,1.1,1.2,1,0,3.0,,EPI/WHO/WB public,N,
+NER,Niger,27.0,32.0,42.0,22.0,18.0,22.0,72.6,0.12,0.05,55,17.6,1,0,-1.03,-0.87,3,1,6.7,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+NGA,Nigeria,28.0,32.0,40.0,22.0,18.0,22.0,70.5,0.57,0.55,310,13.9,5,0,-1.0,-0.91,2,0,7.2,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,Adamawa; Borno; Kaduna; Yobe; Zamfara; Niger
+PRK,North Korea,32.0,40.0,45.0,30.0,28.0,32.0,31.3,2.2,0.1,60,14.1,0,0,-1.8,-2.4,2,0,5.2,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+NOR,Norway,75.0,76.0,78.0,88.0,83.0,85.0,5.9,6.6,0.1,75,17.1,22,0,1.98,1.78,8,0,1.5,1500.0,EPI/WHO/WB/GTP public,N,
+PAK,Pakistan,27.0,32.0,38.0,18.0,22.0,26.0,73.2,1.04,0.15,160,12.4,6,0,-0.61,-0.78,6,0,6.7,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+PSE,Palestine,37.0,40.0,45.0,38.0,30.0,34.0,30.9,0.58,0.1,40,2.9,0,0,-0.9,-0.59,3,3,5.3,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+PNG,Papua New Guinea,31.7,48.0,62.0,22.0,18.0,22.0,12.0,0.88,0.7,190,4.1,8,1,-0.81,-0.69,4,0,5.8,,EPI/WHO/WB public,N,
+PER,Peru,44.3,51.0,60.0,48.0,36.0,42.0,16.1,1.55,1.1,430,19.8,62,1,-0.36,0.39,13,0,5.0,,EPI/WHO/WB/GTP public,N,
+PHL,Philippines,35.1,44.0,52.0,33.0,25.0,30.0,17.6,1.37,1.4,970,7.7,26,1,0.04,-0.18,6,1,5.2,,EPI/WHO/WB/GTP public,Y,ARMM; Western Visayas (VI); Central Visayas (VII); Soccsksargen (XII)
+POL,Poland,50.3,52.0,58.0,45.0,62.0,60.0,19.3,8.2,0.45,72,39.7,18,0,0.61,0.63,17,0,2.2,15000.0,EPI/WHO/WB public,N,
+COG,Republic of the Congo,32.0,45.0,55.0,32.0,22.0,28.0,36.1,0.8,0.45,80,41.8,1,0,-1.35,-1.17,5,0,4.3,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+RUS,Russia,41.1,45.0,50.0,44.0,38.0,42.0,12.9,11.64,0.6,340,13.2,120,1,-0.37,-0.66,31,0,3.3,27000.0,EPI/WHO/WB/GTP public,Y,All regions
+RWA,Rwanda,40.0,45.0,52.0,45.0,32.0,36.0,46.2,0.09,0.2,60,10.2,0,0,0.66,0.37,1,0,4.6,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+SAU,Saudi Arabia,36.0,32.0,35.0,30.0,50.0,48.0,57.2,16.3,0.0,103,17.0,0,0,0.39,0.13,6,0,2.3,,EPI/WHO/WB public,N,
+SOM,Somalia,22.0,30.0,38.0,18.0,15.0,18.0,32.0,0.03,0.1,65,0.6,0,0,-1.97,-2.02,0,0,8.3,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+ZAF,South Africa,47.0,50.0,55.0,46.0,44.0,48.0,23.7,7.62,0.7,440,10.3,221,2,0.09,0.11,11,0,3.8,5200.0,EPI/WHO/WB/GTP public,N,
+SSD,South Sudan,22.0,30.0,38.0,18.0,15.0,18.0,47.0,0.15,0.25,55,17.7,0,0,-2.06,-1.92,0,0,8.3,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+SDN,Sudan,25.0,32.0,40.0,22.0,18.0,22.0,38.0,0.41,0.1,60,7.5,0,0,-1.58,-1.39,3,1,7.4,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+SWE,Sweden,70.0,72.0,76.0,88.0,80.0,82.0,5.8,3.8,0.35,140,14.8,15,0,1.72,1.82,15,0,1.8,,EPI/WHO/WB public,N,
+SYR,Syria,28.0,32.0,40.0,22.0,20.0,24.0,45.0,1.88,0.1,55,0.6,0,0,-1.72,-1.72,6,6,7.0,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+TZA,Tanzania,35.0,42.0,50.0,32.0,28.0,32.0,30.2,0.26,0.6,320,38.2,5,0,-0.46,-0.44,7,1,5.0,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+TUR,Turkey,45.2,48.0,52.0,46.0,45.0,48.0,30.1,5.7,0.4,310,0.2,44,1,0.16,-0.13,21,1,4.3,1200.0,EPI/WHO/WB/GTP public,Y,Şırnak
+TKM,Turkmenistan,38.0,40.0,45.0,38.0,34.0,36.0,22.5,13.9,0.0,60,3.2,0,0,-1.32,-2.16,3,0,3.5,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+UGA,Uganda,32.0,40.0,48.0,28.0,24.0,28.0,41.8,0.1,0.5,125,14.8,0,0,-0.55,-0.28,3,0,5.9,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+UKR,Ukraine,42.0,45.0,50.0,45.0,38.0,40.0,17.3,4.0,0.2,220,4.1,22,1,-0.41,-0.33,8,7,5.5,,EPI/WHO/WB/GTP public,Y,All regions
+ARE,United Arab Emirates,39.0,35.0,40.0,42.0,58.0,55.0,41.2,19.8,0.08,96,15.4,1,0,1.28,1.27,1,0,2.3,,EPI/WHO/WB public,N,
+USA,United States,57.9,60.0,66.0,68.0,70.0,73.0,7.7,14.4,0.6,1630,13.2,1375,1,1.54,1.38,26,1,3.8,33000.0,EPI/WHO/WB/GTP public,N,
+UZB,Uzbekistan,37.0,40.0,45.0,38.0,34.0,38.0,26.9,3.28,0.05,84,5.3,8,0,-0.49,-0.63,7,0,3.1,,EPI/WHO/WB public,N,
+VEN,Venezuela,35.0,42.0,48.0,38.0,28.0,32.0,16.2,2.4,0.3,250,53.7,4,0,-2.04,-1.96,3,1,5.3,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+YEM,Yemen,28.0,32.0,40.0,22.0,20.0,24.0,51.8,0.3,0.05,105,0.8,0,0,-2.13,-1.75,4,4,7.7,,Seed values (EPI/WHO/WB). Refresh via scripts/02_fetch_external_data.py,Y,All regions
+ZMB,Zambia,32.4,42.0,52.0,28.0,22.0,28.0,26.3,0.42,0.8,200,37.8,22,1,-0.68,-0.45,2,0,4.4,,EPI/WHO/WB public,Y,All regions
+ZWE,Zimbabwe,32.0,40.0,48.0,30.0,22.0,26.0,17.8,0.7,0.4,170,27.1,14,1,-1.22,-1.72,6,0,4.6,,EPI/WHO/WB public,Y,All regions

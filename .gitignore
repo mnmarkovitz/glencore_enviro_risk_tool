@@ -1,0 +1,19 @@
+# Confidential supplier data — never commit to public repos.
+# Replace with Glencore's internal counterparty database on handover.
+data/processed/glencore_suppliers.csv
+
+# Raw data downloads (large; regenerate via scripts/)
+data/raw/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# macOS / editors
+.DS_Store
+.vscode/
+.idea/

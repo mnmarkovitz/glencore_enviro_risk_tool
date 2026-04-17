@@ -1,0 +1,23 @@
+process,activity,typical_dba_min,typical_dba_max,source_note
+Mining,Blasting (open pit),120,140,NIOSH Mining Topics - Noise Surveillance
+Mining,Haul truck (operator cab),85,95,NIOSH Mining Topics - Noise Surveillance
+Mining,Rock drill (percussion),108,118,NIOSH RI 9669
+Mining,Continuous miner (underground),95,105,NIOSH MSHA data
+Mining,Roof bolter,100,110,NIOSH RI 9669
+Mining,Jumbo drill (underground),105,115,NIOSH RI 9669
+Mining,Crusher (primary),95,105,NIOSH RI 9669
+Mining,LHD loader,95,110,NIOSH RI 9669
+Mining,Dragline,90,100,NIOSH MSHA data
+Mining,Stacker / conveyor,85,95,NIOSH MSHA data
+Refining,Pumps and compressors,85,95,IFC EHS Guidelines - Base Metal Smelting/Refining
+Refining,Acid plant blowers,90,100,IFC EHS Guidelines
+Refining,Electrowinning cellhouse,80,90,IFC EHS Guidelines
+Smelting,Blast/flash furnace area,95,105,IFC EHS Guidelines - Base Metal Smelting/Refining
+Smelting,Oxygen lance / converter,105,115,IFC EHS Guidelines
+Smelting,ID/FD fans,95,105,IFC EHS Guidelines
+Smelting,Slag granulation,90,100,IFC EHS Guidelines
+Recycling,Shredder (metal),100,115,EPA/OSHA scrap metal facility studies
+Recycling,Baler,90,100,EPA/OSHA scrap metal facility studies
+Recycling,Rotary furnace (secondary),95,105,IFC EHS Guidelines
+Marketing,Port loading / unloading,85,95,IMO/port authority typical values
+Marketing,Truck loading at terminal,80,90,IMO/port authority typical values
