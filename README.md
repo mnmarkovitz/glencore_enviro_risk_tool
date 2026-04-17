@@ -89,8 +89,16 @@ Buckets: 1–4 Low · 5–9 Moderate · 10–14 High · 15–25 Critical. Full m
 
 ## Deploy publicly
 
-Push this directory to a GitHub repo, then:
-
-1. Go to https://share.streamlit.io
-2. New app → point to `app/streamlit_app.py`
+### Option A — Streamlit Community Cloud (free, public URL)
+1. Push this directory to a GitHub repo
+2. Go to https://share.streamlit.io → New app → point to `app/streamlit_app.py`
 3. Free public URL.
+
+### Option B — Docker (portable, works anywhere)
+```bash
+docker compose up -d
+```
+Serves on port 8501. Deploy the resulting image to Azure App Service, AWS ECS, on-prem Linux, or any cloud. Mount `./data` so CSV edits on the host are picked up without rebuilding.
+
+### Option C — Glencore-hosted handover
+See [`docs/HANDOVER.md`](docs/HANDOVER.md) for the full transfer-to-Glencore playbook: Git ownership, Docker deploy, confidential-data swap, refresh cadence, decommissioning the NYU-hosted footprint.

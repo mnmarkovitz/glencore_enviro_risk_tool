@@ -1,0 +1,14 @@
+services:
+  env-risk-tool:
+    build: .
+    image: glencore/enviro-risk-tool:latest
+    container_name: enviro-risk-tool
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    volumes:
+      # Mount the CSV data dir so edits on the host are picked up without rebuilding
+      - ./data:/app/data
+    environment:
+      - STREAMLIT_SERVER_ENABLECORS=false
+      - STREAMLIT_SERVER_ENABLEXSRFPROTECTION=false
