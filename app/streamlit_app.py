@@ -91,13 +91,20 @@ st.caption(
     "Supporting the Glencore Group Responsible Sourcing team (Step 2A - OSDR / Risk Identification) "
     "with publicly-sourced country and process-level environmental risk scores for metals & minerals supply chains."
 )
+with st.expander("📖 **How to use this tool — first-time users start here**", expanded=False):
+    _ug = DOCS / "USER_GUIDE.md"
+    if _ug.exists():
+        st.markdown(_ug.read_text())
+    else:
+        st.info("See docs/USER_GUIDE.md in the repository.")
 
-tab_dashboard, tab_map, tab_charts, tab_risklib, tab_tiers, tab_method, tab_sources, tab_noise = st.tabs([
+tab_dashboard, tab_map, tab_charts, tab_risklib, tab_tiers, tab_userguide, tab_method, tab_sources, tab_noise = st.tabs([
     "🔍 Risk Dashboard",
     "🗺️ Map",
     "📈 More Charts",
     "📚 Risk Library",
     "🤝 Supplier Engagement Tiers",
+    "📖 User Guide",
     "📐 Methodology",
     "📊 Data Sources",
     "🔊 Noise Baseline",
@@ -732,6 +739,17 @@ with tab_tiers:
         "3. Cross-referencing **CAHRA regions** with the supplier's declared origin/transit countries\n\n"
         "This mirrors the SCDD M&M procedure's Step 2A → 2B → 2C workflow."
     )
+
+
+# =================================================================
+# USER GUIDE
+# =================================================================
+with tab_userguide:
+    _ug = DOCS / "USER_GUIDE.md"
+    if _ug.exists():
+        st.markdown(_ug.read_text())
+    else:
+        st.error("USER_GUIDE.md not found. Re-pull from the repository.")
 
 
 # =================================================================

@@ -1,0 +1,194 @@
+# User Guide — How to use this tool
+
+A practical walkthrough for the Glencore Responsible Sourcing team. No coding, no math. Read this once (~10 minutes) and you can run the tool end-to-end.
+
+---
+
+## What this tool does in one sentence
+
+Given a **commodity, country, and process stage**, it returns a ranked list of environmental risks — each with a Likelihood × Severity score drawn from public datasets — plus a map, a heatmap, and everything you need to scope a Supplier Questionnaire (SAQ).
+
+## When to use it
+
+| Scenario | Use the tool to... |
+|---|---|
+| A new supplier is being onboarded | Run a **Tier 1 OSDR screen** before issuing the SAQ — see which risks matter most for that country/commodity/process |
+| Annual SCDD review | Refresh the risk profile of existing suppliers to detect changes |
+| Scoping an onsite visit | Identify which risks (tailings? water? biodiversity?) deserve the most inspection time |
+| Drafting a CAP (Corrective Action Plan) | See which KPIs and data sources to anchor the CAP against |
+| Preparing for a compliance / CSRD report | Pull reproducible risk scores with named public sources for every number |
+
+## The 8 tabs, one-line summaries
+
+| Tab | Use it when you want to... |
+|---|---|
+| 🔍 **Risk Dashboard** | Main workspace — filter, see ranked risks + heatmap, drill down into any row |
+| 🗺️ **Map** | Visualize risks geographically, overlay mine sites from public registries or your own supplier list |
+| 📈 **More Charts** | Explore patterns across countries/risks/commodities (top-N bars, sunburst, etc.) |
+| 📚 **Risk Library** | Look up the definition + KPIs for any of the 15 risks — your reference when drafting SAQ questions |
+| 🤝 **Supplier Engagement Tiers** | See how the tool plugs into Glencore's SCDD M&M workflow — where Tier 1 (this tool) hands off to SAQ / onsite / CAP |
+| 📐 **Methodology** | Understand the scoring formula (for stakeholder/audit questions) |
+| 📊 **Data Sources** | Every public dataset the tool uses, with hyperlinks — your citation list |
+| 🔊 **Noise Baseline** | Look up typical dBA by mining activity (for noise-related SAQ questions) |
+
+---
+
+## Quickstart — your first 5 minutes
+
+1. **Pick a commodity** in the sidebar. Default is Cobalt. Top producer countries surface first automatically.
+2. Leave all other filters at default (all 5 processes, 8 priority risks).
+3. Scroll to the **Risk matrix (Likelihood × Severity)** — this is your at-a-glance view. Worst combinations are top-right (red cells).
+4. Scroll further to the **Ranked environmental risks** table. It's sorted by Overall (= Likelihood × Severity). Rows highlighted yellow are in **CAHRA countries**.
+5. Pick any row from the **Drill-down** selector. You'll see:
+   - The raw indicator value and its public source (e.g., "Aqueduct BWS: category 4 (Extremely High)")
+   - The 1–5 normalized score and the formula
+   - Which **supplier types** likely drive this risk (from Glencore's library)
+   - The **KPIs to ask about in the SAQ** (from `risks.csv`)
+
+That's the core workflow. Everything else is either a different view of the same data (Map, Charts, Sunburst) or a reference (Risk Library, Data Sources).
+
+---
+
+## How to read a score
+
+| Score component | What it means | Range |
+|---|---|---|
+| **Process Intrinsic Risk** | How strongly this process causes this risk at all (e.g., tailings are Mining 5 / Marketing 1) | 1–5 |
+| **Country Hazard** | How likely the country's conditions mean the risk actually materializes (e.g., Aqueduct water stress = 4 means Extremely High) | 1–5 |
+| **Likelihood** | 0.4 × Process + 0.6 × Country | 1–5 |
+| **Ecological Sensitivity** | How fragile the country's ecosystems are (EPI + WDPA) | 1–5 |
+| **Regulatory Strictness** | How hard the regulator would hit you if an incident occurred (WGI + EPI) | 1–5 |
+| **Severity** | 0.5 × Eco + 0.5 × Regulatory | 1–5 |
+| **Overall** | Likelihood × Severity | 1–25 |
+| **Bucket** | Low / Moderate / High / Critical | — |
+
+**Key reading rule:** *strong regulatory regimes increase Severity*, because the tool is measuring **exposure to penalties, fines, and enforcement action**, not pure ecological damage. If a country with strict environmental law has high Severity, that reflects "you will get fined hard if this goes wrong here" — which is exactly the information the Responsible Sourcing team needs to prioritize engagement.
+
+---
+
+## Walkthroughs for the 4 most common tasks
+
+### Task 1 — Tier 1 OSDR for a new cobalt supplier from the DRC
+
+1. Sidebar: Commodity = **Cobalt**. Country = **Democratic Republic of the Congo**. Process = **Mining** (check only this one).
+2. Check 🚩 **CAHRA countries only** — confirms DRC is flagged (it is; All regions).
+3. Risk Set: **Priority (8 risks)**.
+4. Look at the Ranked table. The top risks for DRC × Cobalt × Mining are typically:
+   - **Tailings** — Critical (DRC has a major TSF footprint in Katanga)
+   - **Biodiversity species/ecosystems** — Critical (tropical habitat loss)
+   - **Water pollution** — Critical (acid mine drainage risk)
+5. Open each Drill-down. Screenshot the **KPIs to request in the SAQ** list for each Critical risk — that's exactly what your SAQ needs to cover.
+6. Go to **Supplier Engagement Tiers** tab to double-check which Glencore SCDD M&M steps these findings feed into (Step 2A → 2B).
+
+### Task 2 — Compare two candidate suppliers of the same commodity
+
+Suppose you're deciding between a copper supplier in Chile and one in Zambia.
+
+1. Sidebar: Commodity = **Copper**. Country = leave empty (we'll want both).
+2. Go to **📈 More Charts** tab → **Top countries by average Overall risk**. Chile and Zambia both appear with their respective averages.
+3. Back to Dashboard. Country = **Chile, Zambia** (multi-select). The ranked table now shows every risk for both countries.
+4. Export → **⬇️ Download filtered results (CSV)** button. Open in Excel, pivot by country.
+
+### Task 3 — Annual SCDD refresh for a known supplier
+
+1. Pick the commodity, country, and process for the existing supplier.
+2. Apply the risk set you used in the original assessment.
+3. Compare today's Overall scores against the historical ones (which should be saved in the supplier's SCDD file).
+4. Any risk that moved up a bucket (e.g., Moderate → High) is a trigger to refresh the SAQ for that risk.
+
+### Task 4 — Prep for an onsite visit
+
+1. Select the supplier's commodity + country + process.
+2. Sort the ranked table by Overall (already default, descending).
+3. The top 3–5 Critical/High rows define the onsite agenda:
+   - What to inspect
+   - Which samples to take
+   - Which documents to request
+4. Open the **Risk Library** tab → expand each of those top risks → the **KPIs** list is your onsite checklist.
+
+---
+
+## Common filter combos worth knowing
+
+| I want to see... | Sidebar setup |
+|---|---|
+| Biggest environmental exposures for a given commodity | Commodity + **All countries** + **All processes** + Priority risks |
+| Only high-risk jurisdictions | Check 🚩 **CAHRA countries only** |
+| Only critical minerals (US 2022 list) | Check ⭐ **Critical minerals only** |
+| Mining-only risks (no downstream) | Process = **Mining** only |
+| Only severe risks | **Minimum Overall score** slider → 10 (High+) or 15 (Critical only) |
+| Single risk deep-dive | Risk Set = Custom → pick one |
+
+---
+
+## Reading the map tab
+
+The **country bubbles** are color-coded by max Overall risk (same colors as everywhere else in the tool). Size = share of global production.
+
+Four overlay toggles:
+- **🏭 Glencore-owned assets** — public industrial assets from Glencore's annual report. 39 pins shipped; update `glencore_assets.csv` as the asset portfolio changes
+- **🤝 My suppliers** — your confidential supplier list. Lives in `glencore_suppliers.csv` on the machine running the tool. Git-ignored — never sent to GitHub
+- **⛽ GEM sites** — Global Energy Monitor trackers (coal, oil/gas, iron-ore mines, steel plants). Needs one-time download, then `python scripts/06_fetch_gem.py`
+- **⛏️ USGS MRDS** — all known mines worldwide (context layer, NOT Glencore-specific). Run `python scripts/05_fetch_usgs_mrds.py` to populate
+
+Base layer toggle: 🛰️ Satellite / 🗺️ Streets / 🌑 Dark. Satellite is ESRI World Imagery — free, zoomable, shows actual terrain around mine sites.
+
+---
+
+## How the tool fits into Glencore's SCDD workflow
+
+The tool automates **Tier 1 — OSDR** (Open-Source Desktop Research) under Glencore's SCDD M&M Procedure. Concretely:
+
+| SCDD Step | What the tool does |
+|---|---|
+| Step 1A — Onboarding | Not automated here — happens in Glencore's onboarding forms |
+| **Step 2A — Supplier/product scoping** | ✅ **The tool's core output**: CAHRA flag + risk ranking |
+| **Step 2B — SAQ issuance** | ✅ Risk Library provides the KPIs → SAQ question bank |
+| **Step 2C — Risk assessment** | ✅ Raw indicator values + source URLs for auditable cross-check |
+| Step 2D — Clarifications | Manual — done outside tool |
+| Step 2E — Outcome | Human decision, informed by tool |
+| Step 3.1.5 — Onsite visit | ✅ Ranked risks = onsite agenda |
+| Step 3.1.6 — OGA | Manual — done onsite |
+| Step 3.1.7 — CAPs | ✅ KPIs define CAP milestones |
+
+The full map is in the 🤝 **Supplier Engagement Tiers** tab.
+
+---
+
+## Editing the tool (when data changes)
+
+If you want to change a risk definition, add a country, update scoring weights, or add a new supplier, no coding is needed. Everything lives in the CSV files under `data/processed/`. See **`docs/HOW_TO_EDIT.md`** for the step-by-step.
+
+Common edits:
+- Add a supplier → `glencore_suppliers.csv`
+- Change a risk's KPI list → `risks.csv` → `key_kpis` column
+- Adjust scoring weights (e.g., de-emphasize regulatory strictness) → `scoring_weights.csv`
+- Add a new country → `country_indicators.csv` (+ `country_centroids.csv` if you want it on the map)
+
+After any edit, the hosted Streamlit app picks up changes in 30–60 seconds (once pushed to Git). When running locally, just press **R** in the browser.
+
+---
+
+## Getting help
+
+| Question | Where to look |
+|---|---|
+| "Why did this country score Critical?" | Drill-down panel on the Risk Dashboard — every number has a source |
+| "Can I trust this score?" | **📊 Data Sources** tab — every dataset with URL and license |
+| "What's the math?" | **📐 Methodology** tab, or `docs/METHODOLOGY.md` |
+| "I want to add a country / risk / supplier" | `docs/HOW_TO_EDIT.md` |
+| "We're migrating this to our infrastructure" | `docs/HANDOVER.md` + `docs/INTEGRATION_GUIDE.md` |
+
+---
+
+## The 80/20
+
+If you read nothing else:
+
+- Sidebar filters drive everything. Commodity + Country is 80% of what you need.
+- Drill-down panel has the audit trail — raw values and sources.
+- Risk Library tab is your SAQ question bank.
+- Critical = Overall ≥ 15. Always escalate to Tier 2 (SAQ) at minimum.
+- CAHRA flag + Critical = fast-track to Tier 3 (onsite visit).
+
+That's the whole tool.
