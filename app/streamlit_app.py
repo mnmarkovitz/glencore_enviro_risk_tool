@@ -37,10 +37,10 @@ GLENCORE_DEEP = "#005F73"
 
 # ---- Unified bucket colors (same palette everywhere: table pills, maps, charts, heatmap cells) ----
 BUCKET_COLORS = {
-    "Low":      "#4CAF50",   # green   — Overall 1–4
-    "Moderate": "#FFC107",   # amber   — Overall 5–9
-    "High":     "#FF9800",   # orange  — Overall 10–14
-    "Critical": "#E53935",   # red     — Overall 15–25
+    "Low":      "#4CAF50",   # green       — Overall 1–4
+    "Moderate": "#FFC107",   # amber       — Overall 5–9
+    "High":     "#FF9800",   # orange      — Overall 10–14
+    "Critical": "#7F0000",   # deep dark red — Overall 15–25
     "No data":  "#BDBDBD",
 }
 # Discrete-banded continuous scale for 1–25 range. Each band maps to a bucket;
@@ -49,7 +49,7 @@ RISK_SCALE = [
     [0.00, "#4CAF50"], [4/25, "#4CAF50"],   # Low (1–4)
     [4/25, "#FFC107"], [9/25, "#FFC107"],   # Moderate (5–9)
     [9/25, "#FF9800"], [14/25, "#FF9800"],  # High (10–14)
-    [14/25, "#E53935"], [1.00, "#E53935"],  # Critical (15–25)
+    [14/25, "#7F0000"], [1.00, "#7F0000"],  # Critical (15–25)
 ]
 # Heatmap: same stops so every L×S cell is colored by its bucket
 HEAT_SCALE = RISK_SCALE
@@ -756,6 +756,14 @@ with tab_userguide:
 # METHODOLOGY
 # =================================================================
 with tab_method:
+    st.info(
+        "📝 **Anything shown on this tab is computed from CSVs under `data/processed/`.** "
+        "This page is a read-only view — it's not clickable. To change a weight, a bucket threshold, "
+        "a risk definition, or a country score, open the relevant CSV in Excel or Google Sheets, edit, "
+        "save, and (if the app is hosted) commit the change to Git. The hosted app picks up changes "
+        "within ~60 seconds. Full editing walkthrough in `docs/HOW_TO_EDIT.md`.",
+        icon="💡",
+    )
     st.markdown(
         """
 ### Scoring methodology
@@ -769,17 +777,53 @@ All scores on a **1–5** scale (5 = worst). Overall = Likelihood × Severity (1
 | 10–14 | High |
 | 15–25 | Critical |
 
-**Likelihood = 0.4 × Process Intrinsic Risk + 0.6 × Country Hazard Score**
+### Likelihood formula
 
-- *Process Intrinsic Risk* (1–5): from `risk_process_matrix.csv`, derived from ENCORE materiality + IFC EHS Guidelines.
-- *Country Hazard Score* (1–5): risk-specific public indicator normalized (see Data Sources tab).
+```
+Likelihood = 0.4 × Process Intrinsic Risk  +  0.6 × Country Hazard Score
+```
 
-**Severity = 0.5 × Ecological Sensitivity + 0.5 × Regulatory Strictness**
+- **Process Intrinsic Risk (1–5)** — how strongly the given process drives the given risk at all.
+  From `risk_process_matrix.csv`, derived from ENCORE materiality + IFC EHS Guidelines.
+  *Example:* for the **Tailings** risk, the Process Intrinsic Risk is **5 for Mining** (tailings
+  storage facilities exist at mines), **2 for Refining/Smelting** (limited residue storage), and
+  **1 for Marketing** (no tailings in trading/shipping).
+- **Country Hazard Score (1–5)** — risk-specific public indicator, normalized.
+  *Example:* for **Water depletion**, Aqueduct's Baseline Water Stress category maps directly
+  (Chile, Atacama: 5; Zambia: 2).
 
-- *Ecological Sensitivity*: EPI Ecosystem Vitality (inv.) + WDPA protected area % (inv.)
-- *Regulatory Strictness*: WB WGI Regulatory Quality + EPI overall. Stricter regime = higher penalty exposure.
+**Why the 0.6 / 0.4 split?** Process type determines whether a risk is *possible at all*
+(you cannot have a tailings failure in a trading operation), but the country's physical, regulatory,
+and ecological context determines *how likely* a capable process is to actually cause harm.
+Two copper mines — one in Chile's Atacama, one in Zambia's Copperbelt — have the **same**
+Process Intrinsic Risk for water depletion (5 for Mining), but very **different** realized risk
+because the Atacama is extremely water-stressed (Aqueduct BWS = 5) while Zambia is
+moderate (BWS = 2). Country context therefore carries **more weight (0.6)** than process
+(0.4), while still respecting that without the process, no risk exists. If you disagree with
+this split, edit `scoring_weights.csv`.
 
-All weights editable in `scoring_weights.csv`. Full detail in `docs/METHODOLOGY.md`.
+### Severity formula
+
+```
+Severity = 0.5 × Ecological Sensitivity  +  0.5 × Regulatory Strictness
+```
+
+- **Ecological Sensitivity** — how fragile the country's ecosystems are.
+  From [Yale EPI Ecosystem Vitality](https://epi.yale.edu) (inverted) + [WDPA protected area %](https://www.protectedplanet.net) (inverted).
+- **Regulatory Strictness** — how hard the regulator would hit you if an incident occurred.
+  From [WB WGI Regulatory Quality](https://www.worldbank.org/en/publication/worldwide-governance-indicators) + [Yale EPI overall](https://epi.yale.edu).
+
+**Why equal (0.5 / 0.5) weighting?** The tool's purpose is to capture exposure to
+**penalties, fines, and enforcement action** — not pure ecological damage. Both halves
+matter equally: a pristine ecosystem in a weak regulatory regime (e.g., Madagascar)
+exposes Glencore differently than a heavily modified ecosystem in a strict regime (e.g., Germany),
+but the penalty *potential* in each is comparable — just for different reasons (reputational +
+stakeholder in the former, formal legal enforcement in the latter). Editable in
+`scoring_weights.csv` if your risk appetite or audit scope demands a different balance.
+
+---
+
+All weights, thresholds, and normalizations are in `scoring_weights.csv`. Full detail in `docs/METHODOLOGY.md`.
 
 ### Alignment with Glencore SCDD M&M Procedure
 
