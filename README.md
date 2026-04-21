@@ -12,6 +12,19 @@ Pick any combination of **commodity, country, process** (Mining / Refining / Sme
 4. A **Noise baseline** tab showing typical dBA by mining activity (NIOSH + IFC EHS).
 5. **Methodology** and **Data Sources** tabs listing every input dataset with URL.
 
+## Three ways to use this tool
+
+| For | Use |
+|---|---|
+| Full interactive analysis (filters, maps, drill-down, heatmap) | The Streamlit app (`app/streamlit_app.py`) |
+| Quick Excel lookup (no setup, just open in Excel) | **[`Quick_Reference.xlsx`](Quick_Reference.xlsx)** — 4-sheet companion workbook with color-coded country × risk matrix + full ranked results + data sources |
+| Embed into Power BI / internal BI | CSVs under `data/processed/`; scoring logic documented in `docs/METHODOLOGY.md` |
+
+To refresh `Quick_Reference.xlsx` after any CSV edit:
+```bash
+python scripts/08_export_quick_reference.py
+```
+
 ## Quick start
 
 ```bash
