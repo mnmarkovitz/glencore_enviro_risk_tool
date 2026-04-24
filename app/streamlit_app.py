@@ -330,27 +330,45 @@ with tab_dashboard:
 # MAP
 # =================================================================
 with tab_map:
-    st.subheader("Country choropleth — max Overall risk")
+    st.subheader("Country choropleth")
+    agg_choice = st.radio(
+        "How to aggregate the Overall score per country?",
+        options=["Max (worst case — best for risk screening)",
+                 "Mean (typical across all risks × commodities × processes)",
+                 "Median (half the rows score below this)"],
+        horizontal=False, index=0, key="map_agg",
+    )
+    agg_fn = {"Max (worst case — best for risk screening)": "max",
+              "Mean (typical across all risks × commodities × processes)": "mean",
+              "Median (half the rows score below this)": "median"}[agg_choice]
+
     if len(df) and df["overall_1_25"].notna().any():
-        country_max = (
+        country_agg = (
             df.groupby(["iso3", "country", "cahra_flag"])
-              .agg(max_overall=("overall_1_25", "max"),
-                   avg_overall=("overall_1_25", "mean"),
+              .agg(agg_overall=("overall_1_25", agg_fn),
+                   max_overall=("overall_1_25", "max"),
+                   mean_overall=("overall_1_25", "mean"),
                    combos=("overall_1_25", "count"))
               .reset_index()
         )
         fig_c = px.choropleth(
-            country_max, locations="iso3", color="max_overall",
+            country_agg, locations="iso3", color="agg_overall",
             hover_name="country",
-            hover_data={"iso3": False, "avg_overall": ":.2f",
-                        "combos": True, "cahra_flag": True, "max_overall": ":.2f"},
+            hover_data={"iso3": False, "max_overall": ":.2f",
+                        "mean_overall": ":.2f", "combos": True,
+                        "cahra_flag": True, "agg_overall": ":.2f"},
             color_continuous_scale=RISK_SCALE,
             range_color=(1, 25),
-            labels={"max_overall": "Max Overall (1–25)"},
+            labels={"agg_overall": f"{agg_fn.title()} Overall (1–25)"},
         )
         fig_c.update_layout(height=520, margin=dict(l=0, r=0, t=0, b=0),
                             geo=dict(showframe=False, showcoastlines=True))
         st.plotly_chart(fig_c, use_container_width=True)
+        st.caption(
+            f"Showing **{agg_fn}** Overall across all risks × commodities × processes matching your "
+            f"sidebar filters. Switch to Mean/Median above if you want to see the typical risk level "
+            f"rather than the worst case. Hover over a country to see all three aggregates."
+        )
     else:
         st.info("No results — adjust filters.")
 
@@ -384,8 +402,9 @@ with tab_map:
                                f"{len(MRDS_SITES)} rows — run scripts/05_fetch_usgs_mrds.py to populate.")
     if sel_commodities and len(df):
         prod = producers_df[producers_df["commodity"].isin(sel_commodities)]
-        max_by_ctry = df.groupby(["iso3", "country"])["overall_1_25"].max().reset_index()
-        merged = prod.merge(max_by_ctry, on=["iso3", "country"], how="left")
+        agg_by_ctry = (df.groupby(["iso3", "country"])["overall_1_25"]
+                          .agg(agg_fn).reset_index())
+        merged = prod.merge(agg_by_ctry, on=["iso3", "country"], how="left")
         merged = merged.merge(COUNTRY_LATLON, on="iso3", how="left")
         merged = merged.dropna(subset=["overall_1_25", "lat", "lon"])
         if len(merged):
