@@ -164,6 +164,17 @@ with st.spinner("Scoring..."):
         processes=sel_processes or None,
         risk_ids=sel_risk_ids or None,
     )
+
+# Defensive guard: if the scoring engine returned an empty frame (no matches
+# or upstream CSV issue), stop here with a friendly message rather than
+# crashing on a missing column.
+if df is None or len(df) == 0 or "applies" not in df.columns:
+    st.warning(
+        "⚠️ No data was returned for the current filter combination. "
+        "Try selecting at least one commodity, or reset the filters in the sidebar."
+    )
+    st.stop()
+
 if not show_non_applicable:
     df = df[df["applies"] == "Y"]
 if min_overall > 0:

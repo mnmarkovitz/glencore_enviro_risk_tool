@@ -365,7 +365,12 @@ def compute(
                     severity_dataset=rk["severity_dataset"],
                     definition=rk["definition"],
                 ).__dict__)
-    return pd.DataFrame(out)
+    # Always return a well-formed DataFrame — even when `out` is empty, include
+    # every expected column so downstream code doesn't KeyError on empty filters.
+    if out:
+        return pd.DataFrame(out)
+    expected_cols = list(RiskScore.__dataclass_fields__.keys())
+    return pd.DataFrame(columns=expected_cols)
 
 
 if __name__ == "__main__":
