@@ -129,10 +129,14 @@ def sheet_readme(wb, risks, countries, producers, today):
         "This workbook is a STATIC snapshot. It does not update automatically — re-run "
         "scripts/08_export_quick_reference.py whenever the CSVs change. The interactive Streamlit "
         "tool is the Source of Truth. For map visualization, supplier overlays, and drill-down, use "
-        "the Streamlit tool — not this file."
+        "the Streamlit tool — not this file.\n\n"
+        "Cells showing '—' mean the underlying public dataset has NO value for that country and risk. "
+        "Examples: Noise pollution has no global country-level dataset (hence all '—' in the Hazard "
+        "columns for that risk), and UNESCO heritage-in-danger counts are zero for many countries. "
+        "In those cases, Likelihood falls back to the Process Intrinsic Risk alone."
     )
     ws["A28"].alignment = Alignment(wrap_text=True)
-    ws.row_dimensions[28].height = 60
+    ws.row_dimensions[28].height = 140
 
     ws["A30"] = "Built for Glencore Responsible Sourcing by NYU SPS Global Affairs MS students:"
     ws["A30"].font = Font(italic=True)
@@ -219,7 +223,8 @@ def sheet_full_table(wb, df):
 
     # Data
     for _, row in df_y.iterrows():
-        ws.append(row.tolist())
+        cells = [("—" if pd.isna(v) else v) for v in row.tolist()]
+        ws.append(cells)
         r = ws.max_row
         if row["CAHRA"] == "Y":
             ws.cell(row=r, column=4).fill = PatternFill("solid", start_color="FFFFD54F", end_color="FFFFD54F")
@@ -227,9 +232,10 @@ def sheet_full_table(wb, df):
         bucket = row["Bucket"]
         ws.cell(row=r, column=14).fill = BUCKET_FILLS.get(bucket, PatternFill())
         ws.cell(row=r, column=14).font = BUCKET_FONT_LIGHT if bucket in ("Low", "Critical") else BUCKET_FONT_DARK
-        # Number formats for numeric columns
+        # Number formats for numeric columns (skip cells that are the "—" placeholder)
         for c in [6, 7, 8, 9, 10, 11, 12, 13]:
-            ws.cell(row=r, column=c).number_format = "0.00"
+            if isinstance(ws.cell(row=r, column=c).value, (int, float)):
+                ws.cell(row=r, column=c).number_format = "0.00"
 
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = ws.dimensions

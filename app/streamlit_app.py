@@ -99,12 +99,12 @@ with st.expander("📖 **How to use this tool — first-time users start here**"
 tab_dashboard, tab_map, tab_charts, tab_risklib, tab_tiers, tab_userguide, tab_method, tab_sources, tab_noise = st.tabs([
     "🔍 Risk Dashboard",
     "🗺️ Map",
-    "📈 More Charts",
+    "📊 Comparative Analysis",
     "📚 Risk Library",
     "🤝 Supplier Engagement Tiers",
     "📖 User Guide",
     "📐 Methodology",
-    "📊 Data Sources",
+    "🗂️ Data Sources",
     "🔊 Noise Baseline",
 ])
 
@@ -537,8 +537,105 @@ with tab_map:
 # MORE CHARTS
 # =================================================================
 with tab_charts:
+    st.markdown("### Side-by-side comparison")
+    st.caption(
+        "Compare two countries, two commodities, or two risk types across the full score set. "
+        "Use this when an analyst is deciding between suppliers, writing a comparative brief, or "
+        "answering a stakeholder question like *'Why is Chile red and Peru orange?'*"
+    )
+
+    # --- always-available full dataset (ignore sidebar filters for comparisons) ---
+    @st.cache_data
+    def _full_scored():
+        return compute()
+    full_df = _full_scored()
+    full_df = full_df[full_df["applies"] == "Y"]
+
+    cmp_mode = st.radio(
+        "What do you want to compare?",
+        ["Two countries", "Two commodities", "Two risks"],
+        horizontal=True, key="cmp_mode",
+    )
+    cmp_a, cmp_b = st.columns(2)
+    if cmp_mode == "Two countries":
+        opts = sorted(full_df["country"].unique())
+        with cmp_a: A = st.selectbox("Country A", opts, index=opts.index("Chile") if "Chile" in opts else 0, key="cmpA_c")
+        with cmp_b: B = st.selectbox("Country B", opts, index=opts.index("Peru") if "Peru" in opts else 1, key="cmpB_c")
+        dfA = full_df[full_df["country"] == A]
+        dfB = full_df[full_df["country"] == B]
+        group_field = "risk_type"
+    elif cmp_mode == "Two commodities":
+        opts = sorted(full_df["commodity"].unique())
+        with cmp_a: A = st.selectbox("Commodity A", opts, index=opts.index("Cobalt") if "Cobalt" in opts else 0, key="cmpA_k")
+        with cmp_b: B = st.selectbox("Commodity B", opts, index=opts.index("Copper") if "Copper" in opts else 1, key="cmpB_k")
+        dfA = full_df[full_df["commodity"] == A]
+        dfB = full_df[full_df["commodity"] == B]
+        group_field = "risk_type"
+    else:
+        opts = sorted(full_df["risk_type"].unique())
+        with cmp_a: A = st.selectbox("Risk A", opts, index=0, key="cmpA_r")
+        with cmp_b: B = st.selectbox("Risk B", opts, index=1, key="cmpB_r")
+        dfA = full_df[full_df["risk_type"] == A]
+        dfB = full_df[full_df["risk_type"] == B]
+        group_field = "country"
+
+    # Headline metric comparison
+    mA, mB, mD = st.columns(3)
+    mA.metric(f"A — {A}", f"{dfA['overall_1_25'].mean():.2f}", f"{len(dfA)} rows")
+    mB.metric(f"B — {B}", f"{dfB['overall_1_25'].mean():.2f}", f"{len(dfB)} rows")
+    delta = dfA["overall_1_25"].mean() - dfB["overall_1_25"].mean()
+    mD.metric("A − B (avg Overall)", f"{delta:+.2f}",
+              delta_color="inverse" if delta > 0 else "normal")
+
+    # Grouped bar chart — risk profile side by side
+    a_prof = dfA.groupby(group_field)["overall_1_25"].mean().rename("A")
+    b_prof = dfB.groupby(group_field)["overall_1_25"].mean().rename("B")
+    prof = pd.concat([a_prof, b_prof], axis=1).fillna(0).reset_index()
+    long = prof.melt(id_vars=group_field, var_name="Series", value_name="Avg Overall")
+    long["Series"] = long["Series"].map({"A": f"{A}", "B": f"{B}"})
+    fig_cmp = px.bar(
+        long, x=group_field, y="Avg Overall", color="Series", barmode="group",
+        color_discrete_sequence=["#00A9A5", "#FF9800"],
+        height=480,
+    )
+    fig_cmp.update_layout(xaxis_title="", yaxis_title="Avg Overall (1–25)",
+                          xaxis_tickangle=-30, legend=dict(y=1.1, x=0, orientation="h"))
+    st.plotly_chart(fig_cmp, use_container_width=True)
+
+    # Radar chart
+    if len(prof) >= 3:
+        import plotly.graph_objects as _go
+        fig_r = _go.Figure()
+        cats = prof[group_field].tolist() + [prof[group_field].iloc[0]]
+        fig_r.add_trace(_go.Scatterpolar(r=prof["A"].tolist() + [prof["A"].iloc[0]],
+                                          theta=cats, fill="toself", name=str(A),
+                                          line=dict(color="#00A9A5")))
+        fig_r.add_trace(_go.Scatterpolar(r=prof["B"].tolist() + [prof["B"].iloc[0]],
+                                          theta=cats, fill="toself", name=str(B),
+                                          line=dict(color="#FF9800")))
+        fig_r.update_layout(height=520, polar=dict(radialaxis=dict(range=[0, 25])),
+                             legend=dict(y=1.05, orientation="h"))
+        st.plotly_chart(fig_r, use_container_width=True)
+
+    # Side-by-side tables
+    t1, t2 = st.columns(2)
+    top_a = dfA.sort_values("overall_1_25", ascending=False).head(10)
+    top_b = dfB.sort_values("overall_1_25", ascending=False).head(10)
+    with t1:
+        st.markdown(f"**Top 10 risks for {A}**")
+        st.dataframe(top_a[["risk_type", "commodity", "process", "overall_1_25", "risk_bucket"]]
+                      .rename(columns={"overall_1_25": "Overall", "risk_bucket": "Bucket"}),
+                      height=360, use_container_width=True, hide_index=True)
+    with t2:
+        st.markdown(f"**Top 10 risks for {B}**")
+        st.dataframe(top_b[["risk_type", "commodity", "process", "overall_1_25", "risk_bucket"]]
+                      .rename(columns={"overall_1_25": "Overall", "risk_bucket": "Bucket"}),
+                      height=360, use_container_width=True, hide_index=True)
+
+    st.divider()
+    st.markdown("### Exploratory views (filtered to your sidebar selection)")
     if not len(df):
-        st.info("Add filters on the left to populate charts.")
+        st.info("Add filters on the left to populate these charts.")
     else:
         # Top-N countries
         st.subheader("Top countries by average Overall risk")
