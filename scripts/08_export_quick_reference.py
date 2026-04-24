@@ -203,17 +203,19 @@ def sheet_full_table(wb, df):
     df_y = df[df["applies"] == "Y"].copy()
     cols = [
         "risk_type", "commodity", "country", "cahra_flag", "process",
-        "process_intrinsic_1_5", "country_hazard_raw", "country_hazard_norm_1_5",
-        "likelihood_1_5", "ecological_sensitivity_1_5", "regulatory_strictness_1_5",
-        "severity_1_5", "overall_1_25", "risk_bucket",
+        "country_hazard_raw", "country_hazard_norm_1_5",
+        "likelihood_1_5", "severity_1_5", "overall_1_25", "risk_bucket",
+        "process_intrinsic_1_5",
+        "ecological_sensitivity_1_5", "regulatory_strictness_1_5",
         "likely_supplier_types", "country_hazard_source",
     ]
     df_y = df_y[cols].sort_values("overall_1_25", ascending=False)
     df_y.columns = [
         "Risk", "Commodity", "Country", "CAHRA", "Process",
-        "Process Intrinsic (1-5)", "Hazard Raw", "Hazard Normalized (1-5)",
-        "Likelihood (1-5)", "Eco Sensitivity (1-5)", "Regulatory Strict. (1-5)",
-        "Severity (1-5)", "Overall (1-25)", "Bucket",
+        "Hazard Raw (source units)", "Hazard Normalized (1-5)",
+        "Likelihood (1-5)", "Severity (1-5)", "Overall (1-25)", "Bucket",
+        "Process Intrinsic (1-5)",
+        "Eco Sensitivity (1-5)", "Regulatory Strict. (1-5)",
         "Likely Supplier Types", "Country Hazard Source",
     ]
 
@@ -230,16 +232,16 @@ def sheet_full_table(wb, df):
             ws.cell(row=r, column=4).fill = PatternFill("solid", start_color="FFFFD54F", end_color="FFFFD54F")
             ws.cell(row=r, column=4).font = Font(bold=True)
         bucket = row["Bucket"]
-        ws.cell(row=r, column=14).fill = BUCKET_FILLS.get(bucket, PatternFill())
-        ws.cell(row=r, column=14).font = BUCKET_FONT_LIGHT if bucket in ("Low", "Critical") else BUCKET_FONT_DARK
+        ws.cell(row=r, column=11).fill = BUCKET_FILLS.get(bucket, PatternFill())
+        ws.cell(row=r, column=11).font = BUCKET_FONT_LIGHT if bucket in ("Low", "Critical") else BUCKET_FONT_DARK
         # Number formats for numeric columns (skip cells that are the "—" placeholder)
-        for c in [6, 7, 8, 9, 10, 11, 12, 13]:
+        for c in [6, 7, 8, 9, 10, 12, 13, 14]:
             if isinstance(ws.cell(row=r, column=c).value, (int, float)):
                 ws.cell(row=r, column=c).number_format = "0.00"
 
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = ws.dimensions
-    _autosize(ws, [40, 18, 32, 8, 14, 14, 14, 18, 14, 14, 18, 14, 14, 10, 50, 50])
+    _autosize(ws, [40, 18, 32, 8, 14, 18, 18, 14, 14, 14, 10, 18, 16, 20, 50, 50])
 
 
 def sheet_sources(wb, risks):

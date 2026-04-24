@@ -236,14 +236,23 @@ with tab_dashboard:
 
     st.divider()
     st.subheader("Ranked environmental risks")
+    st.caption(
+        "**Column guide.** Columns in reading order: identifiers → raw indicator → normalized score "
+        "→ Likelihood × Severity → Overall (= L×S) → audit components. "
+        "**Country Hazard Raw** is the raw value in the source dataset's native units and can exceed 5 "
+        "(e.g., IUCN species count, PM2.5 µg/m³, TSF count). It is normalized into the 1–5 "
+        "**Country Hazard Normalized** column which feeds Likelihood."
+    )
     if len(df):
         display_cols = [
             "risk_type", "commodity", "country", "cahra_flag", "process",
             "country_hazard_raw", "country_hazard_norm_1_5",
-            "process_intrinsic_1_5", "likelihood_1_5",
-            "ecological_sensitivity_1_5", "regulatory_strictness_1_5", "severity_1_5",
-            "overall_1_25", "risk_bucket", "likely_supplier_types",
-            "country_hazard_source",
+            # Main score axes — the heatmap shows these two
+            "likelihood_1_5", "severity_1_5", "overall_1_25", "risk_bucket",
+            # Audit / component columns — show how L and S were derived
+            "process_intrinsic_1_5",
+            "ecological_sensitivity_1_5", "regulatory_strictness_1_5",
+            "likely_supplier_types", "country_hazard_source",
         ]
         df_sorted = df.sort_values("overall_1_25", ascending=False, na_position="last").reset_index(drop=True)
         df_sorted.index = df_sorted.index + 1
