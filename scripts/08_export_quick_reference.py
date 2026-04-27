@@ -1,15 +1,29 @@
 """
-Export a simplified companion Excel workbook — "Quick Reference" for
+Export a comprehensive companion Excel workbook — "Quick Reference" for
 Responsible Sourcing analysts who want the scored output without running
 the full Streamlit tool.
 
 Output: Quick_Reference.xlsx (in project root)
 
-Sheets:
-  1. README               - what this is, how to read it, when refreshed
-  2. Country × Risk       - color-coded matrix (countries x 8 priority risks)
-  3. Full Ranked Results  - every scored row with filter + color-coded bucket
-  4. Data Sources         - every dataset cited, with URL
+Sheets (mirrors the Streamlit tool's structure):
+  1.  README                          - what this is + bucket legend + caveats
+  2.  Country × Risk Heatmap          - color-coded matrix (countries × priority risks)
+  3.  Full Ranked Results             - every scored row, filterable, color-coded
+  4.  Risk Library                    - 15 risks with definition, KPIs, supplier types
+  5.  Risk × Process Matrix           - intensity (1–5) of each process per risk
+  6.  Commodity Producers             - USGS top producers + critical-mineral flag
+  7.  CAHRA Country List              - Glencore CAHRA list 2025
+  8.  Country Indicators              - all raw indicators per country
+  9.  Soil Vulnerability (SoilGrids)  - pH, SOC, CEC, derived vulnerability
+  10. Water Stress (Aqueduct)         - WRI Aqueduct 4.0 country scores
+  11. Glencore-Owned Assets           - public industrial assets from annual report
+  12. Supplier Types                  - Glencore supplier-type library
+  13. Risk → Supplier Types           - mapping for SAQ scoping
+  14. Noise Baseline                  - NIOSH dBA per mining activity
+  15. Methodology                     - formulas, normalization, weights
+  16. Supplier Engagement Tiers       - OSDR → SAQ → onsite → CAP
+  17. Scoring Weights                 - editable weights table
+  18. Data Sources                    - all hyperlinked citations
 
 Run whenever the scoring inputs change:
     python scripts/08_export_quick_reference.py
@@ -244,6 +258,347 @@ def sheet_full_table(wb, df):
     _autosize(ws, [40, 18, 32, 8, 14, 18, 18, 14, 14, 14, 10, 18, 16, 20, 50, 50])
 
 
+def _generic_table(wb, sheet_name, df, widths=None, hyperlink_cols=None, freeze="A2"):
+    """Generic helper to drop a DataFrame onto a sheet with header styling."""
+    ws = wb.create_sheet(sheet_name)
+    ws.append(list(df.columns))
+    _style_header(ws[1])
+    for _, row in df.iterrows():
+        ws.append([("" if pd.isna(v) else v) for v in row.tolist()])
+        r = ws.max_row
+        if hyperlink_cols:
+            for c in hyperlink_cols:
+                cell = ws.cell(row=r, column=c)
+                if isinstance(cell.value, str) and cell.value.startswith("http"):
+                    cell.hyperlink = cell.value
+                    cell.font = Font(color="FF0366D6", underline="single")
+    ws.freeze_panes = freeze
+    ws.auto_filter.ref = ws.dimensions
+    if widths:
+        _autosize(ws, widths)
+    return ws
+
+
+def sheet_risk_library(wb, risks, matrix, risk_supplier):
+    ws = wb.create_sheet("Risk Library")
+    ws.append(["Risk", "Category", "Definition", "Key KPIs (for SAQ)",
+                "Driving processes (intensity 1-5)", "Likely supplier types",
+                "Likelihood dataset", "Severity dataset"])
+    _style_header(ws[1])
+    rs_map = dict(zip(risk_supplier["risk_id"], risk_supplier["supplier_types"])) \
+        if "risk_id" in risk_supplier.columns else {}
+    for _, r in risks.iterrows():
+        proc_rows = matrix[(matrix["risk_id"] == r["risk_id"]) & (matrix["applies"] == "Y")] \
+            .sort_values("intrinsic_intensity_1_5", ascending=False)
+        proc_str = "; ".join(f"{p['process']}: {int(p['intrinsic_intensity_1_5'])}"
+                              for _, p in proc_rows.iterrows())
+        ws.append([
+            r["risk_type"], r["category"], r["definition"], r["key_kpis"],
+            proc_str,
+            rs_map.get(r["risk_id"], r.get("likely_supplier_types", "")),
+            r["likelihood_dataset"], r["severity_dataset"],
+        ])
+        # Wrap multi-line cells
+        row_idx = ws.max_row
+        for c in [3, 4, 5, 6]:
+            ws.cell(row=row_idx, column=c).alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[row_idx].height = 90
+    ws.freeze_panes = "A2"
+    _autosize(ws, [32, 12, 60, 60, 40, 40, 28, 28])
+
+
+def sheet_risk_process_matrix(wb, risks, matrix):
+    ws = wb.create_sheet("Risk × Process Matrix")
+    pivot = matrix.pivot(index="risk_id", columns="process",
+                          values="intrinsic_intensity_1_5").fillna(0)
+    # Reorder columns so processes follow value-chain order
+    order = ["Mining", "Refining", "Smelting", "Recycling", "Marketing"]
+    pivot = pivot.reindex(columns=[c for c in order if c in pivot.columns])
+    # Replace risk_id with risk_type
+    label_map = dict(zip(risks["risk_id"], risks["risk_type"]))
+    pivot.index = pivot.index.map(label_map)
+    pivot = pivot.reset_index().rename(columns={"risk_id": "Risk"})
+    ws.append(list(pivot.columns))
+    _style_header(ws[1])
+    for _, r in pivot.iterrows():
+        ws.append(r.tolist())
+        row_idx = ws.max_row
+        for col_i, val in enumerate(r.tolist()[1:], start=2):
+            cell = ws.cell(row=row_idx, column=col_i)
+            try:
+                v = int(float(val))
+            except (TypeError, ValueError):
+                v = 0
+            # 1-5 intensity color (low→high)
+            colors = {0: "FFEEEEEE", 1: "FFC8E6C9", 2: "FFFFF59D",
+                      3: "FFFFCC80", 4: "FFFF8A65", 5: "FFE53935"}
+            cell.fill = PatternFill("solid", start_color=colors.get(v, "FFEEEEEE"),
+                                     end_color=colors.get(v, "FFEEEEEE"))
+            cell.alignment = Alignment(horizontal="center")
+            cell.font = Font(bold=True, color="FFFFFFFF" if v >= 5 else "FF000000")
+    ws.freeze_panes = "B2"
+    _autosize(ws, [40] + [14] * (len(pivot.columns) - 1))
+
+
+def sheet_commodity_producers(wb, producers):
+    df = producers.copy()
+    df.columns = ["Commodity", "Country", "ISO-3", "Rank", "Share % global",
+                   "Source", "Critical Mineral", "Critical Source"]
+    return _generic_table(wb, "Commodity Producers", df,
+                           widths=[18, 30, 8, 8, 12, 28, 12, 60],
+                           hyperlink_cols=[8])
+
+
+def sheet_cahra_list(wb, countries):
+    ws = wb.create_sheet("CAHRA Country List")
+    cahra = countries[countries["cahra_flag"] == "Y"][["iso3", "country", "cahra_regions"]] \
+        .sort_values("country")
+    cahra.columns = ["ISO-3", "Country", "CAHRA regions"]
+    ws.append(list(cahra.columns))
+    _style_header(ws[1])
+    for _, r in cahra.iterrows():
+        ws.append(r.tolist())
+        row_idx = ws.max_row
+        ws.cell(row=row_idx, column=2).fill = PatternFill(
+            "solid", start_color="FFFFD54F", end_color="FFFFD54F")
+        ws.cell(row=row_idx, column=2).font = Font(bold=True)
+    ws.freeze_panes = "A2"
+    _autosize(ws, [8, 32, 60])
+    # Note row at top
+    ws.insert_rows(1)
+    ws["A1"] = (f"Source: Glencore CAHRA List 2025 (updated 27.02.2025) — "
+                 f"{len(cahra)} countries flagged as Conflict-Affected & High-Risk Areas")
+    ws["A1"].font = Font(italic=True, color="FF555555", size=11)
+    ws.merge_cells("A1:C1")
+
+
+def sheet_country_indicators(wb, countries):
+    df = countries.copy().sort_values("country")
+    return _generic_table(wb, "Country Indicators", df,
+                           widths=[6, 28] + [13] * (len(df.columns) - 2))
+
+
+def sheet_soilgrids(wb):
+    path = ROOT / "data" / "processed" / "soilgrids_country.csv"
+    if not path.exists(): return
+    df = pd.read_csv(path).sort_values("country")
+    df.columns = ["ISO-3", "Country", "Topsoil pH (0-5cm)",
+                   "Soil organic carbon (g/kg)", "Cation exchange capacity (cmol/kg)",
+                   "Soil vulnerability (1-5)", "Source"]
+    ws = _generic_table(wb, "Soil Vulnerability (SoilGrids)", df,
+                         widths=[6, 28, 16, 18, 22, 18, 60])
+    # Color the vulnerability column 1-5
+    for r in range(2, ws.max_row + 1):
+        v = ws.cell(row=r, column=6).value
+        if isinstance(v, (int, float)):
+            colors = {1: "FFC8E6C9", 2: "FFDCEDC8", 3: "FFFFF59D",
+                      4: "FFFFCC80", 5: "FFFF8A65"}
+            band = max(1, min(5, int(round(v))))
+            ws.cell(row=r, column=6).fill = PatternFill(
+                "solid", start_color=colors[band], end_color=colors[band])
+            ws.cell(row=r, column=6).number_format = "0.00"
+            ws.cell(row=r, column=6).alignment = Alignment(horizontal="center")
+    # Note
+    ws.insert_rows(1)
+    ws["A1"] = ("Source: ISRIC SoilGrids 2.0 — https://soilgrids.org. "
+                 "Vulnerability = mean of pH-distance, SOC-binding, CEC-buffering scores. "
+                 "Higher = more mobile heavy metals.")
+    ws["A1"].font = Font(italic=True, color="FF555555", size=11)
+    ws.merge_cells("A1:G1")
+    ws.row_dimensions[1].height = 30
+
+
+def sheet_aqueduct(wb):
+    path = ROOT / "data" / "processed" / "aqueduct_country_scores.csv"
+    if not path.exists(): return
+    df = pd.read_csv(path).sort_values("name_0")
+    df.columns = ["ISO-3", "Country", "UN region", "WB region",
+                   "BWS — Baseline Water Stress (0-4)",
+                   "DRR — Drought Risk (0-4)",
+                   "RFR — Riverine Flood Risk (0-4)"]
+    df = df.replace(-9999, "")  # Aqueduct no-data sentinel
+    return _generic_table(wb, "Water Stress (Aqueduct)", df,
+                           widths=[6, 28, 14, 24, 22, 18, 22])
+
+
+def sheet_glencore_assets(wb):
+    path = ROOT / "data" / "processed" / "glencore_assets.csv"
+    if not path.exists(): return
+    df = pd.read_csv(path)
+    df.columns = ["Asset", "Type", "Commodity", "Country", "ISO-3",
+                   "Lat", "Lon", "Status", "Source URL"]
+    return _generic_table(wb, "Glencore-Owned Assets", df,
+                           widths=[34, 18, 28, 28, 6, 8, 8, 18, 50],
+                           hyperlink_cols=[9])
+
+
+def sheet_supplier_types(wb):
+    path = ROOT / "data" / "processed" / "supplier_types.csv"
+    if not path.exists(): return
+    df = pd.read_csv(path)
+    df.columns = ["Supplier type (high-risk category)",
+                   "Possible environmental effect",
+                   "Possible human-rights effect"]
+    ws = _generic_table(wb, "Supplier Types", df, widths=[40, 60, 60])
+    # Wrap text
+    for row in ws.iter_rows(min_row=2):
+        for c in row:
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+    for r in range(2, ws.max_row + 1):
+        ws.row_dimensions[r].height = 60
+
+
+def sheet_risk_supplier(wb, risks, risk_supplier):
+    if "risk_id" not in risk_supplier.columns: return
+    df = risk_supplier.merge(risks[["risk_id", "risk_type"]], on="risk_id", how="left")
+    df = df[["risk_type", "supplier_types"]]
+    df.columns = ["Risk", "Likely supplier types"]
+    ws = _generic_table(wb, "Risk → Supplier Types", df, widths=[40, 80])
+    for row in ws.iter_rows(min_row=2):
+        for c in row:
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+    for r in range(2, ws.max_row + 1):
+        ws.row_dimensions[r].height = 36
+
+
+def sheet_noise(wb, noise):
+    df = noise.copy()
+    df.columns = ["Process", "Activity", "Typical dBA min", "Typical dBA max", "Source"]
+    ws = _generic_table(wb, "Noise Baseline", df, widths=[14, 36, 16, 16, 60])
+    # Color by max dBA
+    for r in range(2, ws.max_row + 1):
+        v = ws.cell(row=r, column=4).value
+        if isinstance(v, (int, float)):
+            color = "FFE53935" if v >= 105 else ("FFFF9800" if v >= 95 else
+                     "FFFFC107" if v >= 85 else "FF4CAF50")
+            ws.cell(row=r, column=4).fill = PatternFill("solid", start_color=color, end_color=color)
+    ws.insert_rows(1)
+    ws["A1"] = ("Source: NIOSH Mining Noise — https://www.cdc.gov/niosh/mining/topics/Noise.html"
+                " + IFC EHS Guidelines (Base Metal Smelting & Refining). "
+                "OSHA action level 85 dBA, PEL 90 dBA.")
+    ws["A1"].font = Font(italic=True, color="FF555555", size=11)
+    ws.merge_cells("A1:E1")
+    ws.row_dimensions[1].height = 32
+
+
+def sheet_methodology(wb, weights):
+    ws = wb.create_sheet("Methodology")
+    ws["A1"] = "Scoring methodology"
+    ws["A1"].font = Font(bold=True, size=18, color="FF00A9A5")
+    rows = [
+        ("Likelihood", "0.4 × Process Intrinsic Risk  +  0.6 × Country Hazard Score    →   1–5"),
+        ("Severity",   "0.5 × Ecological Sensitivity   +  0.5 × Regulatory Strictness    →   1–5"),
+        ("Overall",    "Likelihood × Severity     →   1–25"),
+        ("",            ""),
+        ("Buckets",    "1–4 Low · 5–9 Moderate · 10–14 High · 15–25 Critical"),
+    ]
+    r = 3
+    for label, formula in rows:
+        ws.cell(row=r, column=1, value=label).font = Font(bold=True, color="FF005F73")
+        ws.cell(row=r, column=2, value=formula)
+        r += 1
+    r += 2
+    ws.cell(row=r, column=1, value="Why these weights?").font = Font(bold=True, size=14)
+    r += 1
+    ws.cell(row=r, column=1, value=(
+        "Process type determines whether a risk is possible at all (e.g., tailings only happen at "
+        "mines), but the country's regulatory + ecological context determines whether a capable "
+        "process actually causes harm. Two copper mines — Chile vs Zambia — have the same Process "
+        "Intrinsic Risk for water depletion (5) but very different realized risk because Chile's "
+        "Atacama is extremely water-stressed (Aqueduct BWS = 5) while Zambia is moderate (BWS = 2). "
+        "Country context therefore weighs more (0.6) than process (0.4). Stricter regulators raise "
+        "Severity because the tool measures penalty exposure, not pure ecological damage."
+    ))
+    ws.cell(row=r, column=1).alignment = Alignment(wrap_text=True, vertical="top")
+    ws.row_dimensions[r].height = 110
+    r += 3
+    ws.cell(row=r, column=1, value="Scoring weights (editable in scoring_weights.csv)").font = Font(bold=True, size=14)
+    r += 1
+    ws.cell(row=r, column=1, value="Parameter").fill = HEADER_FILL
+    ws.cell(row=r, column=1).font = HEADER_FONT
+    ws.cell(row=r, column=2, value="Value").fill = HEADER_FILL
+    ws.cell(row=r, column=2).font = HEADER_FONT
+    ws.cell(row=r, column=3, value="Description").fill = HEADER_FILL
+    ws.cell(row=r, column=3).font = HEADER_FONT
+    weights_path = ROOT / "data" / "processed" / "scoring_weights.csv"
+    if weights_path.exists():
+        wdf = pd.read_csv(weights_path)
+        for _, w in wdf.iterrows():
+            r += 1
+            ws.cell(row=r, column=1, value=w["parameter"])
+            ws.cell(row=r, column=2, value=float(w["value"]))
+            ws.cell(row=r, column=3, value=w["description"])
+            ws.cell(row=r, column=3).alignment = Alignment(wrap_text=True, vertical="top")
+            ws.row_dimensions[r].height = 30
+    _autosize(ws, [32, 12, 80])
+
+
+def sheet_supplier_tiers(wb):
+    ws = wb.create_sheet("Supplier Engagement Tiers")
+    ws["A1"] = "Supplier Engagement Tiers — Glencore SCDD M&M Procedure"
+    ws["A1"].font = Font(bold=True, size=18, color="FF00A9A5")
+    ws["A2"] = ("Glencore's SCDD M&M Procedure follows the OECD Due Diligence Guidance (3rd ed.) "
+                 "five-step framework. The tool automates Tier 1 (OSDR — Open-Source Desktop Research) "
+                 "and feeds Tiers 2–4 with targeted questions and evidence requirements.")
+    ws["A2"].alignment = Alignment(wrap_text=True)
+    ws.row_dimensions[2].height = 40
+    headers = ["Tier", "Name", "What it does", "SCDD step", "Inputs", "Outputs", "Escalation rule"]
+    ws.append([])
+    ws.append(headers)
+    _style_header(ws[4])
+    tiers = [
+        ("Tier 1", "OSDR — Open-Source Desktop Research",
+         "Automated by THIS tool. Tier-1 risk ranking from public datasets per "
+         "(commodity × country × process). CAHRA flag, supplier-type cues, KPI list.",
+         "Step 2A — Supplier/product scoping",
+         "Aqueduct, Yale EPI, WHO AAQ, Global Tailings Portal, IUCN Red List, WDPA, GFW, "
+         "World Bank WGI, EDGAR, NIOSH, ISRIC SoilGrids, GEM, CAHRA list, USGS MCS+CMA",
+         "Likelihood × Severity per row + CAHRA flag + likely supplier types + KPI watchlist",
+         "Overall ≥ 10 (High/Critical) OR CAHRA-flagged → escalate to Tier 2"),
+        ("Tier 2", "SCDD Questionnaire (SAQ) + extended OSDR",
+         "Supplier completes SAQ targeted at the risks the tool flagged. Adverse-news screening, "
+         "beneficial-ownership check, certifications review (RMI/Copper Mark/LBMA).",
+         "Step 2B — SAQ + Step 2C Risk assessment",
+         "Supplier-completed SAQ, management system docs, public policies, third-party assurance",
+         "Evidence of EMS, traceability documents, corrective-action history, certifications",
+         "Gaps or inconsistencies → Tier 3. No issues + risks managed → Approve."),
+        ("Tier 3", "Onsite visit / On-the-Ground Assessment (OGA)",
+         "Trained assessor onsite. Water/air/soil sampling, worker + community interviews, "
+         "physical inspection of TSFs, effluent, safety practices.",
+         "Step 3.1.5 Onsite visit / 3.1.6 OGA",
+         "Field team, lab partners, sampling protocols",
+         "Firsthand evidence, signed nonconformances, verified material traceability",
+         "Unresolved nonconformances → Tier 4 (CAP). Severe violations → reject."),
+        ("Tier 4", "Corrective Action Plan (CAP) + monitoring",
+         "Time-bound remediation plan jointly designed with supplier; ongoing monitoring.",
+         "Step 3.1.7 CAPs + monitoring",
+         "Supplier sign-off, milestones, evidence requirements, reporting cadence",
+         "CAP document, monitoring reports, escalation triggers, re-assessment date",
+         "CAP met → re-approve. CAP missed → reject 3P."),
+    ]
+    tier_colors = {"Tier 1": "FF4CAF50", "Tier 2": "FF1976D2",
+                    "Tier 3": "FFFF9800", "Tier 4": "FFE53935"}
+    for t in tiers:
+        ws.append(list(t))
+        r = ws.max_row
+        ws.cell(row=r, column=1).fill = PatternFill("solid",
+            start_color=tier_colors[t[0]], end_color=tier_colors[t[0]])
+        ws.cell(row=r, column=1).font = Font(bold=True, color="FFFFFFFF")
+        ws.cell(row=r, column=1).alignment = Alignment(horizontal="center", vertical="center")
+        for c in range(2, 8):
+            ws.cell(row=r, column=c).alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[r].height = 110
+    _autosize(ws, [10, 28, 50, 36, 50, 50, 36])
+
+
+def sheet_scoring_weights(wb):
+    path = ROOT / "data" / "processed" / "scoring_weights.csv"
+    if not path.exists(): return
+    df = pd.read_csv(path)
+    df.columns = ["Parameter", "Value", "Description"]
+    return _generic_table(wb, "Scoring Weights", df, widths=[34, 12, 80])
+
+
 def sheet_sources(wb, risks):
     ws = wb.create_sheet("Data Sources")
     ws.append(["Risk", "Likelihood dataset", "Indicator", "URL",
@@ -265,7 +620,8 @@ def sheet_sources(wb, risks):
 
 
 def main():
-    risks, matrix, countries, producers, _noise, _w, _st = _load()
+    risks, matrix, countries, producers, noise, weights, _st = _load()
+    risk_supplier = pd.read_csv(ROOT / "data" / "processed" / "risk_supplier_types.csv")
     today = date.today().isoformat()
     print(f"Computing scores for export... (today: {today})")
     df = compute()  # all commodities, countries, processes, risks
@@ -275,9 +631,23 @@ def main():
     sheet_readme(wb, risks, countries, producers, today)
     sheet_country_risk(wb, df, risks)
     sheet_full_table(wb, df)
+    sheet_risk_library(wb, risks, matrix, risk_supplier)
+    sheet_risk_process_matrix(wb, risks, matrix)
+    sheet_commodity_producers(wb, producers)
+    sheet_cahra_list(wb, countries)
+    sheet_country_indicators(wb, countries)
+    sheet_soilgrids(wb)
+    sheet_aqueduct(wb)
+    sheet_glencore_assets(wb)
+    sheet_supplier_types(wb)
+    sheet_risk_supplier(wb, risks, risk_supplier)
+    sheet_noise(wb, noise)
+    sheet_methodology(wb, weights)
+    sheet_supplier_tiers(wb)
+    sheet_scoring_weights(wb)
     sheet_sources(wb, risks)
     wb.save(OUTPUT)
-    print(f"✓ Wrote {OUTPUT.name}  ({OUTPUT.stat().st_size / 1024:.0f} KB)")
+    print(f"✓ Wrote {OUTPUT.name}  ({OUTPUT.stat().st_size / 1024:.0f} KB) — {len(wb.sheetnames)} sheets")
     print(f"  Location: {OUTPUT}")
 
 
