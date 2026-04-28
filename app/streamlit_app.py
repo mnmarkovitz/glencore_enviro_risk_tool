@@ -3,9 +3,7 @@ Environmental Risk Identification & Assessment Tool
 ===================================================
 
 Built for the Glencore Group Responsible Sourcing team in collaboration with
-NYU SPS MS Global Affairs students:
-Marielle Markovitz, Maahi Gupta, Daniela Cano, Daniel Luis de Jesus,
-Lindsay Huba-Zhang, Zorana Ivanovich, Mohamad Rimawi.
+the NYU SPS Center for Global Affairs Consulting Practicum.
 
 A pivot-style decision tool for identifying and ranking outward environmental
 risks across a global metals and minerals supply chain. Every Likelihood and
@@ -400,11 +398,17 @@ with tab_map:
     show_glencore = lay1.checkbox("🏭 Glencore-owned assets",
                                    value=False, help="Public Glencore industrial assets from their annual report. "
                                    f"Currently {len(GLENCORE_ASSETS)} rows in glencore_assets.csv.")
-    show_suppliers = lay2.checkbox("🤝 My suppliers (local CSV)",
-                                    value=False, help=f"Editable list in data/processed/glencore_suppliers.csv. "
-                                    f"Currently {len(GLENCORE_SUPPLIERS)} rows (template is empty by default — "
-                                    f"Glencore's RS team fills it with their counterparty data). Git-ignored — "
-                                    f"stays confidential.")
+    n_suppliers = len(GLENCORE_SUPPLIERS.dropna(subset=["lat", "lon"])) if "lat" in GLENCORE_SUPPLIERS.columns else 0
+    suppliers_label = ("🤝 My suppliers (local CSV) — empty"
+                        if n_suppliers == 0
+                        else f"🤝 My suppliers (local CSV) — {n_suppliers} rows")
+    show_suppliers = lay2.checkbox(
+        suppliers_label, value=False, disabled=(n_suppliers == 0),
+        help=("Confidential supplier list lives in data/processed/glencore_suppliers.csv "
+              "(git-ignored — never reaches GitHub or the public Streamlit deployment). "
+              "Glencore's Responsible Sourcing team fills this with their counterparty data "
+              "after handover. Until then this layer stays empty — toggle is disabled."),
+    )
     show_gem = lay3.checkbox("⛽ GEM sites (coal / oil-gas / iron ore / steel)",
                               value=False, help=f"Global Energy Monitor trackers. Currently "
                               f"{len(GEM_SITES)} rows — run scripts/06_fetch_gem.py to populate.")
@@ -812,44 +816,62 @@ with tab_tiers:
             icon="🌐", color="#4CAF50",
             where="What this tool automates",
             inputs=("Aqueduct; EPI; WHO AAQ; Global Tailings Portal; IUCN; WDPA; GFW; WB WGI; "
-                    "Climate TRACE; CAHRA list; USGS top producers"),
+                    "Climate TRACE; ISRIC SoilGrids; CAHRA list; USGS MCS / Critical Minerals Atlas; "
+                    "Global Energy Monitor"),
             outputs=("Likelihood × Severity per risk × country × process; CAHRA flag; "
                      "likely supplier types; KPI watchlist for SAQ"),
             scdd_step="Step 2A — Supplier/product scoping for SCDD",
-            decision="If Overall ≥ 10 (High/Critical) or CAHRA-flagged → escalate to Tier 2",
+            decision="If Overall ≥ 10 (High/Critical) or CAHRA-flagged or red-flag location → escalate to Tier 2",
         ),
         dict(
-            tier="Tier 2", name="SCDD Questionnaire (SAQ) + extended OSDR",
+            tier="Tier 2", name="SCDD Questionnaire (SAQ) + extended OSDR + supplier engagement",
             icon="📋", color="#2196F3",
-            where="After Tier 1 flags the supplier as in-scope",
-            inputs=("Supplier-completed SAQ; management system docs; publicly-available "
-                    "policies/certifications; adverse-news screening; beneficial ownership"),
+            where="After Tier 1 flags the supplier as in-scope of SCDD",
+            inputs=("Supplier-completed SAQ; management-system documentation; publicly-available "
+                    "policies/certifications; adverse-news screening; beneficial-ownership review"),
             outputs=("Evidence of environmental management systems; traceability documents; "
-                     "corrective action history; third-party certifications (RMI/Copper Mark/LBMA)"),
-            scdd_step="Step 2B — SCDD Questionnaire (SAQ) + Step 2C Risk assessment",
-            decision="Gaps or inconsistencies → Tier 3. No issues + risks managed → Approve.",
+                     "corrective-action history; third-party assurances (RMI, Copper Mark, LBMA, "
+                     "ICMM, ResponsibleSteel)"),
+            scdd_step="Step 2B — SCDD Questionnaire (SAQ) + Step 2C Risk assessment + Step 2D Supplier engagement",
+            decision="Gaps/inconsistencies → Tier 3 (Onsite). Unresolved risks → Tier 4 (OGA). "
+                     "Risks managed → Approve. Severe → BAC review.",
         ),
         dict(
-            tier="Tier 3", name="Onsite visit / On-the-ground Assessment (OGA)",
+            tier="Tier 3", name="Onsite visit by internal teams / SMEs",
             icon="🏭", color="#FF9800",
-            where="When SAQ/OSDR leave unresolved high-consequence risk",
-            inputs=("Trained assessor onsite; water/air/soil sampling; interviews with workers & "
-                    "community; inspection of TSFs, waste streams, effluent, safety practices"),
-            outputs=("Firsthand evidence of conditions; signed nonconformances; verified material "
-                     "traceability; photos and sampling data"),
-            scdd_step="Step 3.1.5 Onsite visits / 3.1.6 On-the-ground assessments",
-            decision="Unresolved nonconformances → design CAP (Tier 4). Severe violations → reject.",
+            where="When SAQ/OSDR leave unresolved questions verifiable by an internal site visit",
+            inputs=("GRST checklist; commercial team or internal HSEC&HR SME on site; "
+                    "site-visit report"),
+            outputs=("Firsthand observation of conditions; verification of management-system claims; "
+                     "documented site-visit report"),
+            scdd_step="Step 2E — Onsite visits (Section 3.1.5 of the SCDD M&M procedure)",
+            decision="Risks mitigated → end SCDD. Findings need independent verification → Tier 4 (OGA). "
+                     "CAP needed → Tier 5.",
         ),
         dict(
-            tier="Tier 4", name="Corrective Action Plan (CAP) + monitoring",
+            tier="Tier 4", name="On-the-Ground Assessment (OGA) — independent third-party",
+            icon="🔍", color="#9C27B0",
+            where="When risks need independent verification beyond an internal onsite visit",
+            inputs=("OGA scope/protocol jointly approved by GRST + relationship owner + assessor; "
+                    "supplier consent; Group Internal Audit & Assurance (GIAA) or external "
+                    "consultant; site-based evaluation per OECD DDG / RMI"),
+            outputs=("Independent assessor report; signed nonconformances; verified traceability "
+                     "evidence; sampling and observation data"),
+            scdd_step="Step 2F & 2G — On-the-Ground Assessment (Section 3.1.6 of the SCDD M&M procedure)",
+            decision="Risks confirmed and unmanaged → Tier 5 (CAP). Supplier rejects OGA without "
+                     "reasonable explanation → suspend / terminate (BAC may override).",
+        ),
+        dict(
+            tier="Tier 5", name="Corrective Action Plan (CAP) + ongoing monitoring",
             icon="🛠️", color="#E53935",
-            where="When risks are real but supplier can remediate",
-            inputs=("CAP jointly designed with supplier; milestones; evidence requirements; "
-                    "reporting cadence"),
-            outputs=("Timebound remediation plan; ongoing monitoring reports; escalation trigger "
-                     "list; re-assessment date"),
-            scdd_step="Step 3.1.7 CAPs + monitoring (in SCDD M&M procedure)",
-            decision="CAP met → re-approve. CAP missed → reject 3P (per SCDD procedure).",
+            where="When risks are real but supplier has agreed to remediate",
+            inputs=("CAP jointly designed by GRST + business + supplier; time-bound milestones; "
+                    "evidence requirements; reporting cadence"),
+            outputs=("Time-bound remediation plan; monitoring reports; escalation triggers; "
+                     "re-assessment date; risk ranking update"),
+            scdd_step="Step 3 — CAPs and monitoring (Section 3.1.7 of the SCDD M&M procedure)",
+            decision="CAP completed and risks mitigated → 3P approved. CAP missed → 3P rejected; "
+                     "added to Declined Party List (DPL) by Head of Sustainability.",
         ),
     ]
 
@@ -1125,15 +1147,9 @@ with tab_noise:
 st.sidebar.divider()
 st.sidebar.markdown(
     """
-**Built for the Glencore Group Responsible Sourcing team** in collaboration with NYU School of Professional Studies Master of Science in Global Affairs students:
-
-- Marielle Markovitz
-- Maahi Gupta
-- Daniela Cano
-- Daniel Luis de Jesus
-- Lindsay Huba-Zhang
-- Zorana Ivanovich
-- Mohamad Rimawi
+**Built for the Glencore Group Responsible Sourcing team**
+in collaboration with the NYU School of Professional Studies
+**Center for Global Affairs Consulting Practicum**.
 
 _Edit CSVs in `data/processed/` to update the tool — no code changes needed. See `docs/HOW_TO_EDIT.md`._
 """

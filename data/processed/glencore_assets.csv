@@ -1,40 +1,56 @@
-asset_name,asset_type,commodity,country,iso3,lat,lon,status,source_url
-Mutanda Mining,Mine,Copper; Cobalt,Democratic Republic of the Congo,COD,-10.80,25.77,Active,https://www.glencore.com/what-we-do/metals-and-minerals/copper
-Kamoto Copper Company (KCC),Mine,Copper; Cobalt,Democratic Republic of the Congo,COD,-10.71,25.45,Active,https://www.glencore.com/what-we-do/metals-and-minerals/copper
-Antapaccay,Mine,Copper,Peru,PER,-14.92,-71.63,Active,https://www.glencore.com/what-we-do/metals-and-minerals/copper
-Lomas Bayas,Mine,Copper,Chile,CHL,-24.04,-69.54,Active,https://www.glencore.com/what-we-do/metals-and-minerals/copper
-Altonorte Smelter,Smelter,Copper,Chile,CHL,-23.69,-70.51,Active,https://www.glencore.com/what-we-do/metals-and-minerals/copper
-Mount Isa Mines (Copper),Mine+Smelter,Copper,Australia,AUS,-20.73,139.49,Active,https://www.glencore.com.au/operations-and-projects/mim
-Horne Smelter,Smelter,Copper,Canada,CAN,48.24,-79.02,Active,https://www.glencore.ca/en/operations-and-projects/horne-smelter
-CCR Refinery,Refinery,Copper,Canada,CAN,45.66,-73.50,Active,https://www.glencore.ca/en/operations-and-projects/ccr-refinery
-Kidd Operations,Mine+Concentrator,Copper; Zinc,Canada,CAN,48.64,-81.59,Active,https://www.glencore.ca/en/operations-and-projects/kidd-operations
-Koniambo Nickel (KNS),Smelter,Nickel,New Caledonia,NCL,-21.02,164.81,Care & Maintenance,https://www.glencore.com/what-we-do/metals-and-minerals/nickel
-INO Sudbury,Mine+Smelter,Nickel; Copper,Canada,CAN,46.50,-81.00,Active,https://www.glencore.ca/en/operations-and-projects/ino-sudbury
-Raglan Mine,Mine,Nickel; Copper,Canada,CAN,61.69,-73.56,Active,https://www.glencore.ca/en/operations-and-projects/raglan-mine
-Murrin Murrin,Mine+Refinery,Nickel; Cobalt,Australia,AUS,-28.70,121.89,Active,https://www.glencore.com.au/operations-and-projects/murrin-murrin
-Nikkelverk Refinery,Refinery,Nickel; Copper; Cobalt,Norway,NOR,58.15,7.99,Active,https://www.glencore.com/what-we-do/metals-and-minerals/nickel
-McArthur River Mine,Mine,Zinc; Lead,Australia,AUS,-16.44,136.07,Active,https://www.glencore.com.au/operations-and-projects/mcarthur-river-mine
-Mount Isa Mines (Zinc-Lead),Mine+Smelter,Zinc; Lead,Australia,AUS,-20.72,139.49,Active,https://www.glencore.com.au/operations-and-projects/mim
-George Fisher,Mine,Zinc; Lead,Australia,AUS,-20.52,139.50,Active,https://www.glencore.com.au/operations-and-projects/mim
-Lady Loretta,Mine,Zinc; Lead,Australia,AUS,-20.80,139.46,Active,https://www.glencore.com.au/operations-and-projects/mim
-Kazzinc,Mine+Smelter,Zinc; Lead; Copper; Gold,Kazakhstan,KAZ,49.95,82.61,Active,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
-Sinchi Wayra / Illapa,Mine,Zinc; Lead; Tin; Silver,Bolivia,BOL,-18.55,-66.63,Active,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
-Los Quenuales,Mine,Zinc; Lead,Peru,PER,-10.60,-76.70,Active,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
-Asturiana de Zinc (San Juan de Nieva),Refinery,Zinc,Spain,ESP,43.55,-6.02,Active,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
-Nordenham,Smelter,Zinc,Germany,DEU,53.48,8.48,Active,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
-Portovesme,Smelter,Zinc; Lead,Italy,ITA,39.19,8.38,Care & Maintenance,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
-Rhovan,Mine+Smelter,Ferrovanadium,South Africa,ZAF,-25.56,27.31,Active,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
-Glencore-Merafe Chrome Venture,Mine+Smelter,Ferrochrome,South Africa,ZAF,-25.84,27.20,Active,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
-Hunter Valley Operations,Mine,Coal,Australia,AUS,-32.30,151.06,Active,https://www.glencore.com.au/operations-and-projects/coal
-Mount Owen Complex,Mine,Coal,Australia,AUS,-32.45,151.18,Active,https://www.glencore.com.au/operations-and-projects/coal
-Ulan,Mine,Coal,Australia,AUS,-32.25,149.77,Active,https://www.glencore.com.au/operations-and-projects/coal
-Bulga,Mine,Coal,Australia,AUS,-32.66,151.16,Active,https://www.glencore.com.au/operations-and-projects/coal
-Mangoola,Mine,Coal,Australia,AUS,-32.33,150.86,Active,https://www.glencore.com.au/operations-and-projects/coal
-Ravensworth,Mine,Coal,Australia,AUS,-32.43,151.00,Active,https://www.glencore.com.au/operations-and-projects/coal
-Oaky Creek,Mine,Coal,Australia,AUS,-23.48,148.27,Active,https://www.glencore.com.au/operations-and-projects/coal
-Collinsville,Mine,Coal,Australia,AUS,-20.55,147.83,Active,https://www.glencore.com.au/operations-and-projects/coal
-Newlands,Mine,Coal,Australia,AUS,-21.72,147.86,Care & Maintenance,https://www.glencore.com.au/operations-and-projects/coal
-Prodeco (La Jagua / Calenturitas),Mine,Coal,Colombia,COL,10.16,-73.58,Care & Maintenance,https://www.glencore.com/what-we-do/energy-products/coal
-Astron Energy Refinery (Cape Town),Refinery,Oil and gas,South Africa,ZAF,-33.90,18.51,Active,https://www.glencore.com/what-we-do/energy-products/oil
-Aseng / Alen (offshore),Production,Oil and gas,Equatorial Guinea,GNQ,1.37,9.56,Active,https://www.glencore.com/what-we-do/energy-products/oil
-Chad (Doba Basin),Production,Oil and gas,Chad,TCD,10.08,15.02,Active,https://www.glencore.com/what-we-do/energy-products/oil
+asset_name,asset_type,commodity,country,region,iso3,lat,lon,ownership_pct,status,commissioned_or_acquired,source_url
+Mutanda Mining,Mine + Hydrometallurgical plant,Copper; Cobalt,Democratic Republic of the Congo,Lualaba,COD,-10.80,25.77,100,Active (restarted 2021),Restart 2021,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Kamoto Copper Company (KCC),Mine + Concentrator + SX-EW Refinery,Copper; Cobalt,Democratic Republic of the Congo,Lualaba (Kolwezi),COD,-10.71,25.45,75,Active,Acquired 2009,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Antapaccay,Open-pit mine + Concentrator,Copper,Peru,Cusco (Espinar),PER,-14.92,-71.63,100,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Lomas Bayas,Open-pit mine + SX-EW,Copper,Chile,Antofagasta,CHL,-24.04,-69.54,100,Active,Acquired 2012,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Altonorte Smelter,Copper smelter,Copper,Chile,Antofagasta,CHL,-23.69,-70.51,100,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Collahuasi (Doña Inés de Collahuasi),Open-pit mine + Concentrator,Copper,Chile,Tarapacá,CHL,-20.97,-68.71,44,Active (44% JV with Anglo American & Mitsui),JV stake,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Antamina,Open-pit mine + Concentrator,Copper; Zinc,Peru,Áncash,PER,-9.55,-77.05,33.75,Active (33.75% JV with BHP/Teck/Mitsubishi),JV stake,https://www.glencore.com/what-we-do/metals-and-minerals/copper
+Mount Isa Mines (Copper operations),Underground mine + Concentrator + Smelter,Copper,Australia,Queensland,AUS,-20.73,139.49,100,Copper smelting & concentrating to wind down 2025,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/mim
+Horne Smelter,Copper smelter (custom),Copper,Canada,Quebec (Rouyn-Noranda),CAN,48.24,-79.02,100,Active,Acquired via Xstrata 2013,https://www.glencore.ca/en/operations-and-projects/horne-smelter
+CCR (Canadian Copper Refinery),Electrolytic refinery,Copper,Canada,Quebec (Montreal-Est),CAN,45.66,-73.50,100,Active,Acquired via Xstrata 2013,https://www.glencore.ca/en/operations-and-projects/ccr-refinery
+Kidd Operations (Mine + Met),Underground mine + Concentrator,Copper; Zinc,Canada,Ontario (Timmins),CAN,48.64,-81.59,100,Active,Acquired via Xstrata 2013,https://www.glencore.ca/en/operations-and-projects/kidd-operations
+Koniambo Nickel SAS (KNS),Smelter (ferro-nickel),Nickel,New Caledonia,North Province,NCL,-21.02,164.81,49,Care & Maintenance (operations suspended 2024),C&M Feb 2024,https://www.glencore.com/what-we-do/metals-and-minerals/nickel
+Sudbury Integrated Nickel Operations (INO),Mine + Mill + Smelter,Nickel; Copper; Cobalt; PGMs,Canada,Ontario (Sudbury),CAN,46.50,-81.00,100,Active,Acquired via Falconbridge / Xstrata 2006,https://www.glencore.ca/en/operations-and-projects/ino-sudbury
+Raglan Mine,Underground mine + Concentrator,Nickel; Copper; PGMs,Canada,Quebec (Nunavik),CAN,61.69,-73.56,100,Active,Acquired via Falconbridge / Xstrata,https://www.glencore.ca/en/operations-and-projects/raglan-mine
+Murrin Murrin,Open-pit mine + Pressure-acid-leach refinery,Nickel; Cobalt,Australia,Western Australia (Goldfields),AUS,-28.70,121.89,100,Active,Acquired 2002,https://www.glencore.com.au/operations-and-projects/murrin-murrin
+Nikkelverk Refinery,Electrolytic refinery,Nickel; Copper; Cobalt; PGMs,Norway,Agder (Kristiansand),NOR,58.15,7.99,100,Active,Acquired via Falconbridge / Xstrata,https://www.glencore.com/what-we-do/metals-and-minerals/nickel
+McArthur River Mine (MRM),Open-pit mine + Concentrator,Zinc; Lead,Australia,Northern Territory,AUS,-16.44,136.07,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/mcarthur-river-mine
+Mount Isa Mines (Zinc-Lead operations),Underground mine + Smelter,Zinc; Lead,Australia,Queensland,AUS,-20.72,139.49,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/mim
+George Fisher Mine,Underground mine,Zinc; Lead,Australia,Queensland (Mount Isa),AUS,-20.52,139.50,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/mim
+Lady Loretta Mine,Underground mine,Zinc; Lead,Australia,Queensland,AUS,-20.80,139.46,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/mim
+Kazzinc (Ust-Kamenogorsk),Mine + Smelter (zinc + lead + copper + gold),Zinc; Lead; Copper; Gold,Kazakhstan,East Kazakhstan,KAZ,49.95,82.61,69.61,Active,Acquired 2008,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Sinchi Wayra / Illapa,Underground mines + Concentrator,Zinc; Lead; Tin; Silver,Bolivia,Potosí,BOL,-19.58,-65.75,100,Active,Acquired 2005,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Los Quenuales (Iscaycruz + Yauliyacu),Underground mines + Concentrator,Zinc; Lead; Silver,Peru,Lima,PER,-10.60,-76.70,97,Active,Acquired 1996,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Asturiana de Zinc (San Juan de Nieva),Electrolytic zinc refinery,Zinc,Spain,Asturias,ESP,43.55,-6.02,100,Active,Acquired 2001,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Nordenham Zinc Smelter,Smelter,Zinc,Germany,Lower Saxony (Wesermarsch),DEU,53.48,8.48,100,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Portovesme Smelter,Smelter,Zinc; Lead,Italy,Sardinia (Sulcis),ITA,39.19,8.38,100,Care & Maintenance,C&M from 2023,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Northfleet Refinery (Britannia Refined Metals),Lead refinery,Lead,United Kingdom,Kent,GBR,51.45,0.33,100,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/metals-and-minerals/zinc
+Rhovan,Mine + Smelter,Ferrovanadium,South Africa,North West Province,ZAF,-25.56,27.31,100,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
+Glencore-Merafe Chrome Venture (Lion Smelter),Ferrochrome smelter,Ferrochrome,South Africa,Limpopo (Steelpoort),ZAF,-24.67,30.16,79.5,Active (JV with Merafe),JV established 2004,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
+Glencore-Merafe (Wonderkop Smelter),Ferrochrome smelter,Ferrochrome,South Africa,North West Province (Marikana),ZAF,-25.69,27.46,79.5,Active,JV established 2004,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
+Glencore-Merafe (Boshoek Smelter),Ferrochrome smelter,Ferrochrome,South Africa,North West Province,ZAF,-25.59,27.16,79.5,Active,JV established 2004,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
+Glencore-Merafe (Rustenburg Smelter),Ferrochrome smelter,Ferrochrome,South Africa,North West Province,ZAF,-25.66,27.24,79.5,Active,JV established 2004,https://www.glencore.com/what-we-do/metals-and-minerals/ferroalloys
+Hunter Valley Operations (HVO),Open-cut mine,Coal (thermal + semi-soft coking),Australia,New South Wales (Hunter Valley),AUS,-32.30,151.06,49,Active (49% JV with Yancoal),JV stake,https://www.glencore.com.au/operations-and-projects/coal
+Mount Owen Complex,Open-cut mine complex,Coal,Australia,New South Wales,AUS,-32.45,151.18,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/coal
+Glendell,Open-cut mine,Coal,Australia,New South Wales (Hunter Valley),AUS,-32.45,151.18,100,Active,Within Mt Owen Complex,https://www.glencore.com.au/operations-and-projects/coal
+Ulan Mine,Underground + Open-cut,Coal,Australia,New South Wales (Mudgee),AUS,-32.25,149.77,90,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/coal
+Bulga,Open-cut + Underground,Coal,Australia,New South Wales (Singleton),AUS,-32.66,151.16,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/coal
+Mangoola,Open-cut mine,Coal,Australia,New South Wales (Hunter Valley),AUS,-32.33,150.86,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/coal
+Ravensworth,Open-cut mine,Coal,Australia,New South Wales (Hunter Valley),AUS,-32.43,151.00,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/coal
+Liddell Coal,Open-cut + Underground,Coal,Australia,New South Wales (Hunter Valley),AUS,-32.39,150.96,67.5,Active (67.5% JV with Mitsui),JV stake,https://www.glencore.com.au/operations-and-projects/coal
+Oaky Creek,Underground longwall,Coal (coking),Australia,Queensland (Bowen Basin),AUS,-23.48,148.27,55,Active (55% JV),JV stake,https://www.glencore.com.au/operations-and-projects/coal
+Collinsville,Open-cut + Underground,Coal,Australia,Queensland,AUS,-20.55,147.83,100,Active,Acquired via Xstrata 2013,https://www.glencore.com.au/operations-and-projects/coal
+Newlands,Open-cut + Underground,Coal,Australia,Queensland (Bowen Basin),AUS,-21.72,147.86,55,Care & Maintenance,JV stake,https://www.glencore.com.au/operations-and-projects/coal
+Hail Creek,Open-cut mine,Coal (coking),Australia,Queensland (Bowen Basin),AUS,-21.43,148.39,82,Active,Acquired from Rio Tinto 2018,https://www.glencore.com.au/operations-and-projects/coal
+Clermont,Open-cut mine,Coal (thermal),Australia,Queensland (Bowen Basin),AUS,-22.83,147.50,50,Active,JV stake,https://www.glencore.com.au/operations-and-projects/coal
+Cerrejón,Open-cut mine,Coal,Colombia,La Guajira,COL,11.10,-72.61,100,Divestment in process (sold to consortium 2024),Full ownership 2022; sold 2024,https://www.glencore.com/what-we-do/energy-products/coal
+Prodeco (La Jagua / Calenturitas),Open-cut mine,Coal,Colombia,Cesar (Becerril),COL,10.16,-73.58,100,Care & Maintenance,C&M since 2021,https://www.glencore.com/what-we-do/energy-products/coal
+Tweefontein Operations,Open-cut + Underground,Coal,South Africa,Mpumalanga (eMalahleni),ZAF,-25.79,29.20,79.8,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/energy-products/coal
+Goedgevonden,Open-cut mine,Coal (thermal),South Africa,Mpumalanga,ZAF,-26.10,29.40,74,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/energy-products/coal
+iMpunzi,Open-cut + Underground,Coal,South Africa,Mpumalanga (eMalahleni),ZAF,-26.04,29.36,79.8,Active,Acquired via Xstrata 2013,https://www.glencore.com/what-we-do/energy-products/coal
+Wonderfontein,Open-cut mine,Coal,South Africa,Mpumalanga,ZAF,-26.25,29.50,74,Active,Acquired,https://www.glencore.com/what-we-do/energy-products/coal
+Astron Energy Cape Town Refinery,Oil refinery (110 kbpd),Oil and gas,South Africa,Western Cape (Cape Town),ZAF,-33.90,18.51,75,Active,Acquired 2018,https://astronenergy.co.za
+Aseng / Alen offshore,Offshore production,Oil and gas,Equatorial Guinea,Gulf of Guinea,GNQ,1.37,9.56,23.75,Active (non-operating partner),Acquired,https://www.glencore.com/what-we-do/energy-products/oil
+Doba Basin (Chad),Onshore production,Oil and gas,Chad,Logone Oriental,TCD,8.65,16.77,100,Active,Acquired 2014,https://www.glencore.com/what-we-do/energy-products/oil
+Volcan Compañía Minera,Polymetallic mines,Zinc; Lead; Silver,Peru,Pasco (Cerro de Pasco),PER,-10.69,-76.26,55,Active (controlling stake),Acquired controlling stake 2017,https://www.glencore.com/what-we-do/metals-and-minerals/zinc

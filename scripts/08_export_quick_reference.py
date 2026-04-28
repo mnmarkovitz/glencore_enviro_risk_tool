@@ -5,25 +5,22 @@ the full Streamlit tool.
 
 Output: Quick_Reference.xlsx (in project root)
 
-Sheets (mirrors the Streamlit tool's structure):
+Sheets:
   1.  README                          - what this is + bucket legend + caveats
-  2.  Country × Risk Heatmap          - color-coded matrix (countries × priority risks)
-  3.  Full Ranked Results             - every scored row, filterable, color-coded
-  4.  Risk Library                    - 15 risks with definition, KPIs, supplier types
-  5.  Risk × Process Matrix           - intensity (1–5) of each process per risk
-  6.  Commodity Producers             - USGS top producers + critical-mineral flag
-  7.  CAHRA Country List              - Glencore CAHRA list 2025
-  8.  Country Indicators              - all raw indicators per country
+  2.  User Guide                      - end-user walkthrough
+  3.  Country × Risk Heatmap          - color-coded matrix + bar chart
+  4.  Full Ranked Results             - every scored row, filterable, color-coded
+  5.  Risk Library                    - 15 risks with definition, KPIs, processes
+  6.  Risk × Process Matrix           - intensity (1–5) of each process per risk
+  7.  Commodity Producers             - USGS top producers + critical-mineral flag + chart
+  8.  Country Indicators              - all raw indicators per country, sourced
   9.  Soil Vulnerability (SoilGrids)  - pH, SOC, CEC, derived vulnerability
   10. Water Stress (Aqueduct)         - WRI Aqueduct 4.0 country scores
   11. Glencore-Owned Assets           - public industrial assets from annual report
-  12. Supplier Types                  - Glencore supplier-type library
-  13. Risk → Supplier Types           - mapping for SAQ scoping
-  14. Noise Baseline                  - NIOSH dBA per mining activity
-  15. Methodology                     - formulas, normalization, weights
-  16. Supplier Engagement Tiers       - OSDR → SAQ → onsite → CAP
-  17. Scoring Weights                 - editable weights table
-  18. Data Sources                    - all hyperlinked citations
+  12. Noise Baseline                  - NIOSH dBA per mining activity
+  13. Methodology + Scoring Weights   - formulas, normalization, weights (combined)
+  14. Supplier Engagement Tiers       - OSDR → SAQ → onsite → OGA → CAP
+  15. Data Sources                    - all hyperlinked citations
 
 Run whenever the scoring inputs change:
     python scripts/08_export_quick_reference.py
@@ -80,6 +77,82 @@ def _style_header(row):
 def _autosize(ws, widths):
     for i, w in enumerate(widths, start=1):
         ws.column_dimensions[get_column_letter(i)].width = w
+
+
+def _add_source_note(ws, text, n_cols, hyperlinks=None):
+    """Insert a sources note as the first row of a sheet (above the header)."""
+    ws.insert_rows(1)
+    ws["A1"] = text
+    ws["A1"].font = Font(italic=True, color="FF555555", size=10)
+    ws["A1"].alignment = Alignment(wrap_text=True, vertical="center")
+    end_col = get_column_letter(n_cols)
+    ws.merge_cells(f"A1:{end_col}1")
+    ws.row_dimensions[1].height = 36
+    if hyperlinks:
+        for url, label in hyperlinks:
+            pass  # markdown-style links don't render natively; we keep URLs in source_note text
+
+
+# Mapping of country-indicator field names to (Display, Source label, URL)
+INDICATOR_META = {
+    "iso3":                          ("ISO-3 code",                   "ISO 3166-1 alpha-3", ""),
+    "country":                       ("Country",                       "", ""),
+    "epi_overall_2024":              ("Yale EPI 2024 overall (0–100, higher better)",
+                                       "Yale Center for Environmental Law & Policy",
+                                       "https://epi.yale.edu"),
+    "epi_ecosystem_vitality":        ("Yale EPI 2024 — Ecosystem Vitality sub-index (0–100)",
+                                       "Yale EPI 2024", "https://epi.yale.edu"),
+    "epi_biodiversity_habitat":      ("Yale EPI 2024 — Biodiversity & Habitat sub-index (0–100)",
+                                       "Yale EPI 2024", "https://epi.yale.edu"),
+    "epi_air_quality":               ("Yale EPI 2024 — Air Quality sub-index (0–100)",
+                                       "Yale EPI 2024", "https://epi.yale.edu"),
+    "epi_waste_management":          ("Yale EPI 2024 — Waste Management sub-index (0–100)",
+                                       "Yale EPI 2024", "https://epi.yale.edu"),
+    "epi_heavy_metals":              ("Yale EPI 2024 — Heavy Metals sub-index (0–100)",
+                                       "Yale EPI 2024", "https://epi.yale.edu"),
+    "who_pm25_annual_ugm3":          ("WHO Ambient PM2.5 (annual mean, µg/m³)",
+                                       "WHO Ambient Air Quality Database",
+                                       "https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database"),
+    "wb_co2_t_per_capita":           ("World Bank — CO2 emissions (metric tonnes per capita)",
+                                       "World Bank Open Data (EN.ATM.CO2E.PC)",
+                                       "https://data.worldbank.org/indicator/EN.ATM.CO2E.PC"),
+    "gfw_tree_cover_loss_pct_2023":  ("Global Forest Watch — tree cover loss (% of country area, 2023)",
+                                       "Global Forest Watch / WRI",
+                                       "https://www.globalforestwatch.org"),
+    "iucn_threatened_species":       ("IUCN Red List — threatened species count in country (CR + EN + VU)",
+                                       "IUCN Red List API", "https://apiv3.iucnredlist.org"),
+    "wdpa_protected_pct":            ("UNEP-WCMC WDPA — % terrestrial area protected",
+                                       "Protected Planet (WDPA)",
+                                       "https://www.protectedplanet.net"),
+    "tsf_count":                     ("Global Tailings Portal — number of tailings storage facilities",
+                                       "GRID-Arendal Global Tailings Portal",
+                                       "https://tailing.grida.no"),
+    "tsf_max_very_high_or_extreme":  ("GTP — count of TSFs with consequence class Very High / Extreme",
+                                       "GRID-Arendal Global Tailings Portal",
+                                       "https://tailing.grida.no"),
+    "wb_wgi_gov_effectiveness":      ("World Bank WGI — Government Effectiveness (-2.5 to +2.5)",
+                                       "World Bank Worldwide Governance Indicators",
+                                       "https://www.worldbank.org/en/publication/worldwide-governance-indicators"),
+    "wb_wgi_regulatory_quality":     ("World Bank WGI — Regulatory Quality (-2.5 to +2.5)",
+                                       "World Bank Worldwide Governance Indicators",
+                                       "https://www.worldbank.org/en/publication/worldwide-governance-indicators"),
+    "unesco_heritage_sites":         ("UNESCO World Heritage — total inscribed sites in country",
+                                       "UNESCO World Heritage Centre",
+                                       "https://whc.unesco.org"),
+    "unesco_heritage_in_danger":     ("UNESCO World Heritage — sites currently listed 'in danger'",
+                                       "UNESCO World Heritage Centre",
+                                       "https://whc.unesco.org"),
+    "inform_risk_2024":              ("INFORM Risk Index 2024 (0–10)",
+                                       "EC Joint Research Centre INFORM Risk",
+                                       "https://drmkc.jrc.ec.europa.eu/inform-index"),
+    "basel_hazwaste_kt_per_yr":      ("UNEP Basel Convention — national hazardous waste generation (kt/yr)",
+                                       "Basel Convention", "http://www.basel.int"),
+    "source_note":                   ("Source note (for this row)", "", ""),
+    "cahra_flag":                    ("Glencore CAHRA flag (Y/N)",
+                                       "Glencore CAHRA List 2025", "https://www.glencore.com"),
+    "cahra_regions":                 ("Glencore CAHRA regions (sub-national)",
+                                       "Glencore CAHRA List 2025", "https://www.glencore.com"),
+}
 
 
 # -------------------------- sheet builders --------------------------
@@ -152,12 +225,9 @@ def sheet_readme(wb, risks, countries, producers, today):
     ws["A28"].alignment = Alignment(wrap_text=True)
     ws.row_dimensions[28].height = 140
 
-    ws["A30"] = "Built for Glencore Responsible Sourcing by NYU SPS Global Affairs MS students:"
+    ws["A30"] = "Built for the Glencore Group Responsible Sourcing team"
     ws["A30"].font = Font(italic=True)
-    ws["A31"] = (
-        "Marielle Markovitz, Maahi Gupta, Daniela Cano, Daniel Luis de Jesus, "
-        "Lindsay Huba-Zhang, Zorana Ivanovich, Mohamad Rimawi"
-    )
+    ws["A31"] = "in collaboration with the NYU SPS Center for Global Affairs Consulting Practicum."
     ws["A31"].font = Font(italic=True, color="FF555555")
 
     _autosize(ws, [18, 80])
@@ -373,9 +443,112 @@ def sheet_cahra_list(wb, countries):
 
 
 def sheet_country_indicators(wb, countries):
-    df = countries.copy().sort_values("country")
-    return _generic_table(wb, "Country Indicators", df,
-                           widths=[6, 28] + [13] * (len(df.columns) - 2))
+    df = countries.copy().sort_values("country").reset_index(drop=True)
+    ws = wb.create_sheet("Country Indicators")
+
+    # Row 1: source note
+    ws["A1"] = ("Per-column source: hover any header for the dataset name. Full URL list "
+                "in the 'Data Sources' sheet. All values public; refresh via "
+                "scripts/02_fetch_external_data.py.")
+    ws["A1"].font = Font(italic=True, color="FF555555", size=10)
+    ws["A1"].alignment = Alignment(wrap_text=True, vertical="center")
+    end_col = get_column_letter(len(df.columns))
+    ws.merge_cells(f"A1:{end_col}1")
+    ws.row_dimensions[1].height = 36
+
+    # Row 2: friendly header + comment with source URL
+    ws.append([INDICATOR_META.get(c, (c, "", ""))[0] for c in df.columns])
+    _style_header(ws[2])
+    from openpyxl.comments import Comment
+    for col_i, col_name in enumerate(df.columns, start=1):
+        meta = INDICATOR_META.get(col_name)
+        if meta and meta[1]:
+            cell = ws.cell(row=2, column=col_i)
+            cell.comment = Comment(f"{meta[1]}\n{meta[2]}", "Tool")
+
+    # Data rows
+    for _, row in df.iterrows():
+        ws.append([("" if pd.isna(v) else v) for v in row.tolist()])
+    ws.freeze_panes = "C3"
+    ws.auto_filter.ref = f"A2:{end_col}{ws.max_row}"
+    widths = [6, 30] + [22] * (len(df.columns) - 2)
+    _autosize(ws, widths)
+
+    # Row 3 onward: highlight CAHRA rows (look up cahra_flag column)
+    cahra_col = list(df.columns).index("cahra_flag") + 1 if "cahra_flag" in df.columns else None
+    if cahra_col:
+        for r in range(3, ws.max_row + 1):
+            if ws.cell(row=r, column=cahra_col).value == "Y":
+                ws.cell(row=r, column=2).fill = PatternFill(
+                    "solid", start_color="FFFFD54F", end_color="FFFFD54F")
+                ws.cell(row=r, column=2).font = Font(bold=True)
+
+
+def sheet_user_guide(wb):
+    """Render USER_GUIDE.md as a sheet (markdown stripped to plain headings + bullets)."""
+    ws = wb.create_sheet("User Guide")
+    ws["A1"] = "Tool — User Guide"
+    ws["A1"].font = Font(bold=True, size=18, color="FF00A9A5")
+    ws["A2"] = ("A practical walkthrough for the Responsible Sourcing analyst. "
+                 "Read this once and you can run the tool end-to-end.")
+    ws["A2"].font = Font(italic=True, color="FF555555")
+    ws["A2"].alignment = Alignment(wrap_text=True)
+    ws.row_dimensions[2].height = 30
+
+    sections = [
+        ("What this tool does (1 sentence)",
+         "Given a commodity, country, and process stage, the tool returns a ranked list "
+         "of environmental risks — each with a Likelihood × Severity score drawn from public "
+         "datasets — plus a map, a heatmap, and everything you need to scope a Supplier "
+         "Questionnaire (SAQ)."),
+        ("When to use it",
+         "Onboarding a new supplier · Annual SCDD review · Scoping an onsite visit · "
+         "Drafting a CAP · Preparing for CSRD/CSDDD compliance reporting."),
+        ("How to read a score",
+         "All scores 1–5 (5 = worst). Likelihood = 0.4 × Process Intrinsic + 0.6 × Country "
+         "Hazard. Severity = 0.5 × Ecological Sensitivity + 0.5 × Regulatory Strictness. "
+         "Overall = L × S, range 1–25. Buckets: 1–4 Low · 5–9 Moderate · 10–14 High · 15–25 "
+         "Critical. Strict regulators raise Severity (penalty exposure)."),
+        ("Quickstart — the first 5 minutes",
+         "1) Pick a commodity in the Streamlit tool's sidebar. 2) Look at the Risk Matrix "
+         "(Likelihood × Severity) heatmap. 3) Read the Ranked Risks table — sort by Overall. "
+         "4) Click the drill-down to see raw indicator + public-source URL. 5) Open the "
+         "Risk Library tab to grab SAQ KPIs."),
+        ("Common workflows (Excel-only)",
+         "(a) Open 'Country × Risk Heatmap' for a one-page country exposure scan. "
+         "(b) Open 'Full Ranked Results' and use Excel's filter for commodity = X, "
+         "country = Y. (c) Open 'Risk Library' to copy SAQ KPIs into your questionnaire. "
+         "(d) Open 'Glencore-Owned Assets' to map the company's footprint to commodity / "
+         "country combinations of interest."),
+        ("Filters and CAHRA",
+         "🚩 CAHRA flag = country (or sub-national region) on Glencore's CAHRA List 2025. "
+         "Any CAHRA + High/Critical row should escalate to Tier 2 SAQ at minimum. "
+         "⭐ Critical Mineral flag = USGS 2022 Critical Minerals List."),
+        ("Supplier Engagement Tiers — where this tool fits",
+         "Tier 1 (OSDR): this tool. Tier 2 (SAQ + clarification): tool's KPI list scopes "
+         "the SAQ. Tier 3 (Onsite, internal SME): tool's Critical rows define agenda. "
+         "Tier 4 (OGA, independent): same. Tier 5 (CAP + monitoring): KPIs become "
+         "milestones. See the 'Supplier Engagement Tiers' sheet for full alignment to "
+         "Glencore's SCDD M&M procedure."),
+        ("Editing the tool",
+         "All logic lives in CSVs under data/processed/. Edit in Excel/Sheets, save, "
+         "and (if hosted) commit. Glencore IT picks up changes within 60 seconds. "
+         "Detailed walkthrough: docs/HOW_TO_EDIT.md."),
+        ("Where to get help",
+         "Why did a country score X? → drill-down in the Streamlit app or the "
+         "'Full Ranked Results' sheet. Can I trust this score? → 'Data Sources' sheet. "
+         "What's the math? → 'Methodology + Scoring Weights' sheet. Migration to Glencore "
+         "infrastructure → docs/HANDOVER.md."),
+    ]
+    r = 4
+    for title, body in sections:
+        ws.cell(row=r, column=1, value=title).font = Font(bold=True, size=13, color="FF005F73")
+        r += 1
+        ws.cell(row=r, column=1, value=body)
+        ws.cell(row=r, column=1).alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[r].height = 60
+        r += 2
+    _autosize(ws, [120])
 
 
 def sheet_soilgrids(wb):
@@ -425,11 +598,22 @@ def sheet_glencore_assets(wb):
     path = ROOT / "data" / "processed" / "glencore_assets.csv"
     if not path.exists(): return
     df = pd.read_csv(path)
-    df.columns = ["Asset", "Type", "Commodity", "Country", "ISO-3",
-                   "Lat", "Lon", "Status", "Source URL"]
-    return _generic_table(wb, "Glencore-Owned Assets", df,
-                           widths=[34, 18, 28, 28, 6, 8, 8, 18, 50],
-                           hyperlink_cols=[9])
+    df.columns = ["Asset", "Type", "Commodity", "Country", "Region / sub-national",
+                   "ISO-3", "Lat", "Lon", "Ownership %", "Status",
+                   "Commissioned / Acquired", "Source URL"]
+    ws = _generic_table(wb, "Glencore-Owned Assets", df,
+                         widths=[34, 28, 22, 22, 26, 6, 8, 8, 12, 26, 22, 50],
+                         hyperlink_cols=[12])
+    # Source row above
+    ws.insert_rows(1)
+    ws["A1"] = ("Source: Glencore corporate website (glencore.com), regional operations "
+                 "pages, 2023 Annual Report, and country subsidiary sites (glencore.com.au, "
+                 "glencore.ca, astronenergy.co.za). Always verify against the latest "
+                 "annual report when updating.")
+    ws["A1"].font = Font(italic=True, color="FF555555", size=10)
+    ws["A1"].alignment = Alignment(wrap_text=True, vertical="center")
+    ws.merge_cells("A1:L1")
+    ws.row_dimensions[1].height = 36
 
 
 def sheet_supplier_types(wb):
@@ -481,8 +665,8 @@ def sheet_noise(wb, noise):
     ws.row_dimensions[1].height = 32
 
 
-def sheet_methodology(wb, weights):
-    ws = wb.create_sheet("Methodology")
+def sheet_methodology_and_weights(wb, weights):
+    ws = wb.create_sheet("Methodology + Scoring Weights")
     ws["A1"] = "Scoring methodology"
     ws["A1"].font = Font(bold=True, size=18, color="FF00A9A5")
     rows = [
@@ -548,36 +732,55 @@ def sheet_supplier_tiers(wb):
     _style_header(ws[4])
     tiers = [
         ("Tier 1", "OSDR — Open-Source Desktop Research",
-         "Automated by THIS tool. Tier-1 risk ranking from public datasets per "
+         "Automated by THIS tool. Risk ranking from public datasets per "
          "(commodity × country × process). CAHRA flag, supplier-type cues, KPI list.",
-         "Step 2A — Supplier/product scoping",
+         "Step 2A — Supplier/product scoping for SCDD",
          "Aqueduct, Yale EPI, WHO AAQ, Global Tailings Portal, IUCN Red List, WDPA, GFW, "
-         "World Bank WGI, EDGAR, NIOSH, ISRIC SoilGrids, GEM, CAHRA list, USGS MCS+CMA",
+         "World Bank WGI, EDGAR, NIOSH, ISRIC SoilGrids, GEM, CAHRA list, USGS MCS + CMA",
          "Likelihood × Severity per row + CAHRA flag + likely supplier types + KPI watchlist",
-         "Overall ≥ 10 (High/Critical) OR CAHRA-flagged → escalate to Tier 2"),
-        ("Tier 2", "SCDD Questionnaire (SAQ) + extended OSDR",
+         "Overall ≥ 10 (High/Critical) OR CAHRA-flagged OR red-flag location → escalate to Tier 2"),
+        ("Tier 2", "SCDD Questionnaire (SAQ) + extended OSDR + supplier engagement",
          "Supplier completes SAQ targeted at the risks the tool flagged. Adverse-news screening, "
-         "beneficial-ownership check, certifications review (RMI/Copper Mark/LBMA).",
-         "Step 2B — SAQ + Step 2C Risk assessment",
-         "Supplier-completed SAQ, management system docs, public policies, third-party assurance",
+         "beneficial-ownership check, third-party assurance review (RMI / Copper Mark / LBMA / "
+         "ICMM / ResponsibleSteel).",
+         "Step 2B — SAQ + Step 2C Risk assessment + Step 2D Supplier engagement",
+         "Supplier-completed SAQ, management-system documents, public policies, third-party "
+         "assurances, beneficial-ownership records",
          "Evidence of EMS, traceability documents, corrective-action history, certifications",
-         "Gaps or inconsistencies → Tier 3. No issues + risks managed → Approve."),
-        ("Tier 3", "Onsite visit / On-the-Ground Assessment (OGA)",
-         "Trained assessor onsite. Water/air/soil sampling, worker + community interviews, "
-         "physical inspection of TSFs, effluent, safety practices.",
-         "Step 3.1.5 Onsite visit / 3.1.6 OGA",
-         "Field team, lab partners, sampling protocols",
-         "Firsthand evidence, signed nonconformances, verified material traceability",
-         "Unresolved nonconformances → Tier 4 (CAP). Severe violations → reject."),
-        ("Tier 4", "Corrective Action Plan (CAP) + monitoring",
-         "Time-bound remediation plan jointly designed with supplier; ongoing monitoring.",
-         "Step 3.1.7 CAPs + monitoring",
-         "Supplier sign-off, milestones, evidence requirements, reporting cadence",
-         "CAP document, monitoring reports, escalation triggers, re-assessment date",
-         "CAP met → re-approve. CAP missed → reject 3P."),
+         "Gaps or inconsistencies → Tier 3 (Onsite). Unresolved → Tier 4 (OGA). Risks managed → "
+         "Approve. Severe → BAC review."),
+        ("Tier 3", "Onsite visit by internal commercial team or HSEC&HR SME",
+         "GRST sends an internal team to verify SAQ claims firsthand: site walkthrough, "
+         "documentation review, interviews with operations staff. NOT an audit; lighter-touch "
+         "than OGA.",
+         "Step 2E — Onsite visits (Section 3.1.5 of the SCDD M&M procedure)",
+         "GRST checklist; commercial team or internal HSEC&HR SME on site; site-visit report",
+         "Firsthand observation; verification of management-system claims; documented site report",
+         "Risks mitigated → end SCDD. Findings need independent verification → Tier 4 (OGA). "
+         "CAP needed → Tier 5."),
+        ("Tier 4", "On-the-Ground Assessment (OGA) — independent third-party",
+         "When risks need independent verification beyond an internal onsite visit. OGA scope "
+         "jointly approved by GRST + relationship owner + assessor; supplier consent required. "
+         "Conducted by Group Internal Audit & Assurance (GIAA) or external consultant.",
+         "Step 2F & 2G — On-the-Ground Assessment (Section 3.1.6 of the SCDD M&M procedure)",
+         "OGA scope/protocol; supplier consent; independent assessor; site-based evaluation per "
+         "OECD DDG / RMI All Minerals Standard",
+         "Independent assessor report; signed nonconformances; verified traceability evidence",
+         "Risks confirmed and unmanaged → Tier 5 (CAP). Supplier rejects OGA without reasonable "
+         "explanation → suspend / terminate (BAC override possible)."),
+        ("Tier 5", "Corrective Action Plan (CAP) + ongoing monitoring",
+         "Time-bound remediation plan jointly designed by GRST + business + supplier. Ongoing "
+         "monitoring with reporting cadence. CAP miss = reject 3P.",
+         "Step 3 — CAPs + monitoring (Section 3.1.7 of the SCDD M&M procedure)",
+         "CAP design (milestones, evidence requirements, reporting cadence)",
+         "CAP document; monitoring reports; escalation triggers; re-assessment date; risk ranking "
+         "update",
+         "CAP met → 3P approved. CAP missed → 3P rejected; added to Declined Party List (DPL) "
+         "by Head of Sustainability."),
     ]
     tier_colors = {"Tier 1": "FF4CAF50", "Tier 2": "FF1976D2",
-                    "Tier 3": "FFFF9800", "Tier 4": "FFE53935"}
+                    "Tier 3": "FFFF9800", "Tier 4": "FF9C27B0",
+                    "Tier 5": "FFE53935"}
     for t in tiers:
         ws.append(list(t))
         r = ws.max_row
@@ -591,12 +794,6 @@ def sheet_supplier_tiers(wb):
     _autosize(ws, [10, 28, 50, 36, 50, 50, 36])
 
 
-def sheet_scoring_weights(wb):
-    path = ROOT / "data" / "processed" / "scoring_weights.csv"
-    if not path.exists(): return
-    df = pd.read_csv(path)
-    df.columns = ["Parameter", "Value", "Description"]
-    return _generic_table(wb, "Scoring Weights", df, widths=[34, 12, 80])
 
 
 def sheet_sources(wb, risks):
@@ -619,33 +816,88 @@ def sheet_sources(wb, risks):
     _autosize(ws, [40, 28, 44, 60, 28, 44, 60])
 
 
+def add_charts(wb, df, producers):
+    """Insert Plotly-style native Excel charts on the heatmap + producers sheets."""
+    from openpyxl.chart import BarChart, Reference, BarChart3D, PieChart
+
+    # Top 10 countries by max Overall — bar chart on Country × Risk sheet
+    if "Country × Risk" in wb.sheetnames:
+        ws = wb["Country × Risk"]
+        df_y = df[df["applies"] == "Y"].copy()
+        top = (df_y.groupby("country")["overall_1_25"].max()
+                   .sort_values(ascending=False).head(10).reset_index())
+        # Append the chart-data block to the right of the table
+        start_col = ws.max_column + 2
+        ws.cell(row=1, column=start_col, value="Top 10 by max Overall")
+        ws.cell(row=1, column=start_col).font = Font(bold=True, color="FF005F73")
+        ws.cell(row=2, column=start_col, value="Country")
+        ws.cell(row=2, column=start_col + 1, value="Max Overall")
+        for i, row in top.iterrows():
+            ws.cell(row=3 + i, column=start_col, value=row["country"])
+            ws.cell(row=3 + i, column=start_col + 1, value=float(row["overall_1_25"]))
+        chart = BarChart()
+        chart.type = "bar"
+        chart.style = 11
+        chart.title = "Top 10 countries — max Overall risk"
+        chart.x_axis.title = "Country"
+        chart.y_axis.title = "Max Overall (1–25)"
+        data = Reference(ws, min_col=start_col + 1, min_row=2, max_row=12, max_col=start_col + 1)
+        cats = Reference(ws, min_col=start_col, min_row=3, max_row=12)
+        chart.add_data(data, titles_from_data=True)
+        chart.set_categories(cats)
+        chart.height = 12; chart.width = 22
+        ws.add_chart(chart, ws.cell(row=15, column=start_col).coordinate)
+
+    # Production share by country for selected commodities — pie chart on Producers sheet
+    if "Commodity Producers" in wb.sheetnames:
+        ws = wb["Commodity Producers"]
+        # Build a small Cobalt-only summary (good demo)
+        cob = producers[producers["commodity"] == "Cobalt"][["country", "share_of_global_pct"]] \
+              .sort_values("share_of_global_pct", ascending=False).head(10).reset_index(drop=True)
+        if len(cob):
+            start_col = ws.max_column + 2
+            ws.cell(row=1, column=start_col, value="Cobalt — global production share by country")
+            ws.cell(row=1, column=start_col).font = Font(bold=True, color="FF005F73")
+            ws.cell(row=2, column=start_col, value="Country")
+            ws.cell(row=2, column=start_col + 1, value="Share %")
+            for i, r in cob.iterrows():
+                ws.cell(row=3 + i, column=start_col, value=r["country"])
+                ws.cell(row=3 + i, column=start_col + 1, value=float(r["share_of_global_pct"]))
+            pie = PieChart()
+            pie.title = "Cobalt — global production share (USGS MCS 2024)"
+            data = Reference(ws, min_col=start_col + 1, min_row=2, max_row=12)
+            labels = Reference(ws, min_col=start_col, min_row=3, max_row=12)
+            pie.add_data(data, titles_from_data=True)
+            pie.set_categories(labels)
+            pie.height = 12; pie.width = 18
+            ws.add_chart(pie, ws.cell(row=15, column=start_col).coordinate)
+
+
 def main():
     risks, matrix, countries, producers, noise, weights, _st = _load()
     risk_supplier = pd.read_csv(ROOT / "data" / "processed" / "risk_supplier_types.csv")
     today = date.today().isoformat()
     print(f"Computing scores for export... (today: {today})")
-    df = compute()  # all commodities, countries, processes, risks
+    df = compute()
     print(f"  {len(df):,} rows scored.")
 
     wb = Workbook()
     sheet_readme(wb, risks, countries, producers, today)
+    sheet_user_guide(wb)
     sheet_country_risk(wb, df, risks)
     sheet_full_table(wb, df)
     sheet_risk_library(wb, risks, matrix, risk_supplier)
     sheet_risk_process_matrix(wb, risks, matrix)
     sheet_commodity_producers(wb, producers)
-    sheet_cahra_list(wb, countries)
     sheet_country_indicators(wb, countries)
     sheet_soilgrids(wb)
     sheet_aqueduct(wb)
     sheet_glencore_assets(wb)
-    sheet_supplier_types(wb)
-    sheet_risk_supplier(wb, risks, risk_supplier)
     sheet_noise(wb, noise)
-    sheet_methodology(wb, weights)
+    sheet_methodology_and_weights(wb, weights)
     sheet_supplier_tiers(wb)
-    sheet_scoring_weights(wb)
     sheet_sources(wb, risks)
+    add_charts(wb, df, producers)
     wb.save(OUTPUT)
     print(f"✓ Wrote {OUTPUT.name}  ({OUTPUT.stat().st_size / 1024:.0f} KB) — {len(wb.sheetnames)} sheets")
     print(f"  Location: {OUTPUT}")

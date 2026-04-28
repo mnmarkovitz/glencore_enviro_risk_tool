@@ -1,7 +1,16 @@
 """
-Build a 9-slide PPTX deck for the graduate-level class presentation.
+Build a 7-slide PPTX deck for the graduate-level class presentation.
 Speaker = 2 people, 5 min each. Geopolitics-of-energy lens.
 Output: Glencore_Env_Risk_Tool_Deck.pptx (uploadable to Google Slides).
+
+Slides:
+ 1. Title
+ 2. Scope of Work (per Glencore × NYU CGA Practicum brief)
+ 3. Why this matters now — energy transition × supply concentration
+ 4. Critical-mineral × CAHRA overlap (evidence)
+ 5. The tool — overview (live screenshot)
+ 6. Methodology — formulas + data sources
+ 7. Geopolitics deep dive — DRC × Cobalt × Mining (case study)
 """
 from pathlib import Path
 from pptx import Presentation
@@ -101,7 +110,7 @@ def add_header(slide, title, subtitle=None):
 
 def add_footer(slide, page_num, total):
     add_text(slide, Inches(0.5), Inches(7.05), Inches(8), Inches(0.35),
-              "Glencore Environmental Risk Tool — NYU SPS MS Global Affairs",
+              "Glencore × NYU SPS Center for Global Affairs Consulting Practicum",
               size=9, color=TEXT_GREY, italic=True)
     add_text(slide, Inches(11.5), Inches(7.05), Inches(1.3), Inches(0.35),
               f"{page_num} / {total}", size=9, color=TEXT_GREY,
@@ -129,12 +138,11 @@ add_text(s, Inches(0.5), Inches(5.0), Inches(12.3), Inches(0.5),
           "A geopolitics-of-energy lens on critical-mineral supply chains",
           size=18, color=LIGHT, italic=True)
 add_text(s, Inches(0.5), Inches(6.2), Inches(12.3), Inches(0.4),
-          "NYU School of Professional Studies  |  MS Global Affairs  |  Spring 2026",
-          size=12, color=LIGHT)
-add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.4),
-          "Marielle Markovitz · Maahi Gupta · Daniela Cano · Daniel Luis de Jesus · "
-          "Lindsay Huba-Zhang · Zorana Ivanovich · Mohamad Rimawi",
-          size=10, color=LIGHT, italic=True)
+          "Glencore × NYU SPS Center for Global Affairs Consulting Practicum",
+          size=14, color=LIGHT, italic=True)
+add_text(s, Inches(0.5), Inches(6.6), Inches(12.3), Inches(0.3),
+          "Spring 2026",
+          size=11, color=LIGHT)
 add_speaker_notes(s,
     "[Speaker 1, 30 sec] Welcome. We're presenting an environmental risk "
     "identification tool we built for the Glencore Responsible Sourcing team. "
@@ -150,50 +158,82 @@ add_speaker_notes(s,
 # ========================================================================
 s = prs.slides.add_slide(BLANK)
 add_header(s, "Scope of Work",
-            "What Glencore asked for · How we framed our response")
-# Two columns
-add_text(s, Inches(0.5), Inches(1.5), Inches(6.0), Inches(0.4),
-          "Mandate", size=16, color=DEEP, bold=True)
-add_bullets(s, Inches(0.5), Inches(1.95), Inches(6.0), Inches(4.5), [
-    ("A pivot-style decision tool for Glencore's Group Responsible Sourcing "
-     "team to support OECD-aligned Tier 1 due diligence", True),
-    "Cover the value chain end-to-end: mining → refining → smelting → "
-    "recycling → marketing",
-    "Quantify outward environmental risks (penalties, fines, reputation) — "
-    "not climate-on-company risks",
-    "Prioritise: water, waste, tailings, biodiversity, noise, air, soil",
-    "Editable by non-technical analysts — Excel/Sheets-friendly",
-    "Built on free, audit-able public data only",
-], size=12)
+            "Glencore × NYU SPS Consulting Practicum — Environmental Due Diligence Framework Development")
 
-add_text(s, Inches(7.0), Inches(1.5), Inches(5.8), Inches(0.4),
-          "Frameworks aligned to", size=16, color=DEEP, bold=True)
-add_bullets(s, Inches(7.0), Inches(1.95), Inches(5.8), Inches(4.5), [
-    ("OECD Due Diligence Guidance for Responsible Supply Chains of Minerals "
-     "(3rd ed., 2016)", True),
-    "Glencore SCDD Procedure — Metals & Minerals (2024) — automates Step 2A "
-    "(Supplier/product scoping) and 2B/2C",
-    "EU CSRD + CSDDD reporting expectations",
-    "RMI Supply Chain Due Diligence Plus Module (April 2025)",
-    "ENCORE materiality + IFC EHS Guidelines for process-level intensity",
-], size=12)
+# Top — challenge framing
+add_rect(s, Inches(0.5), Inches(1.5), Inches(12.3), Inches(0.95), LIGHT)
+add_text(s, Inches(0.7), Inches(1.55), Inches(12), Inches(0.35),
+          "The challenge", size=14, color=DEEP, bold=True)
+add_text(s, Inches(0.7), Inches(1.9), Inches(12), Inches(0.55),
+          "Integrate environmental risk into Glencore's existing human-rights-focused due diligence "
+          "framework. 200,000+ goods & services suppliers and 1,000+ metals & minerals suppliers; "
+          "small assessment team that is not a subject-matter expert across every risk type. "
+          "→ Scalable, risk-based approach essential.",
+          size=11, color=TEXT_DARK)
+
+# Two columns: project objective + key research questions
+add_text(s, Inches(0.5), Inches(2.65), Inches(6.0), Inches(0.4),
+          "Project objective", size=14, color=DEEP, bold=True)
+add_bullets(s, Inches(0.5), Inches(3.05), Inches(6.0), Inches(2.0), [
+    ("Develop a practical, risk-based environmental due-diligence "
+     "guideline and process workflow", True),
+    "Build on Glencore's saliency-based risk framework",
+    "Account for very limited assessor resources",
+    "Inform compliance with EU CSRD, CSDDD, EU Battery Regulation, and the "
+    "Consolidated Mining Standard Initiative",
+], size=11)
+
+add_text(s, Inches(7.0), Inches(2.65), Inches(5.8), Inches(0.4),
+          "Key research questions", size=14, color=DEEP, bold=True)
+add_bullets(s, Inches(7.0), Inches(3.05), Inches(5.8), Inches(2.0), [
+    "How do we assess severity of environmental risk?",
+    "How do we prioritize among competing concerns?",
+    ("How do we translate risk identification into actionable due "
+     "diligence with a small team?", True),
+    "How does sector + jurisdiction influence prioritization "
+    "(water scarcity, protected areas, hazardous materials)?",
+], size=11)
+
+# Bottom strip: deliverables + frameworks
+add_text(s, Inches(0.5), Inches(5.15), Inches(6.0), Inches(0.4),
+          "Deliverables", size=14, color=DEEP, bold=True)
+add_bullets(s, Inches(0.5), Inches(5.55), Inches(6.0), Inches(1.0), [
+    "1. Environmental Due Diligence Guideline",
+    "2. End-to-end process workflow (visual)",
+    "3. This presentation + tool prototype",
+], size=11)
+
+add_text(s, Inches(7.0), Inches(5.15), Inches(5.8), Inches(0.4),
+          "Anchor frameworks", size=14, color=DEEP, bold=True)
+add_bullets(s, Inches(7.0), Inches(5.55), Inches(5.8), Inches(1.0), [
+    "OECD Handbook on Environmental DD in Mineral Supply Chains (2023)",
+    "RMI Supply Chain DD Plus Module (April 2025)",
+    "UNDP HRDD and the Environment: A Practical Tool for Business",
+    "Glencore's saliency-based risk framework + SCDD M&M Procedure",
+], size=11)
+
 # Cite footer
 add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.35),
-          "Sources: OECD DDG (oecd.org/daf/inv/mne/mining.htm); "
-          "Glencore SCDD Procedure for Metals & Minerals; RMI (responsiblemineralsinitiative.org).",
+          "Source: Glencore × NYU Consulting Practicum project brief, NYU SPS Center for Global Affairs, 2026.",
           size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 2, 9)
+add_footer(s, 2, 7)
 add_speaker_notes(s,
-    "[Speaker 1, 1 min] Glencore engaged us to build a Tier 1 desktop "
-    "research tool for environmental risk in their metals and minerals "
-    "supply chain. The mandate had a few hard constraints: it had to "
-    "automate the early steps of their existing OECD-aligned due "
-    "diligence procedure — specifically Step 2A and 2B; it had to be "
-    "non-technical so any RS analyst could use it; and every score had "
-    "to come from a public, audit-able source so it could survive a "
-    "CSRD or CSDDD review. We aligned our scoring methodology to ENCORE "
-    "materiality and the IFC EHS Guidelines for process-level intensity. "
-    "I'll now hand to [Speaker 2] for the geopolitical framing.")
+    "[Speaker 1, 1 min] Glencore — a global producer, processor, and marketer "
+    "of transition-enabling metals and minerals — partnered with NYU's Center "
+    "for Global Affairs to address a specific challenge: their existing "
+    "due-diligence framework is human-rights-focused, but emerging EU "
+    "regulation (CSRD, CSDDD, the Battery Regulation, the Consolidated Mining "
+    "Standard) demands integrated environmental risk assessment. The "
+    "operational constraint is acute: Glencore screens over 200,000 goods "
+    "and services suppliers and 1,000+ metals and minerals suppliers with "
+    "a very small team that cannot be subject-matter experts across every "
+    "risk type. So scalability and a risk-based approach are essential. "
+    "We anchored our work in the OECD Environmental DD Handbook, the RMI "
+    "Plus Module, the UNDP Practical Tool for Business, and Glencore's own "
+    "saliency framework. The deliverables are the guideline document, the "
+    "end-to-end workflow, and what we'll show you today: a working tool "
+    "prototype that operationalizes Tier 1. I'll now hand to [Speaker 2] "
+    "for the geopolitical framing.")
 
 
 # ========================================================================
@@ -238,7 +278,7 @@ add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.35),
           "USGS Mineral Commodity Summaries 2024 (pubs.usgs.gov/periodicals/mcs2024); "
           "USGS 2022 Critical Minerals List; EU Critical Raw Materials Act 2024.",
           size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 3, 9)
+add_footer(s, 3, 7)
 add_speaker_notes(s,
     "[Speaker 2, 1 min 30] The energy transition isn't just a story about "
     "renewable electricity — it's a mineral story. The IEA forecasts 4 to 6 "
@@ -303,7 +343,7 @@ add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.35),
           "(usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals); "
           "Glencore CAHRA List 2025 (updated 27.02.2025).",
           size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 4, 9)
+add_footer(s, 4, 7)
 add_speaker_notes(s,
     "[Speaker 2, 1 min 30] If we map Glencore's CAHRA list against the US "
     "2022 Critical Minerals List, the overlap is striking. Cobalt — 74 percent "
@@ -345,7 +385,7 @@ add_bullets(s, Inches(8.0), Inches(1.85), Inches(4.9), Inches(4.5), [
 add_text(s, Inches(0.5), Inches(6.6), Inches(12.3), Inches(0.3),
           "Live tool: streamlit.app  ·  Repo: github.com/mnmarkovitz/glencore_enviro_risk_tool",
           size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 5, 9)
+add_footer(s, 5, 7)
 add_speaker_notes(s,
     "[Speaker 1, 1 min] This is the tool. An analyst opens it, picks a "
     "commodity in the sidebar — let's say cobalt — and the country "
@@ -418,7 +458,7 @@ add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.35),
           "All weights and bucket thresholds editable in scoring_weights.csv. "
           "Full methodology: github.com/mnmarkovitz/glencore_enviro_risk_tool/blob/main/docs/METHODOLOGY.md",
           size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 6, 9)
+add_footer(s, 6, 7)
 add_speaker_notes(s,
     "[Speaker 1, 1 min] Two formulas. Likelihood is 40 percent process "
     "intensity — does the process even cause this risk — and 60 percent "
@@ -433,178 +473,91 @@ add_speaker_notes(s,
 
 
 # ========================================================================
-# Slide 7 — Case study: DRC × Cobalt × Mining
+# Slide 7 — Geopolitics deep dive — DRC × Cobalt × Mining
 # ========================================================================
 s = prs.slides.add_slide(BLANK)
-add_header(s, "Case study — DRC × Cobalt × Mining",
-            "How a Glencore Responsible Sourcing analyst uses the tool in practice")
+add_header(s, "Geopolitics deep dive — DRC × Cobalt × Mining",
+            "Why this combination is the canonical stress-test for the energy transition")
 
-# Map screenshot left
-img = ASSETS / "02_map.png"
+# Top row: 4 fact tiles framing the stakes
+def fact_tile(slide, x, y, w, h, num, label, color):
+    add_rect(slide, x, y, w, h, color)
+    add_text(slide, x, y + Inches(0.1), w, Inches(0.8), num,
+              size=32, color=WHITE, bold=True, align=PP_ALIGN.CENTER)
+    add_text(slide, x, y + Inches(0.95), w, Inches(0.8), label,
+              size=10, color=WHITE, align=PP_ALIGN.CENTER)
+
+fact_tile(s, Inches(0.5), Inches(1.4), Inches(3.05), Inches(1.65),
+           "74%", "DRC's share of global cobalt mine production (USGS MCS 2024)", DEEP)
+fact_tile(s, Inches(3.65), Inches(1.4), Inches(3.05), Inches(1.65),
+           "All regions", "Glencore CAHRA flag — every Congolese province is high-risk", TEAL)
+fact_tile(s, Inches(6.8), Inches(1.4), Inches(3.05), Inches(1.65),
+           "~2 of 5", "of every EV battery's cathode chemistry depends on cobalt", DEEP)
+fact_tile(s, Inches(9.95), Inches(1.4), Inches(3.05), Inches(1.65),
+           "Tier 2",
+           "auto-trigger: any DRC supplier escalates immediately under SCDD M&M procedure", TEAL)
+
+# Geopolitics narrative — left column
+add_text(s, Inches(0.5), Inches(3.2), Inches(6.0), Inches(0.4),
+          "Why DRC × cobalt is structurally exposed",
+          size=14, color=DEEP, bold=True)
+add_bullets(s, Inches(0.5), Inches(3.6), Inches(6.0), Inches(3.2), [
+    ("Energy transition concentration: cobalt for EV batteries, grid storage. "
+     "IEA forecasts demand 6× by 2040.", True),
+    ("Geographic concentration: DRC produces ~74%; refining ~70% China-controlled. "
+     "Western buyers face cross-strait + cross-border policy exposure.", True),
+    "EU Battery Regulation (EU 2023/1542) and the U.S. Inflation Reduction Act both treat "
+    "cobalt traceability and DD as compliance gating items for market access.",
+    "Artisanal & small-scale mining (ASM) supplies ~15-30% of DRC cobalt — child labor and "
+    "fatality risk make environmental + human-rights DD inseparable.",
+    "Acidic tropical Oxisols → highest soil-pollution vulnerability in the dataset; "
+    "spilled heavy metals mobilize fast (ISRIC SoilGrids vulnerability ≈ 4.3 / 5).",
+], size=11)
+
+# Tool screenshot — right column
+img = ASSETS / "01_dashboard.png"
 if img.exists():
-    s.shapes.add_picture(str(img), Inches(0.4), Inches(1.3), height=Inches(3.5))
+    s.shapes.add_picture(str(img), Inches(6.85), Inches(3.2), height=Inches(3.4))
+add_text(s, Inches(6.85), Inches(6.55), Inches(6.0), Inches(0.3),
+          "Live tool view: DRC × Cobalt × Mining → 3 Critical risks",
+          size=10, color=TEXT_GREY, italic=True)
 
-# Text right
-add_text(s, Inches(0.5), Inches(4.95), Inches(12.3), Inches(0.4),
-          "What the tool surfaces (filter: Cobalt + DRC + Mining)",
-          size=14, color=DEEP, bold=True)
-add_bullets(s, Inches(0.5), Inches(5.35), Inches(6.0), Inches(1.7), [
-    "🚩 CAHRA flag (All regions) → automatic Tier 1 → Tier 2 escalation",
-    "Tailings — Critical (TSF count + GISTM consequence class)",
-    "Soil pollution — Critical (acidic Oxisols + EPI Heavy Metals)",
-    "Biodiversity loss — Critical (590 IUCN-listed species; high deforestation)",
-], size=11)
-add_bullets(s, Inches(7.0), Inches(5.35), Inches(5.8), Inches(1.7), [
-    "Each row's drill-down shows raw + normalized scores with source URL",
-    "Risk Library tab pre-loads SAQ KPIs (e.g. tailings GISTM conformance %, "
-    "seepage rate) → directly into Glencore's Step 2B questionnaire",
-    "Likely supplier types ranked: Earth moving · Hazardous chemicals · "
-    "Waste disposal — narrows the SAQ scope",
-], size=11)
+# Bottom — what the tool delivers operationally
+add_text(s, Inches(0.5), Inches(6.85), Inches(12.3), Inches(0.3),
+          "What the analyst gets in 10 minutes: ranked risks (Tailings · Soil pollution · "
+          "Biodiversity → all Critical), KPIs for the SAQ, supplier-type categories, every "
+          "score auditable to a public dataset URL.",
+          size=10, color=TEXT_DARK)
 
-add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.35),
-          "Sources: USGS MCS 2024; Glencore CAHRA List 2025; ISRIC SoilGrids 2.0; "
-          "Yale EPI 2024; IUCN Red List API; Global Forest Watch.",
-          size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 7, 9)
+# Sources strip
+add_text(s, Inches(0.5), Inches(7.2), Inches(12.3), Inches(0.3),
+          "Sources: USGS MCS 2024 · Glencore CAHRA List 2025 · IEA Critical Minerals Outlook 2024 · "
+          "ISRIC SoilGrids 2.0 · IUCN Red List · Global Forest Watch · Global Tailings Portal · "
+          "EU Battery Regulation 2023/1542 · U.S. IRA (Public Law 117–169).",
+          size=8, color=TEXT_GREY, italic=True)
+add_footer(s, 7, 7)
 add_speaker_notes(s,
-    "[Speaker 2, 2 min] Concrete case study. Suppose an analyst gets a "
-    "request to onboard a new cobalt supplier from the DRC. They open "
-    "the tool, filter to Cobalt — DRC — Mining. Immediately three things "
-    "happen. First, the CAHRA flag fires, automatically pushing this "
-    "supplier from Tier 1 to Tier 2 of Glencore's SCDD procedure — that's "
-    "non-discretionary. Second, the ranked table shows three Critical "
-    "risks: tailings, soil pollution, and biodiversity loss. Each is "
-    "audit-able — tailings comes from the Global Tailings Portal, soil "
-    "pollution from ISRIC SoilGrids — DRC has highly acidic tropical "
-    "soils that mobilize heavy metals — and biodiversity from IUCN Red "
-    "List counts. Third, and this is the most operationally useful part: "
-    "the Risk Library tab pre-loads the SAQ KPIs the analyst should ask "
-    "the supplier — GISTM conformance, seepage rate in liters per day, "
-    "heavy-metal soil concentrations. It also surfaces the likely "
-    "supplier-type categories: earth moving, hazardous-chemical supplier, "
-    "waste disposal. This collapses what was a multi-day desk-research "
-    "exercise into about 10 minutes — and every number is auditable.")
-
-
-# ========================================================================
-# Slide 8 — Integration with Glencore SCDD workflow
-# ========================================================================
-s = prs.slides.add_slide(BLANK)
-add_header(s, "Where this fits — Glencore's SCDD Tiers",
-            "Tool automates Tier 1, scopes Tier 2, accelerates Tiers 3–4")
-
-tiers = [
-    ("Tier 1", "OSDR — desktop research", GREEN,
-     "AUTOMATED by tool",
-     "Step 2A: scoping",
-     "Public data: Aqueduct, EPI, IUCN, WDPA, GTP, SoilGrids, GEM, USGS MRDS"),
-    ("Tier 2", "SAQ — Supplier Questionnaire", TEAL,
-     "Tool scopes the SAQ",
-     "Step 2B & 2C",
-     "Tool's Risk Library + KPI list → directly into the SAQ template"),
-    ("Tier 3", "Onsite / OGA — On-the-ground assessment", ORANGE,
-     "Tool ranks priorities",
-     "Step 3.1.5",
-     "Critical-bucket rows define the onsite agenda; sampling priorities"),
-    ("Tier 4", "CAP — Corrective Action Plan", RED,
-     "Tool identifies milestones",
-     "Step 3.1.7",
-     "KPIs become CAP milestones; ongoing monitoring tracks improvement"),
-]
-left = Inches(0.5); top = Inches(1.45); h = Inches(1.18); gap = Inches(0.08)
-for i, (tier, name, color, role, step, content) in enumerate(tiers):
-    y = top + (h + gap) * i
-    add_rect(s, left, y, Inches(1.5), h, color)
-    add_text(s, left, y, Inches(1.5), Inches(0.45), tier,
-              size=18, color=WHITE, bold=True, align=PP_ALIGN.CENTER,
-              anchor=MSO_ANCHOR.MIDDLE)
-    add_text(s, left, y + Inches(0.5), Inches(1.5), Inches(0.6), role,
-              size=10, color=WHITE, align=PP_ALIGN.CENTER, italic=True)
-    # Right side
-    add_rect(s, left + Inches(1.55), y, Inches(11.1), h, LIGHT if i % 2 == 0 else WHITE)
-    add_text(s, left + Inches(1.7), y + Inches(0.05), Inches(8), Inches(0.4),
-              name, size=14, color=DEEP, bold=True)
-    add_text(s, left + Inches(9.3), y + Inches(0.05), Inches(3.1), Inches(0.4),
-              step, size=11, color=TEXT_GREY, italic=True, align=PP_ALIGN.RIGHT)
-    add_text(s, left + Inches(1.7), y + Inches(0.45), Inches(10.7), Inches(0.7),
-              content, size=11, color=TEXT_DARK)
-
-add_text(s, Inches(0.5), Inches(6.55), Inches(12.3), Inches(0.35),
-          "Sources: Glencore SCDD Procedure for Metals & Minerals (2024); "
-          "OECD DDG (3rd ed.); RMI Supply Chain DD Plus Module (April 2025).",
-          size=9, color=TEXT_GREY, italic=True)
-add_footer(s, 8, 9)
-add_speaker_notes(s,
-    "[Speaker 2, 1 min] The tool sits cleanly inside Glencore's existing "
-    "SCDD workflow. Their procedure follows the OECD's five-step framework "
-    "and breaks operational engagement into four tiers. Tier 1 is "
-    "open-source desktop research — that's what we automate. Tier 2 is "
-    "the supplier questionnaire — our Risk Library tab pre-populates the "
-    "questions for that. Tier 3 is the onsite visit — our Critical-bucket "
-    "rows tell the assessor where to focus. Tier 4 is the corrective "
-    "action plan — our KPIs become CAP milestones. The point is: nothing "
-    "in Glencore's existing process changes. The tool just makes the "
-    "first three tiers faster and more reproducible.")
-
-
-# ========================================================================
-# Slide 9 — Roadmap, handover & references
-# ========================================================================
-s = prs.slides.add_slide(BLANK)
-add_header(s, "Status & roadmap",
-            "Handover-ready · public repo · permanent Streamlit URL")
-
-# Two columns
-add_text(s, Inches(0.5), Inches(1.5), Inches(6.0), Inches(0.4),
-          "What's shipping today", size=15, color=DEEP, bold=True)
-add_bullets(s, Inches(0.5), Inches(1.95), Inches(6.0), Inches(2.6), [
-    "Public repo — github.com/mnmarkovitz/glencore_enviro_risk_tool",
-    "Live Streamlit app — public URL via Streamlit Community Cloud",
-    "18-sheet Excel companion (Quick_Reference.xlsx) for offline analysts",
-    "Full handover playbook for Glencore IT (Dockerfile + docs/HANDOVER.md)",
-    ".gitignore protects confidential supplier CSV from public push",
-], size=11)
-
-add_text(s, Inches(7.0), Inches(1.5), Inches(5.8), Inches(0.4),
-          "Roadmap", size=15, color=DEEP, bold=True)
-add_bullets(s, Inches(7.0), Inches(1.95), Inches(5.8), Inches(2.6), [
-    "Glencore swaps in their counterparty database for the supplier layer",
-    "Sub-national CAHRA region resolution (Aqueduct already at province level)",
-    "Live Aqueduct API for water-pollution UCW + CEP indicators",
-    "Translate scoring engine into Power BI / DAX for Glencore BI stack",
-    "Annual data refresh cycle with automated CI",
-], size=11)
-
-# References
-add_text(s, Inches(0.5), Inches(4.7), Inches(12.3), Inches(0.4),
-          "Selected references",
-          size=14, color=DEEP, bold=True)
-refs = [
-    "OECD (2016). Due Diligence Guidance for Responsible Supply Chains of Minerals from "
-    "Conflict-Affected and High-Risk Areas, 3rd ed. oecd.org/daf/inv/mne/mining.htm",
-    "IEA (2024). Global Critical Minerals Outlook 2024. iea.org",
-    "USGS (2024). Mineral Commodity Summaries 2024. pubs.usgs.gov/periodicals/mcs2024",
-    "USGS (2022). 2022 List of Critical Minerals. usgs.gov/news/national-news-release/"
-    "us-geological-survey-releases-2022-list-critical-minerals",
-    "Glencore (2024). Supply Chain Due Diligence Procedure — Metals and Minerals.",
-    "Glencore (2025). CAHRA List 2025 (updated 27.02.2025).",
-    "Yale EPI 2024 · WRI Aqueduct 4.0 · WHO Ambient Air Quality DB · IUCN Red List · "
-    "WDPA · ISRIC SoilGrids · Global Energy Monitor · Global Tailings Portal · "
-    "ENCORE · IFC EHS Guidelines · INFORM Risk Index 2024.",
-]
-add_bullets(s, Inches(0.5), Inches(5.05), Inches(12.3), Inches(2.0), refs, size=9.5)
-
-add_footer(s, 9, 9)
-add_speaker_notes(s,
-    "[Speaker 1 closing, 30 sec] To wrap: the tool is on a public GitHub "
-    "repo, deployed to a permanent Streamlit URL, ships with an 18-sheet "
-    "Excel companion for analysts who don't want to run a web tool, and "
-    "comes with a Docker container plus a written handover playbook for "
-    "Glencore's IT team. Everything is editable in CSVs — no code skills "
-    "required. We aimed to build something that survives the handover and "
-    "stays useful as the geopolitical and energy-transition context keeps "
-    "evolving. Happy to take questions.")
+    "[Speaker 2, 2 min — geopolitics deep dive] DRC × cobalt × mining is "
+    "the single best case study to show why this tool matters in the "
+    "geopolitics of the energy transition. Three layers stack here. "
+    "First, energy-transition concentration: every electric vehicle "
+    "battery cathode chemistry except LFP relies on cobalt, and the IEA "
+    "forecasts 6× demand growth by 2040. Second, geographic concentration: "
+    "74 percent of mine production is in the DRC, and 70 percent of "
+    "refining is in China — so a Western buyer is dependent on a single "
+    "high-risk source country plus a single processing chokepoint that "
+    "is itself subject to escalating U.S.–China trade restrictions. "
+    "Third, regulatory pressure: the EU Battery Regulation that came "
+    "into force in 2023 and the U.S. Inflation Reduction Act both treat "
+    "cobalt traceability and environmental due diligence as gating items "
+    "for market access. So this isn't optional — Glencore needs auditable "
+    "Tier-1 evidence per supplier. The tool surfaces three Critical risks "
+    "for any DRC cobalt mine: tailings, soil pollution — because DRC's "
+    "tropical Oxisols mobilize heavy metals fast — and biodiversity loss. "
+    "Every score links back to a public dataset, which is exactly what an "
+    "EU CSDDD or CSRD audit will demand. That collapses a multi-day "
+    "OSDR exercise into about ten minutes per supplier — and that's the "
+    "scalability gap Glencore's small assessment team needs filled.")
 
 
 prs.save(OUT)
