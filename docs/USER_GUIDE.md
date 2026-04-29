@@ -157,7 +157,7 @@ The full map is in the 🤝 **Supplier Engagement Tiers** tab.
 
 ## Editing the tool (when data changes)
 
-If you want to change a risk definition, add a country, update scoring weights, or add a new supplier, no coding is needed. Everything lives in the CSV files under `data/processed/`. See **`docs/HOW_TO_EDIT.md`** for the step-by-step.
+If you want to change a risk definition, add a country, update scoring weights, or add a new supplier, the maintaining team handles it through the project's normal update workflow — see `docs/OVERVIEW_AND_HANDOVER.md` Section 6.
 
 Common edits:
 - Add a supplier → `glencore_suppliers.csv`
@@ -176,8 +176,8 @@ After any edit, the hosted Streamlit app picks up changes in 30–60 seconds (on
 | "Why did this country score Critical?" | Drill-down panel on the Risk Dashboard — every number has a source |
 | "Can I trust this score?" | **📊 Data Sources** tab — every dataset with URL and license |
 | "What's the math?" | **📐 Methodology** tab, or `docs/METHODOLOGY.md` |
-| "I want to add a country / risk / supplier" | `docs/HOW_TO_EDIT.md` |
-| "We're migrating this to our infrastructure" | `docs/HANDOVER.md` + `docs/INTEGRATION_GUIDE.md` |
+| "I want to add a country / risk / supplier" | `docs/OVERVIEW_AND_HANDOVER.md` Section 6 |
+| "We're migrating this to our infrastructure" | `docs/OVERVIEW_AND_HANDOVER.md` Section 5 |
 
 ---
 

@@ -205,11 +205,9 @@ glencore_enviro_risk_tool/
 │   ├── build_slides.py                  (rebuilds the class deck)
 │   └── capture_screenshots.py
 ├── docs/
-│   ├── OVERVIEW_AND_HANDOVER.md  (this file)
+│   ├── OVERVIEW_AND_HANDOVER.md  (this file — single entry point)
 │   ├── METHODOLOGY.md            (full scoring rules)
-│   ├── USER_GUIDE.md             (analyst-facing walkthrough)
-│   ├── INTEGRATION_GUIDE.md      (Glencore IT integration paths)
-│   └── HANDOVER.md               (extended IT handover playbook)
+│   └── USER_GUIDE.md             (analyst-facing walkthrough)
 ├── .streamlit/config.toml        (turquoise theme)
 ├── Dockerfile + docker-compose.yml  (one-command deploy)
 ├── requirements.txt              (pinned Python dependencies)
@@ -255,5 +253,5 @@ That's the whole project.
 | What does this score mean? | Drill-down panel of the Streamlit tool, or `Full Ranked Results` sheet in the Excel |
 | Is this dataset trustworthy? | `Data Sources` sheet in the Excel; every URL listed |
 | What's the math? | `Methodology + Scoring Weights` sheet in the Excel; `docs/METHODOLOGY.md` |
-| How do I deploy this on our infrastructure? | This document, Section 5; `docs/INTEGRATION_GUIDE.md` for more detail |
+| How do I deploy this on our infrastructure? | This document, Section 5 |
 | How does this fit our SCDD procedure? | `Supplier Engagement Tiers` sheet in the Excel; `docs/USER_GUIDE.md` |

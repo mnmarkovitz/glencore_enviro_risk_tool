@@ -1,117 +1,68 @@
 # Environmental Risk Identification & Assessment Tool
 
-A contextual pivot tool for identifying, ranking and auditing environmental risks across a global commodity mining and trading supply chain. Every Likelihood and Severity score is derived from a **named public dataset**; nothing is subjective analyst input.
+> Built for the Glencore Group Responsible Sourcing team
+> in partnership with the **NYU SPS Center for Global Affairs Consulting Practicum**.
 
-## What it does
+A risk-based desktop tool that scores environmental risks across Glencore's metals & minerals supply chain. Every score traces back to a public dataset; nothing is analyst opinion.
 
-Pick any combination of **commodity, country, process** (Mining / Refining / Smelting / Recycling / Marketing) and **risk type** (15 risks; 8 priority). The tool returns:
+---
 
-1. A **ranked risk table** (descending Overall = Likelihood × Severity) with both **raw indicator values** and **normalized 1–5 scores** so every number can be audited back to its source.
-2. A **5 × 5 Likelihood × Severity heatmap**.
-3. **Drill-down** per row: risk definition, the specific dataset used, and the raw + normalized scores.
-4. A **Noise baseline** tab showing typical dBA by mining activity (NIOSH + IFC EHS).
-5. **Methodology** and **Data Sources** tabs listing every input dataset with URL.
+## What's in this repository
 
-## Three ways to use this tool
-
-| For | Use |
+| Deliverable | Open it |
 |---|---|
-| Full interactive analysis (filters, maps, drill-down, heatmap) | The Streamlit app (`app/streamlit_app.py`) |
-| Quick Excel lookup (no setup, just open in Excel) | **[`Quick_Reference.xlsx`](Quick_Reference.xlsx)** — 4-sheet companion workbook with color-coded country × risk matrix + full ranked results + data sources |
-| Embed into Power BI / internal BI | CSVs under `data/processed/`; scoring logic documented in `docs/METHODOLOGY.md` |
+| 🌐 **Live tool** (filters, maps, heatmaps, drill-down) | [Streamlit app — public URL](https://glencore-enviro-risk-tool.streamlit.app) |
+| 📊 **Excel companion** (15-sheet color-coded workbook, no setup) | [Quick_Reference.xlsx](Quick_Reference.xlsx) |
+| 🎤 **Class presentation** (7 slides, geopolitics-of-energy lens) | [Glencore_Env_Risk_Tool_Deck.pptx](Glencore_Env_Risk_Tool_Deck.pptx) |
+| 📘 **Handover document** (how built, how to integrate, how to update) | [docs/OVERVIEW_AND_HANDOVER.md](docs/OVERVIEW_AND_HANDOVER.md) |
 
-To refresh `Quick_Reference.xlsx` after any CSV edit:
+---
+
+## What the tool does
+
+Pick any combination of **commodity, country, mining process** (Mining / Refining / Smelting / Recycling / Marketing) and **risk type**. The tool returns:
+
+- A ranked table of environmental risks scored 1–25 (Likelihood × Severity), color-coded Low / Moderate / High / Critical
+- A 5×5 Likelihood × Severity heatmap
+- A satellite map of producer countries, Glencore-owned assets, and (optional) suppliers
+- A drill-down panel showing the raw indicator value and the public-source URL behind every score
+- Pre-loaded SAQ KPIs per risk that the Responsible Sourcing analyst can drop straight into Glencore's existing Step 2B questionnaire
+
+---
+
+## Frameworks aligned to
+
+- **OECD** Due Diligence Guidance for Responsible Supply Chains of Minerals (3rd ed.) and **OECD Handbook on Environmental Due Diligence in Mineral Supply Chains** (2023)
+- **Glencore SCDD Procedure — Metals & Minerals** (2024) — automates Step 2A + supports Steps 2B–3
+- **RMI Supply Chain Due Diligence Plus Module** (April 2025)
+- **UNDP** Human Rights Due Diligence and the Environment: A Practical Tool for Business
+- Glencore's existing **saliency-based risk framework**
+
+---
+
+## Public datasets behind the scoring
+
+WRI Aqueduct · Yale EPI 2024 · WHO Ambient Air Quality DB · IUCN Red List · UNEP-WCMC Protected Planet · Global Forest Watch · Global Tailings Portal · USGS Mineral Commodity Summaries · USGS MRDS · USGS Critical Minerals Atlas · Global Energy Monitor · ISRIC SoilGrids · World Bank WGI · **NRGI Resource Governance Index** · **EJ Atlas (Environmental Justice Atlas)** · INFORM Risk Index · UNESCO World Heritage · Glencore CAHRA List 2025
+
+Full URLs and licences are listed in the **Data Sources** sheet of the Excel file and in `docs/OVERVIEW_AND_HANDOVER.md` Section 4.
+
+---
+
+## Run locally (technical, optional)
+
 ```bash
-python scripts/08_export_quick_reference.py
-```
-
-## Quick start
-
-```bash
-# Install
 pip install -r requirements.txt
-
-# Run the app
 streamlit run app/streamlit_app.py
 ```
 
 Opens at http://localhost:8501.
 
-## Project layout
+For Docker / Glencore-hosted deploy: see [docs/OVERVIEW_AND_HANDOVER.md Section 5](docs/OVERVIEW_AND_HANDOVER.md).
 
-```
-glencore_env_risk_tool/
-├── app/
-│   ├── streamlit_app.py      # UI (filters, heatmap, table, drill-down)
-│   └── scoring.py            # Normalized scoring engine
-├── data/
-│   ├── raw/                  # Refreshable external datasets (see scripts/02_*)
-│   └── processed/            # EDITABLE CSVs that drive the tool:
-│       ├── risks.csv                    # 15 risks: definition, KPIs, source datasets
-│       ├── risk_process_matrix.csv      # Risk × Process applicability (1–5)
-│       ├── commodity_producers.csv      # USGS top producers per commodity
-│       ├── country_indicators.csv       # Country-level raw indicators (EPI, PM2.5, etc.)
-│       ├── aqueduct_country_scores.csv  # WRI Aqueduct 4.0 (bws, drr, rfr)
-│       ├── noise_process_baseline.csv   # NIOSH dBA by mining activity
-│       └── scoring_weights.csv          # Tunable weights (L = αP + βC, S = γE + δR)
-├── scripts/
-│   ├── 01_process_aqueduct.py
-│   ├── 02_fetch_external_data.py        # Refresh external datasets
-│   └── 03_merge_to_indicators.py        # Merge raw → processed
-├── docs/
-│   ├── METHODOLOGY.md
-│   └── HOW_TO_EDIT.md
-└── README.md
-```
+---
 
-## Editing the tool
+## Project documentation
 
-All of the tool's logic is in CSVs under `data/processed/`. Anyone can edit them in Excel, Google Sheets, or a text editor. Restart the app (`Ctrl-C` then re-run) or hit `R` in the Streamlit UI to pick up changes. See `docs/HOW_TO_EDIT.md`.
-
-## Refreshing external data
-
-```bash
-# World Bank (public, no auth)
-python scripts/02_fetch_external_data.py --source worldbank
-
-# All sources (some require manual downloads)
-python scripts/02_fetch_external_data.py --source all
-
-# Merge fetched data into country_indicators.csv
-python scripts/03_merge_to_indicators.py
-```
-
-Datasets requiring free account registration (download manually to `data/raw/`):
-- **Yale EPI 2024** — https://epi.yale.edu/downloads
-- **Global Tailings Portal** — https://tailing.grida.no/data
-- **WHO Ambient Air Quality DB** — https://www.who.int/data/gho/data/themes/air-pollution
-- **Global Forest Watch country summary** — https://www.globalforestwatch.org/dashboards/global/
-- **IUCN Red List** — set `IUCN_TOKEN` env var after requesting at https://apiv3.iucnredlist.org
-
-The tool ships with seed values for ~43 top mining/oil-producing countries from these sources, so it works out of the box.
-
-## Scoring (one-liner)
-
-```
-Likelihood = 0.4 × Process_Intrinsic  +  0.6 × Country_Hazard        (1–5)
-Severity   = 0.5 × Ecological_Sensitivity + 0.5 × Regulatory_Strictness (1–5)
-Overall    = Likelihood × Severity                                    (1–25)
-```
-
-Buckets: 1–4 Low · 5–9 Moderate · 10–14 High · 15–25 Critical. Full method in `docs/METHODOLOGY.md`.
-
-## Deploy publicly
-
-### Option A — Streamlit Community Cloud (free, public URL)
-1. Push this directory to a GitHub repo
-2. Go to https://share.streamlit.io → New app → point to `app/streamlit_app.py`
-3. Free public URL.
-
-### Option B — Docker (portable, works anywhere)
-```bash
-docker compose up -d
-```
-Serves on port 8501. Deploy the resulting image to Azure App Service, AWS ECS, on-prem Linux, or any cloud. Mount `./data` so CSV edits on the host are picked up without rebuilding.
-
-### Option C — Glencore-hosted handover
-See [`docs/HANDOVER.md`](docs/HANDOVER.md) for the full transfer-to-Glencore playbook: Git ownership, Docker deploy, confidential-data swap, refresh cadence, decommissioning the NYU-hosted footprint.
+- **[docs/OVERVIEW_AND_HANDOVER.md](docs/OVERVIEW_AND_HANDOVER.md)** — primary handover document. How the tool was built, how to integrate into Glencore's systems, how to update the data, full file map, and a plain-English step-by-step walkthrough.
+- **[docs/METHODOLOGY.md](docs/METHODOLOGY.md)** — exact scoring formulas, normalization rules, weight rationale.
+- **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** — analyst-facing walkthrough; mirrored inside the live tool's "📖 User Guide" tab.
