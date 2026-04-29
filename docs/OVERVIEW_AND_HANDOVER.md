@@ -202,8 +202,7 @@ glencore_enviro_risk_tool/
 │   ├── 07_fetch_soilgrids.py
 │   ├── 08_export_quick_reference.py    (rebuilds the .xlsx)
 │   ├── 09_add_nrgi_ej_atlas.py
-│   ├── build_slides.py                  (rebuilds the class deck)
-│   └── capture_screenshots.py
+│   └── 09_add_nrgi_ej_atlas.py
 ├── docs/
 │   ├── OVERVIEW_AND_HANDOVER.md  (this file — single entry point)
 │   ├── METHODOLOGY.md            (full scoring rules)
@@ -212,7 +211,7 @@ glencore_enviro_risk_tool/
 ├── Dockerfile + docker-compose.yml  (one-command deploy)
 ├── requirements.txt              (pinned Python dependencies)
 ├── Quick_Reference.xlsx          (15-sheet Excel companion)
-└── Glencore_Env_Risk_Tool_Deck.pptx  (class presentation)
+└── (no other top-level deliverable files)
 ```
 
 ---

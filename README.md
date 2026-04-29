@@ -13,7 +13,6 @@ A risk-based desktop tool that scores environmental risks across Glencore's meta
 |---|---|
 | 🌐 **Live tool** (filters, maps, heatmaps, drill-down) | [Streamlit app — public URL](https://glencore-enviro-risk-tool.streamlit.app) |
 | 📊 **Excel companion** (15-sheet color-coded workbook, no setup) | [Quick_Reference.xlsx](Quick_Reference.xlsx) |
-| 🎤 **Class presentation** (7 slides, geopolitics-of-energy lens) | [Glencore_Env_Risk_Tool_Deck.pptx](Glencore_Env_Risk_Tool_Deck.pptx) |
 | 📘 **Handover document** (how built, how to integrate, how to update) | [docs/OVERVIEW_AND_HANDOVER.md](docs/OVERVIEW_AND_HANDOVER.md) |
 
 ---
