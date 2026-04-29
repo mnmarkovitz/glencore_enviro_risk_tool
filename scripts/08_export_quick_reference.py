@@ -206,7 +206,7 @@ def sheet_readme(wb, risks, countries, producers, today):
     ws["A16"] = "README"
     ws["B16"] = "This page."
     ws["A17"] = "Country × Risk"
-    ws["B17"] = "Heatmap: max Overall risk score per country × each priority risk. Best for scanning exposure."
+    ws["B17"] = "Heatmap: max Overall risk score per country × each environmental risk. Best for scanning exposure."
     ws["A18"] = "Full Ranked Results"
     ws["B18"] = "Every scored combination with sources. Use Excel's filter to slice."
     ws["A19"] = "Data Sources"
@@ -247,25 +247,24 @@ def sheet_readme(wb, risks, countries, producers, today):
 
 def sheet_country_risk(wb, df, risks):
     ws = wb.create_sheet("Country × Risk")
-    priority_ids = risks[risks["category"] == "Priority"]["risk_id"].tolist()
-    priority_labels = dict(zip(risks["risk_id"], risks["risk_type"]))
+    risk_ids = risks["risk_id"].tolist()
+    risk_labels = dict(zip(risks["risk_id"], risks["risk_type"]))
 
     # Build max Overall per country × risk (all commodities, all processes, applies==Y)
     df_y = df[df["applies"] == "Y"].copy()
     pivot = (
-        df_y[df_y["risk_id"].isin(priority_ids)]
+        df_y[df_y["risk_id"].isin(risk_ids)]
         .groupby(["country", "iso3", "cahra_flag", "risk_id"])["overall_1_25"]
         .max().unstack("risk_id")
     )
-    # Reorder columns to match priority order
-    pivot = pivot.reindex(columns=[rid for rid in priority_ids if rid in pivot.columns])
+    pivot = pivot.reindex(columns=[rid for rid in risk_ids if rid in pivot.columns])
     # Sort countries by their worst Overall score descending
     pivot["_max"] = pivot.max(axis=1)
     pivot = pivot.sort_values("_max", ascending=False).drop(columns=["_max"])
     pivot = pivot.reset_index()
 
     # Header row
-    headers = ["Country", "ISO", "CAHRA"] + [priority_labels[rid] for rid in pivot.columns[3:]]
+    headers = ["Country", "ISO", "CAHRA"] + [risk_labels[rid] for rid in pivot.columns[3:]]
     ws.append(headers)
     _style_header(ws[1])
 
@@ -363,7 +362,7 @@ def _generic_table(wb, sheet_name, df, widths=None, hyperlink_cols=None, freeze=
 
 def sheet_risk_library(wb, risks, matrix, risk_supplier):
     ws = wb.create_sheet("Risk Library")
-    ws.append(["Risk", "Category", "Definition", "Key KPIs (for SAQ)",
+    ws.append(["Risk", "Definition", "Key KPIs (for SAQ)",
                 "Driving processes (intensity 1-5)", "Likely supplier types",
                 "Likelihood dataset", "Severity dataset"])
     _style_header(ws[1])
@@ -375,16 +374,16 @@ def sheet_risk_library(wb, risks, matrix, risk_supplier):
         proc_str = "; ".join(f"{p['process']}: {int(p['intrinsic_intensity_1_5'])}"
                               for _, p in proc_rows.iterrows())
         ws.append([
-            r["risk_type"], r["category"], r["definition"], r["key_kpis"],
+            r["risk_type"], r["definition"], r["key_kpis"],
             proc_str,
             rs_map.get(r["risk_id"], r.get("likely_supplier_types", "")),
             r["likelihood_dataset"], r["severity_dataset"],
         ])
         row_idx = ws.max_row
-        for c in [3, 4, 5, 6]:
+        for c in [2, 3, 4, 5]:
             ws.cell(row=row_idx, column=c).alignment = Alignment(wrap_text=True, vertical="top")
         # Hyperlink the dataset names back to their public URLs
-        for col_idx, url_col in [(7, "likelihood_url"), (8, "severity_url")]:
+        for col_idx, url_col in [(6, "likelihood_url"), (7, "severity_url")]:
             cell = ws.cell(row=row_idx, column=col_idx)
             url = r.get(url_col)
             if isinstance(url, str) and url.startswith("http"):
@@ -392,7 +391,7 @@ def sheet_risk_library(wb, risks, matrix, risk_supplier):
                 cell.font = Font(color="FF0366D6", underline="single", size=10)
         ws.row_dimensions[row_idx].height = 90
     ws.freeze_panes = "A2"
-    _autosize(ws, [32, 12, 60, 60, 40, 40, 28, 28])
+    _autosize(ws, [32, 60, 60, 40, 40, 28, 28])
 
 
 def sheet_risk_process_matrix(wb, risks, matrix):

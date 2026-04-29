@@ -134,19 +134,12 @@ sel_countries = st.sidebar.multiselect(
 process_options = ["Mining", "Refining", "Smelting", "Recycling", "Marketing"]
 sel_processes = st.sidebar.multiselect("Process", process_options, default=process_options)
 
-risk_priority = st.sidebar.radio(
-    "Risk set", ["Priority (8 risks)", "All risks (15)", "Custom"], index=0
+sel_risk_ids = st.sidebar.multiselect(
+    "Risk types", options=risks_df["risk_id"].tolist(),
+    format_func=lambda x: risks_df.set_index("risk_id").loc[x, "risk_type"],
+    default=risks_df["risk_id"].tolist(),
+    help="All 13 environmental risks selected by default. Untick any to focus the analysis.",
 )
-if risk_priority == "Priority (8 risks)":
-    sel_risk_ids = risks_df[risks_df["category"] == "Priority"]["risk_id"].tolist()
-elif risk_priority == "All risks (15)":
-    sel_risk_ids = risks_df["risk_id"].tolist()
-else:
-    sel_risk_ids = st.sidebar.multiselect(
-        "Risk types", options=risks_df["risk_id"].tolist(),
-        format_func=lambda x: risks_df.set_index("risk_id").loc[x, "risk_type"],
-        default=risks_df["risk_id"].tolist(),
-    )
 
 min_overall = st.sidebar.slider("Minimum Overall score", 0.0, 25.0, 0.0, 0.5)
 show_non_applicable = st.sidebar.checkbox("Show non-applicable process combos", value=False)
@@ -763,11 +756,10 @@ with tab_risklib:
         "Mining": "⛏️", "Refining": "🧪", "Smelting": "🔥",
         "Recycling": "♻️", "Marketing": "🚢",
     }
-    cat_filter = st.radio("Show", ["Priority (8)", "All (15)"], horizontal=True, index=0, key="risklib_cat")
-    rl_df = risks_df if cat_filter == "All (15)" else risks_df[risks_df["category"] == "Priority"]
+    rl_df = risks_df
 
     for _, r in rl_df.iterrows():
-        with st.expander(f"**{r['risk_type']}**  ·  {r['category']}", expanded=False):
+        with st.expander(f"**{r['risk_type']}**", expanded=False):
             colx, coly = st.columns([3, 2])
             with colx:
                 st.markdown(f"#### Definition\n> {r['definition']}")
@@ -1048,7 +1040,7 @@ with tab_sources:
     st.divider()
     st.markdown("### Risk → likelihood & severity dataset mapping")
     st.dataframe(
-        risks_df[["risk_type", "category", "likelihood_dataset", "likelihood_indicator",
+        risks_df[["risk_type", "likelihood_dataset", "likelihood_indicator",
                   "likelihood_url", "severity_dataset", "severity_indicator", "severity_url"]],
         use_container_width=True, height=450,
     )
