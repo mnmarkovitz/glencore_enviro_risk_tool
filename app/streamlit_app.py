@@ -386,12 +386,10 @@ with tab_map:
         "Country centroids color-coded by max Overall risk. Toggle the layers below to overlay "
         "actual facility points from public registries (and, optionally, Glencore's internal supplier list)."
     )
-    basemap = st.radio(
-        "Base map", ["🛰️ Satellite (ESRI World Imagery)", "🗺️ Streets (OpenStreetMap)", "🌑 Carto Dark"],
-        horizontal=True, index=0, key="basemap_choice",
-    )
-    st.caption("🌍 **Base layer (always on):** top producer countries (USGS MCS 2024) as bubbles sized by global "
-               "production share and colored by max Overall risk.")
+    basemap = "🛰️ Satellite (ESRI World Imagery)"
+    st.caption("🛰️ Base map: ESRI World Imagery (free satellite tiles, no API key)  ·  "
+               "🌍 Base layer (always on): top producer countries (USGS MCS 2024) as bubbles "
+               "sized by global production share and colored by max Overall risk.")
     st.markdown("**Optional overlays to add mine-site / facility pins:**")
     show_producers = True  # always on — top producer country bubbles
     lay1, lay2, lay3, lay4 = st.columns(4)
@@ -423,22 +421,16 @@ with tab_map:
         merged = merged.merge(COUNTRY_LATLON, on="iso3", how="left")
         merged = merged.dropna(subset=["overall_1_25", "lat", "lon"])
         if len(merged):
-            if basemap.startswith("🛰️"):
-                mapbox_style = "white-bg"
-                mapbox_layers = [{
-                    "below": "traces",
-                    "sourcetype": "raster",
-                    "sourceattribution": "Tiles © Esri — Sources: Esri, Maxar, Earthstar Geographics",
-                    "source": [
-                        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                    ],
-                }]
-            elif basemap.startswith("🗺️"):
-                mapbox_style = "open-street-map"
-                mapbox_layers = []
-            else:
-                mapbox_style = "carto-darkmatter"
-                mapbox_layers = []
+            # Single base layer: ESRI World Imagery satellite tiles (free, no token).
+            mapbox_style = "white-bg"
+            mapbox_layers = [{
+                "below": "traces",
+                "sourcetype": "raster",
+                "sourceattribution": "Tiles © Esri — Sources: Esri, Maxar, Earthstar Geographics",
+                "source": [
+                    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                ],
+            }]
 
             fig_p = go.Figure()
             # Base producer bubbles (toggleable — USGS top-10 producer countries, not suppliers)
