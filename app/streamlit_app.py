@@ -918,14 +918,6 @@ with tab_userguide:
 # METHODOLOGY
 # =================================================================
 with tab_method:
-    st.info(
-        "📝 **Anything shown on this tab is computed from CSVs under `data/processed/`.** "
-        "This page is a read-only view — it's not clickable. To change a weight, a bucket threshold, "
-        "a risk definition, or a country score, open the relevant CSV in Excel or Google Sheets, edit, "
-        "save, and (if the app is hosted) commit the change to Git. The hosted app picks up changes "
-        "within ~60 seconds. Full editing walkthrough in `docs/HOW_TO_EDIT.md`.",
-        icon="💡",
-    )
     st.markdown(
         """
 ### Scoring methodology
@@ -972,8 +964,11 @@ Severity = 0.5 × Ecological Sensitivity  +  0.5 × Regulatory Strictness
 
 - **Ecological Sensitivity** — how fragile the country's ecosystems are.
   From [Yale EPI Ecosystem Vitality](https://epi.yale.edu) (inverted) + [WDPA protected area %](https://www.protectedplanet.net) (inverted).
-- **Regulatory Strictness** — how hard the regulator would hit you if an incident occurred.
-  From [WB WGI Regulatory Quality](https://www.worldbank.org/en/publication/worldwide-governance-indicators) + [Yale EPI overall](https://epi.yale.edu).
+- **Regulatory Strictness** — how hard the regulator would hit you (or how visibly contested operations already are) if an incident occurred. Blended from four public sources:
+    - [World Bank WGI Regulatory Quality](https://www.worldbank.org/en/publication/worldwide-governance-indicators) — broad governance signal
+    - [Yale EPI overall](https://epi.yale.edu) — environmental-policy enforcement capacity
+    - [NRGI Resource Governance Index 2021](https://resourcegovernanceindex.org) — resource-sector specific governance (mining + oil/gas)
+    - [EJ Atlas (Environmental Justice Atlas)](https://ejatlas.org) — count of documented environmental conflicts; high counts *reduce* strictness as a signal of poorly-enforced or contested regimes
 
 **Why equal (0.5 / 0.5) weighting?** The tool's purpose is to capture exposure to
 **penalties, fines, and enforcement action** — not pure ecological damage. Both halves
@@ -1013,6 +1008,8 @@ with tab_sources:
 - **[Yale EPI 2024](https://epi.yale.edu)** — Ecosystem Vitality, Waste Management, Heavy Metals, Air Quality, Overall (180 countries). Attribution required.
 - **[WHO Ambient Air Quality Database](https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database)** — PM2.5 annual mean concentration.
 - **[World Bank Open Data](https://data.worldbank.org/)** — CO₂ per capita (EN.ATM.CO2E.PC); **[World Bank WGI](https://www.worldbank.org/en/publication/worldwide-governance-indicators)** — Regulatory Quality, Government Effectiveness. CC BY 4.0.
+- **[NRGI Resource Governance Index (RGI) 2021](https://resourcegovernanceindex.org)** — extractive-sector specific governance scoring (mining + oil/gas). Free, attribution required. Feeds Regulatory Strictness.
+- **[EJ Atlas — Environmental Justice Atlas](https://ejatlas.org)** — EJOLT-curated database of ~4,000 environmental conflicts globally. Country-level case counts feed Regulatory Strictness (high counts → contested / poorly enforced regime). CC BY-NC-SA.
 - **[IUCN Red List API](https://apiv3.iucnredlist.org/)** — Threatened species counts by country. Free token required.
 - **[Protected Planet / WDPA (UNEP-WCMC)](https://www.protectedplanet.net/en)** — % national terrestrial area protected.
 - **[Global Forest Watch (WRI)](https://www.globalforestwatch.org/)** — Tree cover loss per country per year.
@@ -1151,6 +1148,6 @@ st.sidebar.markdown(
 in collaboration with the NYU School of Professional Studies
 **Center for Global Affairs Consulting Practicum**.
 
-_Edit CSVs in `data/processed/` to update the tool — no code changes needed. See `docs/HOW_TO_EDIT.md`._
+_See the project handover document for the full source list, integration paths, and update procedure._
 """
 )

@@ -122,13 +122,34 @@ def _eco_sensitivity(row: pd.Series) -> float:
 
 
 def _regulatory_strictness(row: pd.Series) -> float:
+    """
+    Regulatory strictness blend (1=lax/contested, 5=very strict & enforced).
+    Inputs (any subset, averaged):
+      - WB WGI Regulatory Quality (-2.5..2.5) → linear rescale to 1..5
+      - Yale EPI overall score (0..100) → linear rescale to 1..5
+      - NRGI Resource Governance Index (0..100) → linear rescale to 1..5;
+        most directly relevant to extractive-sector governance
+      - EJ Atlas environmental-conflict count → quintile-bucketed; HIGH conflicts
+        REDUCE strictness (signal of contested / poorly-enforced regimes)
+    """
     rq = row.get("wb_wgi_regulatory_quality")
     epi = row.get("epi_overall_2024")
+    nrgi = row.get("nrgi_rgi_score_0_100")
+    ej = row.get("ej_atlas_conflict_count")
     parts = []
     if pd.notna(rq):
         parts.append(_wgi_to_strictness(rq))
     if pd.notna(epi):
-        parts.append(max(1, min(5, epi / 25.0 + 1)))  # 0 -> 1, 100 -> 5
+        parts.append(max(1, min(5, epi / 25.0 + 1)))
+    if pd.notna(nrgi):
+        # Higher NRGI = stronger governance → higher strictness
+        parts.append(max(1, min(5, float(nrgi) / 25.0 + 1)))
+    if pd.notna(ej):
+        # Many EJ Atlas conflicts indicates weak/contested enforcement → LOWER strictness.
+        # >100 cases → 1; 50-99 → 2; 20-49 → 3; 5-19 → 4; <5 → 5.
+        v = float(ej)
+        ej_strict = 1.0 if v >= 100 else (2.0 if v >= 50 else (3.0 if v >= 20 else (4.0 if v >= 5 else 5.0)))
+        parts.append(ej_strict)
     if not parts:
         return np.nan
     return float(np.mean(parts))

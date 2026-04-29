@@ -152,6 +152,20 @@ INDICATOR_META = {
                                        "Glencore CAHRA List 2025", "https://www.glencore.com"),
     "cahra_regions":                 ("Glencore CAHRA regions (sub-national)",
                                        "Glencore CAHRA List 2025", "https://www.glencore.com"),
+    "nrgi_rgi_score_0_100":          ("NRGI Resource Governance Index 2021 (0–100, higher = better governance)",
+                                       "Natural Resource Governance Institute",
+                                       "https://resourcegovernanceindex.org"),
+    "ej_atlas_conflict_count":       ("EJ Atlas — count of documented environmental conflicts",
+                                       "Environmental Justice Atlas (EJOLT)",
+                                       "https://ejatlas.org"),
+    "soil_ph_0_5cm":                 ("ISRIC SoilGrids — topsoil pH (0–5cm depth)",
+                                       "ISRIC SoilGrids 2.0", "https://soilgrids.org"),
+    "soil_soc_g_per_kg":             ("ISRIC SoilGrids — topsoil organic carbon (g/kg)",
+                                       "ISRIC SoilGrids 2.0", "https://soilgrids.org"),
+    "soil_cec_cmol_per_kg":          ("ISRIC SoilGrids — topsoil CEC (cmol/kg)",
+                                       "ISRIC SoilGrids 2.0", "https://soilgrids.org"),
+    "soil_vulnerability_1_5":        ("Soil vulnerability score (1–5; derived from pH + SOC + CEC)",
+                                       "Derived; see Methodology sheet", ""),
 }
 
 
@@ -213,10 +227,8 @@ def sheet_readme(wb, risks, countries, producers, today):
     ws["A27"] = "Important caveats"
     ws["A27"].font = Font(bold=True, size=13)
     ws["A28"] = (
-        "This workbook is a STATIC snapshot. It does not update automatically — re-run "
-        "scripts/08_export_quick_reference.py whenever the CSVs change. The interactive Streamlit "
-        "tool is the Source of Truth. For map visualization, supplier overlays, and drill-down, use "
-        "the Streamlit tool — not this file.\n\n"
+        "This workbook is a static snapshot. The interactive Streamlit tool is the Source of Truth. "
+        "For map visualization, supplier overlays, and drill-down, use the Streamlit tool — not this file.\n\n"
         "Cells showing '—' mean the underlying public dataset has NO value for that country and risk. "
         "Examples: Noise pollution has no global country-level dataset (hence all '—' in the Hazard "
         "columns for that risk), and UNESCO heritage-in-danger counts are zero for many countries. "
@@ -368,10 +380,16 @@ def sheet_risk_library(wb, risks, matrix, risk_supplier):
             rs_map.get(r["risk_id"], r.get("likely_supplier_types", "")),
             r["likelihood_dataset"], r["severity_dataset"],
         ])
-        # Wrap multi-line cells
         row_idx = ws.max_row
         for c in [3, 4, 5, 6]:
             ws.cell(row=row_idx, column=c).alignment = Alignment(wrap_text=True, vertical="top")
+        # Hyperlink the dataset names back to their public URLs
+        for col_idx, url_col in [(7, "likelihood_url"), (8, "severity_url")]:
+            cell = ws.cell(row=row_idx, column=col_idx)
+            url = r.get(url_col)
+            if isinstance(url, str) and url.startswith("http"):
+                cell.hyperlink = url
+                cell.font = Font(color="FF0366D6", underline="single", size=10)
         ws.row_dimensions[row_idx].height = 90
     ws.freeze_panes = "A2"
     _autosize(ws, [32, 12, 60, 60, 40, 40, 28, 28])
@@ -414,9 +432,22 @@ def sheet_commodity_producers(wb, producers):
     df = producers.copy()
     df.columns = ["Commodity", "Country", "ISO-3", "Rank", "Share % global",
                    "Source", "Critical Mineral", "Critical Source"]
-    return _generic_table(wb, "Commodity Producers", df,
-                           widths=[18, 30, 8, 8, 12, 28, 12, 60],
-                           hyperlink_cols=[8])
+    ws = _generic_table(wb, "Commodity Producers", df,
+                         widths=[18, 30, 8, 8, 12, 28, 12, 60],
+                         hyperlink_cols=[8])
+    # Source row at top
+    ws.insert_rows(1)
+    ws["A1"] = ("Sources: USGS Mineral Commodity Summaries 2024 "
+                 "(https://pubs.usgs.gov/periodicals/mcs2024) for metals; "
+                 "BP Statistical Review of World Energy 2024 (https://www.energyinst.org/statistical-review) "
+                 "+ IEA (https://www.iea.org) for coal and oil/gas. "
+                 "Critical-mineral flag from USGS 2022 Critical Minerals List "
+                 "(https://www.usgs.gov/news/national-news-release/us-geological-survey-releases-2022-list-critical-minerals).")
+    ws["A1"].font = Font(italic=True, color="FF005F73", size=11)
+    ws["A1"].hyperlink = "https://pubs.usgs.gov/periodicals/mcs2024"
+    ws["A1"].alignment = Alignment(wrap_text=True, vertical="top")
+    ws.merge_cells("A1:H1")
+    ws.row_dimensions[1].height = 60
 
 
 def sheet_cahra_list(wb, countries):
@@ -530,15 +561,11 @@ def sheet_user_guide(wb):
          "Tier 4 (OGA, independent): same. Tier 5 (CAP + monitoring): KPIs become "
          "milestones. See the 'Supplier Engagement Tiers' sheet for full alignment to "
          "Glencore's SCDD M&M procedure."),
-        ("Editing the tool",
-         "All logic lives in CSVs under data/processed/. Edit in Excel/Sheets, save, "
-         "and (if hosted) commit. Glencore IT picks up changes within 60 seconds. "
-         "Detailed walkthrough: docs/HOW_TO_EDIT.md."),
         ("Where to get help",
          "Why did a country score X? → drill-down in the Streamlit app or the "
          "'Full Ranked Results' sheet. Can I trust this score? → 'Data Sources' sheet. "
-         "What's the math? → 'Methodology + Scoring Weights' sheet. Migration to Glencore "
-         "infrastructure → docs/HANDOVER.md."),
+         "What's the math? → 'Methodology + Scoring Weights' sheet. "
+         "Updates and integration paths are described in the project's handover document."),
     ]
     r = 4
     for title, body in sections:
@@ -589,9 +616,19 @@ def sheet_aqueduct(wb):
                    "BWS — Baseline Water Stress (0-4)",
                    "DRR — Drought Risk (0-4)",
                    "RFR — Riverine Flood Risk (0-4)"]
-    df = df.replace(-9999, "")  # Aqueduct no-data sentinel
-    return _generic_table(wb, "Water Stress (Aqueduct)", df,
-                           widths=[6, 28, 14, 24, 22, 18, 22])
+    df = df.replace(-9999, "")
+    ws = _generic_table(wb, "Water Stress (Aqueduct)", df,
+                         widths=[6, 28, 14, 24, 22, 18, 22])
+    # Source row at top
+    ws.insert_rows(1)
+    ws["A1"] = ("Source: WRI Aqueduct 4.0 — Country Rankings download (July 2023). "
+                 "https://www.wri.org/applications/aqueduct/country-rankings/  ·  "
+                 "License: CC BY 4.0  ·  Categories 0-4 (4 = extremely high). "
+                 "Empty cell = no data published for that country.")
+    ws["A1"].font = Font(italic=True, color="FF005F73", size=11)
+    ws["A1"].hyperlink = "https://www.wri.org/applications/aqueduct/country-rankings/"
+    ws.merge_cells("A1:G1")
+    ws.row_dimensions[1].height = 38
 
 
 def sheet_glencore_assets(wb):
@@ -805,7 +842,6 @@ def sheet_sources(wb, risks):
         ws.append([r["risk_type"],
                     r["likelihood_dataset"], r["likelihood_indicator"], r["likelihood_url"],
                     r["severity_dataset"], r["severity_indicator"], r["severity_url"]])
-        # Make URLs clickable
         row = ws.max_row
         for col in [4, 7]:
             cell = ws.cell(row=row, column=col)
@@ -814,6 +850,33 @@ def sheet_sources(wb, risks):
                 cell.font = Font(color="FF0366D6", underline="single")
     ws.freeze_panes = "A2"
     _autosize(ws, [40, 28, 44, 60, 28, 44, 60])
+
+    # Append a "Cross-cutting governance datasets" block beneath the risk list
+    blank = ws.max_row + 2
+    ws.cell(row=blank, column=1, value="Cross-cutting governance datasets (feed Regulatory Strictness for every risk):"
+            ).font = Font(bold=True, color="FF005F73", size=12)
+    governance_rows = [
+        ("World Bank Worldwide Governance Indicators (WGI)",
+         "Regulatory Quality + Government Effectiveness (-2.5 to +2.5)",
+         "https://www.worldbank.org/en/publication/worldwide-governance-indicators"),
+        ("Yale Environmental Performance Index (EPI 2024)",
+         "Overall environmental governance score (0-100)", "https://epi.yale.edu"),
+        ("NRGI Resource Governance Index 2021",
+         "Extractive-sector specific governance (0-100)", "https://resourcegovernanceindex.org"),
+        ("Environmental Justice Atlas (EJ Atlas / EJOLT)",
+         "Count of documented environmental conflicts per country",
+         "https://ejatlas.org"),
+        ("Glencore CAHRA List 2025",
+         "Conflict-Affected & High-Risk Areas (sub-national where applicable)",
+         "https://www.glencore.com"),
+    ]
+    for name, indicator, url in governance_rows:
+        blank += 1
+        ws.cell(row=blank, column=1, value=name).font = Font(bold=True)
+        ws.cell(row=blank, column=2, value=indicator)
+        cell = ws.cell(row=blank, column=3, value=url)
+        cell.hyperlink = url
+        cell.font = Font(color="FF0366D6", underline="single")
 
 
 def add_charts(wb, df, producers):
@@ -897,7 +960,6 @@ def main():
     sheet_methodology_and_weights(wb, weights)
     sheet_supplier_tiers(wb)
     sheet_sources(wb, risks)
-    add_charts(wb, df, producers)
     wb.save(OUTPUT)
     print(f"✓ Wrote {OUTPUT.name}  ({OUTPUT.stat().st_size / 1024:.0f} KB) — {len(wb.sheetnames)} sheets")
     print(f"  Location: {OUTPUT}")
