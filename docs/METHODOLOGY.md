@@ -68,9 +68,11 @@ Default weights (editable in `scoring_weights.csv`):
 - Yale EPI 2024 *Ecosystem Vitality* (inverted: `(100 − score)/20 + 1`)
 - Protected Planet WDPA *% terrestrial area protected* (inverted: `max(1, 6 − pct/10)`)
 
-**Regulatory Strictness (1–5)** — mean of:
+**Regulatory Strictness (1–5)** — mean of any subset that has data:
 - World Bank WGI *Regulatory Quality* (−2.5..2.5 → 1..5 linear)
 - Yale EPI 2024 overall score (0..100 → 1..5 linear; proxy for enforcement capacity)
+- **NRGI Resource Governance Index 2021** (0..100 → 1..5; extractive-sector specific governance)
+- **EJ Atlas (Environmental Justice Atlas)** environmental-conflict count per country: ≥100 cases → 1; 50–99 → 2; 20–49 → 3; 5–19 → 4; <5 → 5. High counts *reduce* strictness as a signal of contested or poorly enforced regimes.
 
 > **Design choice:** we treat *stronger regulatory regimes as producing higher Severity*, because the tool's purpose is to capture exposure to **penalties, fines, and enforcement action**. A rigorously enforced regime penalizes incidents harder. If your use case is pure ecological damage (not penalty exposure), edit `scoring_weights.csv` to lower `severity_regulatory_weight`.
 
@@ -137,7 +139,10 @@ When `risk_process_matrix.csv` marks a risk × process cell as `applies = N` (e.
 | WHO Ambient Air Quality DB | PM2.5 annual mean | https://www.who.int/data/gho/data/themes/air-pollution |
 | EC JRC EDGAR | SO₂, NOx national emissions | https://edgar.jrc.ec.europa.eu |
 | World Bank WGI | Regulatory Quality, Government Effectiveness | https://www.worldbank.org/en/publication/worldwide-governance-indicators |
+| **NRGI Resource Governance Index 2021** | Extractive-sector specific governance score (0–100) | https://resourcegovernanceindex.org |
+| **EJ Atlas (Environmental Justice Atlas)** | Count of documented environmental conflicts per country | https://ejatlas.org |
 | World Bank Open Data | CO₂ per capita | https://data.worldbank.org |
+| ISRIC SoilGrids 2.0 | Topsoil pH + organic carbon + cation exchange capacity | https://soilgrids.org |
 | INFORM Risk Index (EC JRC) | Natural hazard exposure | https://drmkc.jrc.ec.europa.eu/inform-index |
 | UNESCO World Heritage | Heritage sites & sites in danger | https://whc.unesco.org |
 | UNEP Basel Convention | National hazardous waste generation | http://www.basel.int |

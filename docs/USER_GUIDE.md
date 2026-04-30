@@ -25,7 +25,7 @@ Given a **commodity, country, and process stage**, it returns a ranked list of e
 | 🔍 **Risk Dashboard** | Main workspace — filter, see ranked risks + heatmap, drill down into any row |
 | 🗺️ **Map** | Visualize risks geographically, overlay mine sites from public registries or your own supplier list |
 | 📈 **More Charts** | Explore patterns across countries/risks/commodities (top-N bars, sunburst, etc.) |
-| 📚 **Risk Library** | Look up the definition + KPIs for any of the 15 risks — your reference when drafting SAQ questions |
+| 📚 **Risk Library** | Look up the definition + KPIs for any of the 13 environmental risks — your reference when drafting SAQ questions |
 | 🤝 **Supplier Engagement Tiers** | See how the tool plugs into Glencore's SCDD M&M workflow — where Tier 1 (this tool) hands off to SAQ / onsite / CAP |
 | 📐 **Methodology** | Understand the scoring formula (for stakeholder/audit questions) |
 | 📊 **Data Sources** | Every public dataset the tool uses, with hyperlinks — your citation list |
@@ -36,7 +36,7 @@ Given a **commodity, country, and process stage**, it returns a ranked list of e
 ## Quickstart — your first 5 minutes
 
 1. **Pick a commodity** in the sidebar. Default is Cobalt. Top producer countries surface first automatically.
-2. Leave all other filters at default (all 5 processes, 8 priority risks).
+2. Leave all other filters at default (all 5 processes, all 13 risks).
 3. Scroll to the **Risk matrix (Likelihood × Severity)** — this is your at-a-glance view. Worst combinations are top-right (red cells).
 4. Scroll further to the **Ranked environmental risks** table. It's sorted by Overall (= Likelihood × Severity). Rows highlighted yellow are in **CAHRA countries**.
 5. Pick any row from the **Drill-down** selector. You'll see:

@@ -10,7 +10,7 @@ Sheets:
   2.  User Guide                      - end-user walkthrough
   3.  Country × Risk Heatmap          - color-coded matrix + bar chart
   4.  Full Ranked Results             - every scored row, filterable, color-coded
-  5.  Risk Library                    - 15 risks with definition, KPIs, processes
+  5.  Risk Library                    - 13 risks with definition, KPIs, processes
   6.  Risk × Process Matrix           - intensity (1–5) of each process per risk
   7.  Commodity Producers             - USGS top producers + critical-mineral flag + chart
   8.  Country Indicators              - all raw indicators per country, sourced

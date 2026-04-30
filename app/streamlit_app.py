@@ -245,6 +245,28 @@ with tab_dashboard:
         "(e.g., IUCN species count, PM2.5 µg/m³, TSF count). It is normalized into the 1–5 "
         "**Country Hazard Normalized** column which feeds Likelihood."
     )
+    search_q = st.text_input(
+        "🔎 Search rows", value="", placeholder="e.g. cobalt DRC tailings · or just a country name · or a supplier type",
+        help="Free-text search across risk · commodity · country · process · supplier types · data source. Case-insensitive.",
+        key="ranked_search",
+    )
+    if search_q.strip() and len(df):
+        terms = [t.lower() for t in search_q.strip().split() if t.strip()]
+        searchable = (
+            df["risk_type"].astype(str).str.lower() + " "
+            + df["commodity"].astype(str).str.lower() + " "
+            + df["country"].astype(str).str.lower() + " "
+            + df["process"].astype(str).str.lower() + " "
+            + df["likely_supplier_types"].astype(str).str.lower() + " "
+            + df["country_hazard_source"].astype(str).str.lower() + " "
+            + df["risk_bucket"].astype(str).str.lower()
+        )
+        mask = pd.Series(True, index=df.index)
+        for t in terms:
+            mask &= searchable.str.contains(t, regex=False, na=False)
+        df = df[mask]
+        if not len(df):
+            st.warning(f"No rows matched all of: {', '.join(terms)}. Try fewer or different keywords.")
     if len(df):
         display_cols = [
             "risk_type", "commodity", "country", "cahra_flag", "process",

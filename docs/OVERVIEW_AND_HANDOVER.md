@@ -221,7 +221,7 @@ glencore_enviro_risk_tool/
 If a stakeholder ever asks "where did this come from?", here is the simplest possible walkthrough.
 
 ### Step 1 — pick the risks
-We started from Glencore's existing saliency-based environmental risk framework and the OECD Handbook on Environmental Due Diligence in Mineral Supply Chains (2023), which list the categories: water pollution, water depletion, tailings, biodiversity (species and ecosystems), noise, air, soil, hazardous waste, and so on. We have 15 risks total, 8 prioritized.
+We started from Glencore's existing saliency-based environmental risk framework and the OECD Handbook on Environmental Due Diligence in Mineral Supply Chains (2023), which list the categories: water pollution, water depletion, tailings, biodiversity (species and ecosystems), noise, air, soil, hazardous waste, and so on. We have **13 environmental risks** in total, all treated equally (no priority/secondary distinction).
 
 ### Step 2 — pick the public dataset that says how bad each risk is in each country
 For each risk, we found the best free, audit-able dataset. Aqueduct for water. WHO for air. IUCN for species. SoilGrids for soil. Global Tailings Portal for tailings. Etc. The mapping is in `risks.csv`.
