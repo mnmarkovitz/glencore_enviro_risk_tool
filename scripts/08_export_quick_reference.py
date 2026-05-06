@@ -166,83 +166,183 @@ INDICATOR_META = {
                                        "ISRIC SoilGrids 2.0", "https://soilgrids.org"),
     "soil_vulnerability_1_5":        ("Soil vulnerability score (1–5; derived from pH + SOC + CEC)",
                                        "Derived; see Methodology sheet", ""),
+    "bws_cat_0_4":                   ("WRI Aqueduct — Baseline Water Stress category (0–4; 4 = Extremely High, >80% of renewable supply withdrawn)",
+                                       "WRI Aqueduct 4.0",
+                                       "https://www.wri.org/applications/aqueduct/country-rankings/"),
+    "drr_cat_0_4":                   ("WRI Aqueduct — Drought Risk category (0–4; blends hazard, exposure, vulnerability)",
+                                       "WRI Aqueduct 4.0",
+                                       "https://www.wri.org/applications/aqueduct/country-rankings/"),
+    "rfr_cat_0_4":                   ("WRI Aqueduct — Riverine Flood Risk category (0–4; expected annual fluvial-flood damage)",
+                                       "WRI Aqueduct 4.0",
+                                       "https://www.wri.org/applications/aqueduct/country-rankings/"),
 }
 
 
 # -------------------------- sheet builders --------------------------
 
 def sheet_readme(wb, risks, countries, producers, today):
+    """
+    Single combined Welcome / User Guide / Methodology / Caveats sheet.
+    Excel-specific: how to navigate this workbook, how to read the scores,
+    how to use Excel's built-in filter to do common analyst tasks.
+    """
     ws = wb.active
-    ws.title = "README"
+    ws.title = "Start Here"
+
+    def title(row, text):
+        ws.cell(row=row, column=1, value=text).font = Font(bold=True, size=13, color="FF005F73")
+
+    def body(row, text, height=None, italic=False):
+        ws.cell(row=row, column=1, value=text)
+        ws.cell(row=row, column=1).alignment = Alignment(wrap_text=True, vertical="top")
+        if italic:
+            ws.cell(row=row, column=1).font = Font(italic=True, color="FF555555")
+        if height:
+            ws.row_dimensions[row].height = height
+
+    # Header
     ws["A1"] = "Environmental Risk — Quick Reference"
-    ws["A1"].font = Font(bold=True, size=18, color="FF00A9A5")
+    ws["A1"].font = Font(bold=True, size=20, color="FF00A9A5")
     ws["A2"] = f"Generated: {today}   |   For: Glencore Group Responsible Sourcing team"
-    ws["A2"].font = Font(italic=True, color="FF555555")
+    ws["A2"].font = Font(italic=True, color="FF555555", size=11)
 
-    ws["A4"] = "What this workbook is"
-    ws["A4"].font = Font(bold=True, size=13)
-    ws["A5"] = (
-        "A precomputed snapshot of environmental risk scores for every commodity × country × "
-        "mining process combination in the Glencore Responsible Sourcing team's tool. Use this "
-        "Excel file for quick lookups when you don't need the full interactive Streamlit tool."
-    )
-    ws["A5"].alignment = Alignment(wrap_text=True, vertical="top")
-    ws.row_dimensions[5].height = 60
+    # ---- 1. WHAT THIS WORKBOOK IS ----
+    title(4, "What this workbook is")
+    body(5,
+         "A 14-sheet Excel snapshot of the environmental-risk scoring tool built for "
+         "Glencore Responsible Sourcing. Every (commodity × country × process × risk) "
+         "combination has been pre-computed and color-coded, so you can do your Tier 1 "
+         "OSDR triage entirely inside Excel — no Python, no web app required.\n\n"
+         "The interactive Streamlit tool remains the Source of Truth (it has live maps, "
+         "drill-down, and supplier overlays). This workbook gives you the same numbers "
+         "in a format you can filter, copy/paste, and email.",
+         height=120)
 
-    ws["A7"] = "How to read the scores"
-    ws["A7"].font = Font(bold=True, size=13)
-    ws["A8"] = "Overall = Likelihood × Severity, range 1–25. Cells are color-coded by bucket:"
-    ws["A10"] = "Low";      ws["A10"].fill = BUCKET_FILLS["Low"];      ws["A10"].font = BUCKET_FONT_LIGHT
-    ws["B10"] = "Overall 1–4"
-    ws["A11"] = "Moderate"; ws["A11"].fill = BUCKET_FILLS["Moderate"]; ws["A11"].font = BUCKET_FONT_DARK
-    ws["B11"] = "Overall 5–9"
-    ws["A12"] = "High";     ws["A12"].fill = BUCKET_FILLS["High"];     ws["A12"].font = BUCKET_FONT_DARK
-    ws["B12"] = "Overall 10–14"
-    ws["A13"] = "Critical"; ws["A13"].fill = BUCKET_FILLS["Critical"]; ws["A13"].font = BUCKET_FONT_LIGHT
-    ws["B13"] = "Overall 15–25"
+    # ---- 2. HOW TO READ THE SCORES ----
+    title(8, "How to read a score")
+    body(9,
+         "Every row has Likelihood (1–5), Severity (1–5), and Overall = L × S (1–25). "
+         "The Bucket column color-codes Overall:",
+         height=36)
+    ws["A11"] = "Low";      ws["A11"].fill = BUCKET_FILLS["Low"];      ws["A11"].font = BUCKET_FONT_LIGHT
+    ws["B11"] = "Overall 1–4   ·   acceptable Tier-1 outcome; no Tier-2 SAQ required for this combination unless CAHRA-flagged"
+    ws["A12"] = "Moderate"; ws["A12"].fill = BUCKET_FILLS["Moderate"]; ws["A12"].font = BUCKET_FONT_DARK
+    ws["B12"] = "Overall 5–9   ·   keep on watchlist; review during annual SCDD refresh"
+    ws["A13"] = "High";     ws["A13"].fill = BUCKET_FILLS["High"];     ws["A13"].font = BUCKET_FONT_DARK
+    ws["B13"] = "Overall 10–14 ·   escalate to Tier 2 (SAQ) at next supplier touchpoint"
+    ws["A14"] = "Critical"; ws["A14"].fill = BUCKET_FILLS["Critical"]; ws["A14"].font = BUCKET_FONT_LIGHT
+    ws["B14"] = "Overall 15–25 ·   immediate SAQ; CAHRA + Critical → schedule onsite (Tier 3)"
 
-    ws["A15"] = "Sheets"
-    ws["A15"].font = Font(bold=True, size=13)
-    ws["A16"] = "README"
-    ws["B16"] = "This page."
-    ws["A17"] = "Country × Risk"
-    ws["B17"] = "Heatmap: max Overall risk score per country × each environmental risk. Best for scanning exposure."
-    ws["A18"] = "Full Ranked Results"
-    ws["B18"] = "Every scored combination with sources. Use Excel's filter to slice."
-    ws["A19"] = "Data Sources"
-    ws["B19"] = "Hyperlinked list of every public dataset the scores come from."
+    # ---- 3. SHEET MAP ----
+    title(16, "What's in each sheet")
+    sheet_table = [
+        ("Start Here",                 "This page — workbook intro + how to use"),
+        ("Country × Risk Heatmap",     "One-page country-exposure scan (countries × all 13 risks). Best place to start an analysis."),
+        ("Full Ranked Results",        "Every scored combination (~9,000 rows). Filterable. Use Excel's auto-filter dropdowns to slice by commodity / country / process / bucket."),
+        ("Risk Library",               "13 environmental risks: definitions, KPIs to ask in the SAQ, driving processes, likely supplier types, hyperlinked sources."),
+        ("Risk × Process Matrix",      "Intensity (1–5) of each mining process per risk. Shows e.g. that Tailings is 5/5 for Mining but 1/5 for Marketing."),
+        ("Commodity Producers",        "USGS top-10 producer countries per commodity with critical-mineral flag."),
+        ("Country Indicators",         "Every per-country raw indicator (~30 columns). Hover any header for source URL."),
+        ("Soil Vulnerability",         "ISRIC SoilGrids — pH, SOC, CEC, derived 1–5 vulnerability."),
+        ("Water Stress (Aqueduct)",    "WRI Aqueduct 4.0 — Baseline Water Stress, Drought Risk, Riverine Flood Risk per country."),
+        ("Glencore-Owned Assets",      "Public Glencore industrial assets from glencore.com (mines, smelters, refineries)."),
+        ("Risk → Supplier Types",      "Maps each risk to the Glencore supplier categories most likely to drive it. Use this when scoping the SAQ."),
+        ("Noise Baseline",             "NIOSH dBA per mining activity (no global country dataset exists for noise)."),
+        ("Methodology + Weights",      "Scoring formulas, normalization rules, weight rationale. Editable weights table at the bottom."),
+        ("Supplier Engagement Tiers",  "5-tier alignment to Glencore's SCDD M&M Procedure (Tier 1 OSDR → Tier 5 CAP)."),
+        ("Data Sources",               "Hyperlinked master list of every public dataset feeding the scoring."),
+    ]
+    r = 17
+    for name, desc in sheet_table:
+        ws.cell(row=r, column=1, value=name).font = Font(bold=True)
+        ws.cell(row=r, column=2, value=desc).alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[r].height = 30
+        r += 1
 
-    ws["A21"] = "Methodology (brief)"
-    ws["A21"].font = Font(bold=True, size=13)
-    ws["A22"] = "Likelihood = 0.4 × Process Intrinsic Risk + 0.6 × Country Hazard Score (both 1–5)"
-    ws["A23"] = "Severity   = 0.5 × Ecological Sensitivity + 0.5 × Regulatory Strictness (both 1–5)"
-    ws["A24"] = "Overall    = Likelihood × Severity"
-    ws["A25"] = (
-        "Full methodology, formulas, and normalization rules are in the Streamlit tool's "
-        "Methodology tab and in docs/METHODOLOGY.md."
-    )
-    ws["A25"].alignment = Alignment(wrap_text=True)
-    ws.row_dimensions[25].height = 40
+    # ---- 4. EXCEL TIPS ----
+    title(r + 1, "Tips — getting the most out of Excel")
+    tips = [
+        ("Use auto-filter on every data sheet",
+         "All sheets have Excel's auto-filter enabled (the small ▼ dropdown on each header). "
+         "Click any dropdown → Filter / Search → narrow to one commodity, country, or bucket."),
+        ("Freeze panes are pre-set",
+         "Header rows + the first 1–2 columns stay visible as you scroll. Look for the thin "
+         "blue line marking the freeze."),
+        ("Hover headers for source citations",
+         "Cells with a small red triangle in the corner have a comment / note. Hover (or right-click → Show Note) "
+         "to see the dataset name and URL."),
+        ("Color-coded cells use the same legend everywhere",
+         "Green = Low · Amber = Moderate · Orange = High · Red = Critical. Same scale on the heatmap, "
+         "the bucket column, and the soil-vulnerability column."),
+        ("CAHRA highlight",
+         "Yellow-highlighted country rows are on Glencore's CAHRA List 2025 (Conflict-Affected & High-Risk Areas)."),
+        ("Searching",
+         "Cmd+F (Mac) / Ctrl+F (Windows) finds any text — combine with auto-filter to narrow first, then search."),
+        ("Updating the workbook",
+         "This file is a static snapshot dated at the top of this sheet. The maintaining team rebuilds it whenever "
+         "the underlying datasets are refreshed. The interactive Streamlit tool always shows the latest data."),
+    ]
+    r += 2
+    for h, t in tips:
+        ws.cell(row=r, column=1, value=h).font = Font(bold=True, color="FF005F73")
+        ws.cell(row=r, column=2, value=t).alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[r].height = 50
+        r += 1
 
-    ws["A27"] = "Important caveats"
-    ws["A27"].font = Font(bold=True, size=13)
-    ws["A28"] = (
-        "This workbook is a static snapshot. The interactive Streamlit tool is the Source of Truth. "
-        "For map visualization, supplier overlays, and drill-down, use the Streamlit tool — not this file.\n\n"
-        "Cells showing '—' mean the underlying public dataset has NO value for that country and risk. "
-        "Examples: Noise pollution has no global country-level dataset (hence all '—' in the Hazard "
-        "columns for that risk), and UNESCO heritage-in-danger counts are zero for many countries. "
-        "In those cases, Likelihood falls back to the Process Intrinsic Risk alone."
-    )
-    ws["A28"].alignment = Alignment(wrap_text=True)
-    ws.row_dimensions[28].height = 140
+    # ---- 5. COMMON WORKFLOWS ----
+    title(r + 1, "Common analyst workflows")
+    flows = [
+        ("Tier 1 OSDR for a new supplier (5 min)",
+         "1) 'Country × Risk Heatmap' → find the supplier's country row · 2) Note any Critical/High cells · "
+         "3) 'Full Ranked Results' → filter Country=X, Commodity=Y, Process=Z · "
+         "4) For each Critical row, open 'Risk Library' → copy the KPIs into the SAQ template · "
+         "5) Cross-check 'Risk → Supplier Types' to scope SAQ sections."),
+        ("Annual SCDD refresh of an existing supplier",
+         "Filter 'Full Ranked Results' to that supplier's country + commodity + process. "
+         "Compare current Bucket against the previous year's saved file. Any movement up "
+         "(e.g., Moderate → High) triggers a SAQ refresh on that risk."),
+        ("Onsite-visit prep",
+         "Filter 'Full Ranked Results' to the supplier. Sort by Overall descending. Top 3–5 Critical/High "
+         "rows define the inspection agenda. For each, the 'Risk Library' KPIs become the onsite checklist."),
+        ("CSRD / CSDDD reporting",
+         "Use 'Data Sources' for citations. Every score is auditable: raw indicator value + public-source URL "
+         "are in 'Full Ranked Results'."),
+    ]
+    r += 2
+    for h, t in flows:
+        ws.cell(row=r, column=1, value=h).font = Font(bold=True, color="FF005F73")
+        ws.cell(row=r, column=2, value=t).alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[r].height = 75
+        r += 1
 
-    ws["A30"] = "Built for the Glencore Group Responsible Sourcing team"
-    ws["A30"].font = Font(italic=True)
-    ws["A31"] = "in collaboration with the NYU SPS Center for Global Affairs Consulting Practicum."
-    ws["A31"].font = Font(italic=True, color="FF555555")
+    # ---- 6. METHODOLOGY (brief) ----
+    title(r + 1, "Methodology — brief")
+    body(r + 2,
+         "Likelihood = 0.4 × Process Intrinsic Risk + 0.6 × Country Hazard Score      (both 1–5)\n"
+         "Severity   = 0.5 × Ecological Sensitivity   + 0.5 × Regulatory Strictness    (both 1–5)\n"
+         "Overall    = Likelihood × Severity                                            (1–25)\n\n"
+         "Full formulas, normalization rules, weight rationale, and editable weights table are in the "
+         "'Methodology + Weights' sheet.",
+         height=120)
+    ws.cell(row=r + 2, column=1).font = Font(name="Consolas", size=11)
 
-    _autosize(ws, [18, 80])
+    # ---- 7. CAVEATS ----
+    title(r + 4, "Important caveats")
+    body(r + 5,
+         "Cells showing '—' mean the underlying public dataset has no value for that country and risk. "
+         "Examples: Noise pollution has no global country-level dataset (hence all '—' in the Hazard "
+         "columns for that risk); UNESCO heritage-in-danger counts are zero for many countries. "
+         "In those cases, Likelihood falls back to the Process Intrinsic Risk alone.\n\n"
+         "This workbook is a static snapshot. The interactive Streamlit tool is the Source of Truth. "
+         "For maps, supplier overlays, and live drill-down, use the Streamlit tool.",
+         height=120)
+
+    # Footer
+    ws.cell(row=r + 8, column=1, value="Built for the Glencore Group Responsible Sourcing team").font = Font(italic=True)
+    ws.cell(row=r + 9, column=1, value="in collaboration with the NYU SPS Center for Global Affairs Consulting Practicum.").font = Font(italic=True, color="FF555555")
+
+    _autosize(ws, [32, 95])
+    ws.sheet_view.showGridLines = False
 
 
 def sheet_country_risk(wb, df, risks):
@@ -945,7 +1045,6 @@ def main():
 
     wb = Workbook()
     sheet_readme(wb, risks, countries, producers, today)
-    sheet_user_guide(wb)
     sheet_country_risk(wb, df, risks)
     sheet_full_table(wb, df)
     sheet_risk_library(wb, risks, matrix, risk_supplier)
