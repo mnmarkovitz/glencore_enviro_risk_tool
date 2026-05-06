@@ -1054,6 +1054,7 @@ def main():
     sheet_soilgrids(wb)
     sheet_aqueduct(wb)
     sheet_glencore_assets(wb)
+    sheet_risk_supplier(wb, risks, risk_supplier)
     sheet_noise(wb, noise)
     sheet_methodology_and_weights(wb, weights)
     sheet_supplier_tiers(wb)
