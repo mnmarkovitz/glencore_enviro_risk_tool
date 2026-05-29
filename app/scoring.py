@@ -312,9 +312,23 @@ def compute(
         producers_f = producers_f[producers_f["country"].isin(countries)]
     # commodity-country pairs to score
     pairs = producers_f[["commodity", "country", "iso3", "producer_rank", "share_of_global_pct"]].drop_duplicates()
-    if countries and not commodities:
-        # "any country" mode: cross with all commodities
-        pass
+
+    # Transit / sourcing-jurisdiction mode: if the user explicitly selected one or
+    # more countries that are NOT top producers of any tracked commodity (e.g. CAHRA
+    # transit hubs like Nigeria), still score them. We synthesize a commodity-agnostic
+    # row labelled "(transit / sourcing jurisdiction)" so every risk × process is
+    # evaluated using the country's own hazard + process intrinsic risk. This supports
+    # OECD "red-flag location of origin or transit" screening.
+    if countries:
+        produced = set(pairs["country"])
+        name_to_iso = dict(zip(countries_df["country"], countries_df["iso3"]))
+        for cname in countries:
+            if cname not in produced and cname in name_to_iso:
+                pairs = pd.concat([pairs, pd.DataFrame([{
+                    "commodity": "(transit / sourcing jurisdiction)",
+                    "country": cname, "iso3": name_to_iso[cname],
+                    "producer_rank": None, "share_of_global_pct": None,
+                }])], ignore_index=True)
 
     risks_f = risks.copy()
     if risk_ids:

@@ -115,20 +115,27 @@ st.sidebar.header("🎯 Filters")
 commodity_list = sorted(producers_df["commodity"].unique())
 sel_commodities = st.sidebar.multiselect("Commodity", commodity_list, default=["Cobalt"])
 
-# Surface top producers first for the selected commodity
+# Country dropdown = producer countries first, then every other country in the
+# dataset (e.g. CAHRA transit jurisdictions like Nigeria that aren't top producers).
+# Selecting a non-producer country scores it in "transit / sourcing jurisdiction" mode.
+all_dataset_countries = set(countries_df["country"]) | set(producers_df["country"])
 if sel_commodities:
     top = (
         producers_df[producers_df["commodity"].isin(sel_commodities)]
         .sort_values(["commodity", "producer_rank"])["country"]
         .drop_duplicates().tolist()
     )
-    others = sorted(set(producers_df["country"]) - set(top))
-    country_options = top + others
 else:
-    country_options = sorted(producers_df["country"].unique())
+    top = sorted(producers_df["country"].unique())
+others = sorted(all_dataset_countries - set(top))
+country_options = top + others
 
 sel_countries = st.sidebar.multiselect(
-    "Country (top producers surfaced first)", country_options, default=[]
+    "Country (top producers first; non-producer / transit jurisdictions listed after)",
+    country_options, default=[],
+    help="Producer countries appear first. Countries further down (e.g. Nigeria and other "
+         "CAHRA transit jurisdictions) aren't top producers of a tracked commodity — selecting "
+         "one scores it as a transit / sourcing jurisdiction across all risks and processes.",
 )
 
 process_options = ["Mining", "Refining", "Smelting", "Recycling", "Marketing"]
@@ -191,61 +198,68 @@ with tab_dashboard:
     st.divider()
     st.subheader("Risk matrix (Likelihood × Severity)")
     if len(df) and df["likelihood_1_5"].notna().any():
-        df_h = df.dropna(subset=["likelihood_1_5", "severity_1_5", "overall_1_25"]).copy()
-        df_h["L_bin"] = df_h["likelihood_1_5"].round().clip(1, 5).astype(int)
-        df_h["S_bin"] = df_h["severity_1_5"].round().clip(1, 5).astype(int)
+        df_full = df.dropna(subset=["likelihood_1_5", "severity_1_5", "overall_1_25"]).copy()
 
-        # Exact bucket tally — computed from each row's OWN bucket (identical to the
-        # ranked table, so the two always agree). Shown as colored tiles above the matrix.
-        bucket_counts = df_h["risk_bucket"].value_counts().to_dict()
+        # Plot ONE point per environmental risk (per commodity × country), taking the
+        # worst-scoring process for that risk. This removes process duplicates so each
+        # risk appears once — the matrix counts then match "number of risks", not
+        # "number of risk × process combinations".
+        mtx = (df_full.sort_values("overall_1_25", ascending=False)
+                      .drop_duplicates(subset=["risk_type", "commodity", "country"], keep="first"))
+
+        n_points = len(mtx)
+        bucket_counts = mtx["risk_bucket"].value_counts().to_dict()
         tiles = "".join(
             f"<span style='display:inline-block;background:{BUCKET_COLORS[b]};color:white;"
             f"font-weight:700;padding:6px 14px;border-radius:6px;margin-right:8px;'>"
             f"{b}: {bucket_counts.get(b, 0)}</span>"
             for b in ["Low", "Moderate", "High", "Critical"]
         )
-        st.markdown("**Exact bucket counts (matches the ranked table below):** " + tiles,
-                    unsafe_allow_html=True)
+        st.markdown(f"**Each dot = one environmental risk** (shown at its worst-scoring process). "
+                    f"{n_points} risks plotted:&nbsp;&nbsp;" + tiles, unsafe_allow_html=True)
 
-        # Each cell colored by the buckets of the rows ACTUALLY in it (majority bucket),
-        # so the matrix never disagrees with the per-row buckets. Count = rows in cell.
+        # Continuous scatter: no rounding, so a dot's position and its colour (true bucket)
+        # always agree. Faint hyperbola boundaries (L×S = 4, 9, 14) separate the buckets.
+        import numpy as _np
         fig = go.Figure()
-        for S in [5, 4, 3, 2, 1]:
-            for L in [1, 2, 3, 4, 5]:
-                cell_rows = df_h[(df_h["L_bin"] == L) & (df_h["S_bin"] == S)]
-                cnt = len(cell_rows)
-                if cnt:
-                    # majority (modal) bucket among rows in this cell
-                    fill = BUCKET_COLORS[cell_rows["risk_bucket"].mode().iloc[0]]
-                else:
-                    fill = "#F5F5F5"
-                fig.add_shape(type="rect", x0=L-0.5, x1=L+0.5, y0=S-0.5, y1=S+0.5,
-                              fillcolor=fill, line=dict(color="white", width=2))
-                if cnt:
-                    fig.add_annotation(x=L, y=S, text=str(cnt), showarrow=False,
-                                       font=dict(color="white", size=18, family="Arial Black"))
-        fig.update_xaxes(range=[0.4, 5.6], tickvals=[1, 2, 3, 4, 5],
-                         title="Likelihood (1 low, 5 high)")
-        fig.update_yaxes(range=[0.4, 5.6], tickvals=[1, 2, 3, 4, 5],
-                         title="Severity (1 low, 5 high)", scaleanchor="x", scaleratio=1)
-        fig.update_layout(height=500, margin=dict(l=60, r=40, t=20, b=60),
-                          plot_bgcolor="white", showlegend=False)
-        legend_html = "".join(
-            f"<span style='display:inline-block; width:14px; height:14px; background:{c}; "
-            f"border-radius:3px; margin-right:4px; vertical-align:middle;'></span> "
-            f"<span style='margin-right:18px;'>{name}</span>"
-            for name, c in BUCKET_COLORS.items() if name != "No data"
-        )
-        st.markdown(legend_html, unsafe_allow_html=True)
+        # bucket boundary curves
+        xs = _np.linspace(1, 5, 100)
+        for thr in (4, 9, 14):
+            ys = _np.clip(thr / xs, 1, 5)
+            fig.add_trace(go.Scatter(x=xs, y=ys, mode="lines",
+                                     line=dict(color="#CCCCCC", width=1, dash="dot"),
+                                     hoverinfo="skip", showlegend=False))
+        # one trace per bucket so colors + legend are clean
+        for b in ["Low", "Moderate", "High", "Critical"]:
+            sub = mtx[mtx["risk_bucket"] == b]
+            if not len(sub):
+                continue
+            fig.add_trace(go.Scatter(
+                x=sub["likelihood_1_5"], y=sub["severity_1_5"],
+                mode="markers", name=b,
+                marker=dict(size=13, color=BUCKET_COLORS[b],
+                            line=dict(color="white", width=1.5), opacity=0.85),
+                customdata=sub[["risk_type", "commodity", "country", "process", "overall_1_25"]].values,
+                hovertemplate=("<b>%{customdata[0]}</b><br>%{customdata[1]} · %{customdata[2]}<br>"
+                               "Worst process: %{customdata[3]}<br>"
+                               "Likelihood %{x:.2f} · Severity %{y:.2f} · Overall %{customdata[4]:.1f}"
+                               "<extra>" + b + "</extra>"),
+            ))
+        fig.update_xaxes(range=[0.8, 5.2], dtick=1, title="Likelihood (1 low → 5 high)",
+                         gridcolor="#EEEEEE")
+        fig.update_yaxes(range=[0.8, 5.2], dtick=1, title="Severity (1 low → 5 high)",
+                         gridcolor="#EEEEEE", scaleanchor="x", scaleratio=1)
+        fig.update_layout(height=520, margin=dict(l=60, r=20, t=10, b=60),
+                          plot_bgcolor="white",
+                          legend=dict(orientation="h", y=1.08, x=0))
         st.plotly_chart(fig, use_container_width=True)
         st.caption(
-            "Each cell is positioned by **rounded** Likelihood and Severity and colored by the "
-            "**majority risk bucket of the rows in that cell** — so the matrix never disagrees with "
-            "the ranked table. The number inside each cell is how many risk-country-process "
-            "combinations fall there. For exact per-bucket totals use the colored tiles above "
-            "(they are computed from each row's own Overall = L × S, identical to the table). "
-            "Note: because cells round L and S to whole numbers, a single cell can contain rows "
-            "from two adjacent buckets; the tiles above are the authoritative count."
+            "Each dot is one environmental risk plotted at its exact Likelihood and Severity "
+            "(no rounding), coloured by its risk bucket (Overall = Likelihood × Severity). "
+            "Dotted curves mark the Low / Moderate / High / Critical boundaries. Hover a dot for "
+            "the risk name and its worst-scoring process. The counts above match the **distinct "
+            "risks** here; the ranked table below lists every risk × process combination, so its "
+            "row count is higher (each risk can appear under several processes)."
         )
     else:
         st.info("Add filters to see the heatmap.")
