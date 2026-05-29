@@ -245,12 +245,62 @@ That's the whole project.
 
 ---
 
-## 9. Where to ask questions
+## 9. Data selection criteria — why these datasets
+
+Every dataset in the tool had to pass five tests, in priority order:
+
+1. **Public and free.** No paywalled or subscription data (this is why the SEED Index was excluded). The tool's value proposition is that any score can be re-derived by anyone.
+2. **Global country coverage.** The dataset must score most countries on a comparable scale, so cross-country comparison is valid. (This is why noise pollution has no country layer — no global dataset exists; only the NIOSH process baseline.)
+3. **Authoritative / institutional.** Produced by a recognised body — UN agency, World Bank, USGS, WRI, Yale, IUCN, ISRIC, EC JRC, or an OECD-aligned initiative. No crowd-sourced or unverifiable sources.
+4. **Directly relevant to the specific risk.** Each risk is mapped to the dataset that most precisely measures it (Aqueduct for water stress; IUCN for species; SoilGrids for soil chemistry), not a generic proxy, wherever one exists.
+5. **Refreshable.** The dataset is updated on a known cadence and can be re-pulled (see Section 6), so the tool does not decay.
+
+Where no single dataset satisfies tests 2 + 4 (e.g., regulatory governance), the tool **blends several** so no one source dominates — Regulatory Strictness combines World Bank WGI, Yale EPI, NRGI Resource Governance Index, and the EJ Atlas conflict count.
+
+## 10. Scope notes and known coverage gaps
+
+### How "recycling" is defined
+In this tool, **Recycling** means secondary recovery of metals from end-of-life or scrap feedstock — re-smelting and re-refining of recovered material rather than virgin ore. Its process-intensity scores (`risk_process_matrix.csv`) reflect that recycling:
+- still runs high-temperature furnaces and chemical leaching (so air, waste, and water-pollution intensities remain material — often 4–5/5);
+- generates **hazardous secondary waste streams** of highly variable quality (waste-pollution intensity 5/5);
+- does **not** generate tailings or cause direct habitat loss the way mining does (those intensities drop to 1–2).
+
+**Treatment of mixed sources:** the tool scores recycling as a *process type*, not a feedstock-purity claim. It does not distinguish 100%-recycled from blended (recycled + primary) feedstock — that distinction is handled in Glencore's SCDD procedure itself (Step 2: a supplier of 100% recycled material with no precious-metal blending can be out of scope, whereas blended material is treated as primary). The tool flags the *environmental* risks of the recycling process; the *feedstock-purity / chain-of-custody* question is a separate due-diligence determination made in the SAQ.
+
+### Why some countries don't appear under a commodity (e.g., Nigeria)
+The commodity filter is driven by `commodity_producers.csv`, which lists the **USGS top-~10 producer countries** for each commodity. A country only appears under a commodity if it is a top-tier global producer of it. **Nigeria** is in the tool's country database (it is CAHRA-flagged and fully scored), but it is **not a top-10 global producer of any of the 16 commodities** in the tool, so it does not surface in any commodity-filtered view. To assess Nigeria for a specific commodity, add a row to `commodity_producers.csv` (commodity, Nigeria, NGA, rank, share) — its scores compute immediately because its indicator data already exists.
+
+The same logic applies to any country: presence in a commodity view = "is a top global producer of that commodity," not "exists in the database."
+
+### Oil & gas country scores
+All 10 oil & gas producer countries in the tool (US, Saudi Arabia, Russia, Canada, China, Iraq, UAE, Brazil, Iran, Kuwait) are **fully scored** — every risk × process combination returns an Overall score. If a particular *cell* shows "—" it is the **raw hazard column** for a risk that has no global country dataset (e.g., noise pollution) or no data for that country (e.g., a desert state with no Aqueduct flood category). In those cases the Likelihood still computes from the process-intrinsic score, and the Overall is still produced. "—" in a raw-indicator cell never means the row is unscored; it means that one public input is unavailable and the fallback rule applied (see `docs/METHODOLOGY.md`, "Missing data").
+
+## 11. Customizing the app
+
+Everything an analyst would want to change lives in CSVs under `data/processed/` — no Python required. Common customizations:
+
+| I want to… | Edit this file | Notes |
+|---|---|---|
+| Add a commodity | `commodity_producers.csv` | Add rows (commodity, country, iso3, rank, share, source, critical flag). Producer countries must exist in `country_indicators.csv`. |
+| Add a country | `country_indicators.csv` (+ `country_centroids.csv` for the map, `soilgrids_country.csv` for soil) | Fill any indicators you have; blanks fall back gracefully. |
+| Add / edit a risk | `risks.csv` (+ a row per process in `risk_process_matrix.csv`, + a row in `risk_supplier_types.csv`) | Map the risk to its public likelihood + severity datasets. |
+| Change how a process drives a risk | `risk_process_matrix.csv` | Edit the 1–5 `intrinsic_intensity` and the rationale. |
+| Re-weight the formula | `scoring_weights.csv` | Change the 0.4/0.6 (likelihood) or 0.5/0.5 (severity) split, or the bucket thresholds. |
+| Re-map supplier types to risks | `risk_supplier_types.csv` | Drives the "Supplier type (high risk categories)" column. |
+| Add Glencore-owned assets to the map | `glencore_assets.csv` | Public assets only. Cite `source_url` per row. |
+| Add confidential suppliers to the map | `glencore_suppliers.csv` | Git-ignored; stays local/confidential. |
+
+To change the **app's behavior or look** (tabs, colors, charts) edit `app/streamlit_app.py`; the scoring logic is isolated in `app/scoring.py`. After any change: rerun the app (or push to trigger a Streamlit Cloud rebuild) and rebuild the Excel with `python scripts/08_export_quick_reference.py`.
+
+## 12. Where to ask questions
 
 | Question | Where to look |
 |---|---|
 | What does this score mean? | Drill-down panel of the Streamlit tool, or `Full Ranked Results` sheet in the Excel |
 | Is this dataset trustworthy? | `Data Sources` sheet in the Excel; every URL listed |
 | What's the math? | `Methodology + Scoring Weights` sheet in the Excel; `docs/METHODOLOGY.md` |
-| How do I deploy this on our infrastructure? | This document, Section 5 |
+| Why these datasets? | Section 9 of this document |
+| How is recycling defined? Why is country X missing? | Section 10 of this document |
+| How do I customize the tool? | Section 11 of this document |
+| How do I deploy this on our infrastructure? | Section 5 of this document |
 | How does this fit our SCDD procedure? | `Supplier Engagement Tiers` sheet in the Excel; `docs/USER_GUIDE.md` |
