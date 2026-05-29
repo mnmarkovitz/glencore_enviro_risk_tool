@@ -65,3 +65,4 @@ For Docker / Glencore-hosted deploy: see [docs/OVERVIEW_AND_HANDOVER.md Section 
 - **[docs/OVERVIEW_AND_HANDOVER.md](docs/OVERVIEW_AND_HANDOVER.md)** — primary handover document. How the tool was built, how to integrate into Glencore's systems, how to update the data, full file map, and a plain-English step-by-step walkthrough.
 - **[docs/METHODOLOGY.md](docs/METHODOLOGY.md)** — exact scoring formulas, normalization rules, weight rationale.
 - **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** — analyst-facing walkthrough; mirrored inside the live tool's "📖 User Guide" tab.
+- **[docs/FAQ_AND_DATA_NOTES.md](docs/FAQ_AND_DATA_NOTES.md)** — data selection criteria, coverage gaps (e.g. why Nigeria isn't a default producer), how "Recycling" is defined, and why the risk matrix vs ranked-table counts differ.

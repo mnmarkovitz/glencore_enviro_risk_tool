@@ -299,8 +299,9 @@ To change the **app's behavior or look** (tabs, colors, charts) edit `app/stream
 | What does this score mean? | Drill-down panel of the Streamlit tool, or `Full Ranked Results` sheet in the Excel |
 | Is this dataset trustworthy? | `Data Sources` sheet in the Excel; every URL listed |
 | What's the math? | `Methodology + Scoring Weights` sheet in the Excel; `docs/METHODOLOGY.md` |
-| Why these datasets? | Section 9 of this document |
-| How is recycling defined? Why is country X missing? | Section 10 of this document |
+| Why these datasets? | Section 9 of this document; `docs/FAQ_AND_DATA_NOTES.md` |
+| How is recycling defined? Why is country X (e.g. Nigeria) missing? Why do some oil & gas countries look blank? | `docs/FAQ_AND_DATA_NOTES.md` |
+| Why does the risk matrix not match the ranked table? | `docs/FAQ_AND_DATA_NOTES.md` §5 (fixed — exact-count tiles added) |
 | How do I customize the tool? | Section 11 of this document |
 | How do I deploy this on our infrastructure? | Section 5 of this document |
 | How does this fit our SCDD procedure? | `Supplier Engagement Tiers` sheet in the Excel; `docs/USER_GUIDE.md` |
