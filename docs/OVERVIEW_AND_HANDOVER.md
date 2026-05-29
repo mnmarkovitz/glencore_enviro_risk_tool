@@ -274,6 +274,108 @@ Everything an analyst would want to change lives in CSVs under `data/processed/`
 
 To change the **app's behavior or look** (tabs, colors, charts) edit `app/streamlit_app.py`; the scoring logic is isolated in `app/scoring.py`. After any change: rerun the app (or push to trigger a Streamlit Cloud rebuild) and rebuild the Excel with `python scripts/08_export_quick_reference.py`.
 
+---
+
+### 10.1 How to edit — step-by-step cheat-sheet (no coding)
+
+This section is written for a non-technical analyst. It uses Excel, but Google Sheets works identically.
+
+#### The golden rules (read once)
+
+1. **Only edit files in the `data/processed/` folder.** Everything else is code.
+2. **Never rename or delete the top header row** of a CSV — the tool finds columns by their header name. You may edit values and add/remove data rows.
+3. **Always save as CSV** (`File ▸ Save As ▸ CSV UTF-8`), *not* as `.xlsx`. Excel will warn "do you want to keep this format" — click **Keep CSV**.
+4. **One change at a time**, then check the result, before making the next.
+
+#### A. Open a CSV safely in Excel
+
+```
+1. Open Excel first (don't double-click the CSV — that can mangle accents and ISO codes).
+2. File ▸ Open ▸ browse to  data/processed/  ▸ pick the CSV.
+3. (If Excel's Text Import wizard appears) choose: Delimited ▸ comma ▸ and set every
+   column with codes/text to "Text" format so leading zeros and ISO-3 codes survive.
+```
+> 🖼️ *What you'll see:* a normal spreadsheet grid. Row 1 is the header (teal-shaded in our exported workbook; plain in the raw CSV). Each row below is one data record.
+
+#### B. Walkthrough 1 — Add a new country (e.g. Kyrgyzstan)
+
+```
+1. Open  data/processed/country_indicators.csv
+2. Scroll to the bottom, click the first empty row.
+3. Fill the cells you have data for, left to right:
+      iso3 = KGZ   |   country = Kyrgyzstan   |   epi_overall_2024 = 45   ... etc.
+   Leave any cell blank if you don't have it — the tool fills the gap gracefully.
+4. Set  cahra_flag = Y or N  (and cahra_regions if Y).
+5. File ▸ Save As ▸ CSV UTF-8 ▸ Keep CSV.
+6. (For the map) Open  country_centroids.csv ▸ add a row:  KGZ, 41.20, 74.77
+7. (Optional, for soil pollution) Open  soilgrids_country.csv ▸ add KGZ row.
+```
+> 🖼️ *Result:* Kyrgyzstan now appears in the country dropdown and is scored across all risks.
+
+#### C. Walkthrough 2 — Add it as a producer of a commodity
+
+```
+1. Open  data/processed/commodity_producers.csv
+2. Add a row:
+      commodity = Gold | country = Kyrgyzstan | iso3 = KGZ |
+      producer_rank = 9 | share_of_global_pct = 2.0 | source = USGS MCS 2024 |
+      critical_mineral = N | critical_source = (leave blank)
+3. Save as CSV.
+```
+> 🖼️ *Result:* "Gold" now lists Kyrgyzstan among its producer countries, surfaced in the dropdown when Gold is selected.
+
+#### D. Walkthrough 3 — Change a scoring weight
+
+```
+1. Open  data/processed/scoring_weights.csv
+2. Find the row  likelihood_country_weight  ▸ change value 0.6 → 0.7
+3. Find the row  likelihood_process_weight  ▸ change value 0.4 → 0.3
+   (these two must always add up to 1.0)
+4. Save as CSV.
+```
+> 🖼️ *Result:* every Likelihood score now weights country context more heavily. The bucket thresholds (Low/Moderate/High/Critical cut-offs) are in the same file if you want to shift those too.
+
+#### E. Walkthrough 4 — Edit a risk's definition or SAQ KPIs
+
+```
+1. Open  data/processed/risks.csv
+2. Find the risk row (e.g. risk_id = water_pollution).
+3. Edit the  definition  cell or the  key_kpis  cell — write normal sentences.
+4. Save as CSV.
+```
+> 🖼️ *Result:* the new text shows in the Risk Library tab and the drill-down panel.
+
+#### F. Make the edit go live
+
+Pick the row that matches how the tool is running:
+
+| How it's running | Steps to publish your edit |
+|---|---|
+| **On your own laptop** | In the running app click **Rerun** (top-right) or refresh the browser. Done. |
+| **Hosted on Streamlit Cloud (current public URL)** | Upload the changed CSV to GitHub: on github.com open the file ▸ click the ✏️ pencil ▸ paste/replace ▸ **Commit changes**. Streamlit rebuilds itself in ~60 seconds. (Or use GitHub Desktop: it shows your changed file → write a summary → **Commit** → **Push**.) |
+| **Hosted by Glencore IT (Docker)** | Commit the CSV to Glencore's repo; their deployment redeploys on its normal cadence. |
+
+#### G. Refresh the Excel workbook to match
+
+The Excel file is a snapshot — it does **not** update when you edit a CSV. To regenerate it:
+
+```
+Open a terminal in the project folder and run:
+    python scripts/08_export_quick_reference.py
+```
+This rewrites `Quick_Reference.xlsx` (~5 seconds) with your new numbers. If you don't have Python set up, ask whoever maintains the deployment to run it, or skip it — the live app already reflects your edit.
+
+#### H. If something looks wrong
+
+| Symptom | Fix |
+|---|---|
+| A country disappeared from the dropdown | You probably removed it from `commodity_producers.csv`. It still works in "transit jurisdiction" mode if it's in `country_indicators.csv`. |
+| Scores didn't change | You edited but didn't **Rerun** (laptop) or didn't **push** (hosted). Also try a hard browser refresh: Cmd/Ctrl + Shift + R. |
+| App shows an error after an edit | You likely renamed a header, deleted a needed column, or saved as `.xlsx`. Re-open the file, restore the header row, save as **CSV UTF-8**. The previous version is always recoverable from GitHub's history. |
+| Accents/ISO codes look garbled | The file was saved in the wrong encoding. Re-save as **CSV UTF-8**. |
+
+> **Safety net:** because every version is stored in GitHub, no edit is ever permanent — you can always view or restore the previous version from the repository's "History" view.
+
 ## 11. Where to ask questions
 
 | Question | Where to look |
