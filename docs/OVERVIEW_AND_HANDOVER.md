@@ -267,10 +267,12 @@ In this tool, **Recycling** means secondary recovery of metals from end-of-life 
 
 **Treatment of mixed sources:** the tool scores recycling as a *process type*, not a feedstock-purity claim. It does not distinguish 100%-recycled from blended (recycled + primary) feedstock — that distinction is handled in Glencore's SCDD procedure itself (Step 2: a supplier of 100% recycled material with no precious-metal blending can be out of scope, whereas blended material is treated as primary). The tool flags the *environmental* risks of the recycling process; the *feedstock-purity / chain-of-custody* question is a separate due-diligence determination made in the SAQ.
 
-### Why some countries don't appear under a commodity (e.g., Nigeria)
-The commodity filter is driven by `commodity_producers.csv`, which lists the **USGS top-~10 producer countries** for each commodity. A country only appears under a commodity if it is a top-tier global producer of it. **Nigeria** is in the tool's country database (it is CAHRA-flagged and fully scored), but it is **not a top-10 global producer of any of the 16 commodities** in the tool, so it does not surface in any commodity-filtered view. To assess Nigeria for a specific commodity, add a row to `commodity_producers.csv` (commodity, Nigeria, NGA, rank, share) — its scores compute immediately because its indicator data already exists.
+### Countries, producers, and "transit / sourcing jurisdiction" mode (e.g., Nigeria)
+The commodity filter is driven by `commodity_producers.csv`, which lists the **USGS top-~10 producer countries** for each commodity. A country appears *under a commodity* only if it is a top-tier global producer of it.
 
-The same logic applies to any country: presence in a commodity view = "is a top global producer of that commodity," not "exists in the database."
+**Nigeria** and ~35 other countries (mostly CAHRA jurisdictions) are in the country database — fully scored, CAHRA-flagged — but are **not top-10 producers of any tracked commodity**. They therefore don't surface in a commodity-filtered producer list. To make these analysable, the **country dropdown lists every country in the database** (producers first, then non-producers labelled as transit jurisdictions). Selecting a non-producer country scores it in **transit / sourcing-jurisdiction mode**: every risk × process is evaluated from the country's own environmental + governance hazard and the process-intrinsic risk, with the commodity shown as "(transit / sourcing jurisdiction)." This supports OECD "red-flag location of mineral origin or transit" screening.
+
+To instead treat such a country as a *producer* of a specific commodity, add a row to `commodity_producers.csv` (commodity, country, iso3, rank, share) — its scores compute immediately because its indicator data already exists.
 
 ### Oil & gas country scores
 All 10 oil & gas producer countries in the tool (US, Saudi Arabia, Russia, Canada, China, Iraq, UAE, Brazil, Iran, Kuwait) are **fully scored** — every risk × process combination returns an Overall score. If a particular *cell* shows "—" it is the **raw hazard column** for a risk that has no global country dataset (e.g., noise pollution) or no data for that country (e.g., a desert state with no Aqueduct flood category). In those cases the Likelihood still computes from the process-intrinsic score, and the Overall is still produced. "—" in a raw-indicator cell never means the row is unscored; it means that one public input is unavailable and the fallback rule applied (see `docs/METHODOLOGY.md`, "Missing data").
@@ -299,9 +301,8 @@ To change the **app's behavior or look** (tabs, colors, charts) edit `app/stream
 | What does this score mean? | Drill-down panel of the Streamlit tool, or `Full Ranked Results` sheet in the Excel |
 | Is this dataset trustworthy? | `Data Sources` sheet in the Excel; every URL listed |
 | What's the math? | `Methodology + Scoring Weights` sheet in the Excel; `docs/METHODOLOGY.md` |
-| Why these datasets? | Section 9 of this document; `docs/FAQ_AND_DATA_NOTES.md` |
-| How is recycling defined? Why is country X (e.g. Nigeria) missing? Why do some oil & gas countries look blank? | `docs/FAQ_AND_DATA_NOTES.md` |
-| Why does the risk matrix not match the ranked table? | `docs/FAQ_AND_DATA_NOTES.md` §5 (fixed — exact-count tiles added) |
+| Why these datasets? | Section 9 of this document |
+| How is recycling defined? Why is country X (e.g. Nigeria) missing? | Sections 10 & 11 of this document |
 | How do I customize the tool? | Section 11 of this document |
 | How do I deploy this on our infrastructure? | Section 5 of this document |
 | How does this fit our SCDD procedure? | `Supplier Engagement Tiers` sheet in the Excel; `docs/USER_GUIDE.md` |
