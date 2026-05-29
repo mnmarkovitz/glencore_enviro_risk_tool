@@ -58,6 +58,7 @@ PNG,Papua New Guinea,5.2,40,20,2.78,Seed estimate (climate/soil order). Refresh 
 PER,Peru,5.5,30,15,2.65,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
 PHL,Philippines,5.5,25,12,3.32,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
 POL,Poland,6.2,25,22,2.68,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
+PRT,Portugal,5.8,20,15,2.85,Seed estimate (Mediterranean soils). Refresh via scripts/07_fetch_soilgrids.py.
 COG,Republic of the Congo,5.1,28,14,3.49,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
 RUS,Russia,5.8,40,25,2.19,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.
 RWA,Rwanda,5.0,25,15,3.2,Seed estimate (climate/soil order). Refresh via scripts/07_fetch_soilgrids.py.

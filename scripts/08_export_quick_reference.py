@@ -411,7 +411,7 @@ def sheet_full_table(wb, df):
         "Likelihood (1-5)", "Severity (1-5)", "Overall (1-25)", "Bucket",
         "Process Intrinsic (1-5)",
         "Eco Sensitivity (1-5)", "Regulatory Strict. (1-5)",
-        "Likely Supplier Types", "Country Hazard Source",
+        "Supplier type (high risk categories)", "Country Hazard Source",
     ]
 
     # Header
@@ -463,7 +463,7 @@ def _generic_table(wb, sheet_name, df, widths=None, hyperlink_cols=None, freeze=
 def sheet_risk_library(wb, risks, matrix, risk_supplier):
     ws = wb.create_sheet("Risk Library")
     ws.append(["Risk", "Definition", "Key KPIs (for SAQ)",
-                "Driving processes (intensity 1-5)", "Likely supplier types",
+                "Driving processes (intensity 1-5)", "Supplier type (high risk categories)",
                 "Likelihood dataset", "Severity dataset"])
     _style_header(ws[1])
     rs_map = dict(zip(risk_supplier["risk_id"], risk_supplier["supplier_types"])) \
@@ -772,7 +772,7 @@ def sheet_risk_supplier(wb, risks, risk_supplier):
     if "risk_id" not in risk_supplier.columns: return
     df = risk_supplier.merge(risks[["risk_id", "risk_type"]], on="risk_id", how="left")
     df = df[["risk_type", "supplier_types"]]
-    df.columns = ["Risk", "Likely supplier types"]
+    df.columns = ["Risk", "Supplier type (high risk categories)"]
     ws = _generic_table(wb, "Risk → Supplier Types", df, widths=[40, 80])
     for row in ws.iter_rows(min_row=2):
         for c in row:

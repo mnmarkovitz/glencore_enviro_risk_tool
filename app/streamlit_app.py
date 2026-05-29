@@ -191,37 +191,45 @@ with tab_dashboard:
     st.divider()
     st.subheader("Risk matrix (Likelihood × Severity)")
     if len(df) and df["likelihood_1_5"].notna().any():
-        df_h = df.dropna(subset=["likelihood_1_5", "severity_1_5"]).copy()
+        df_h = df.dropna(subset=["likelihood_1_5", "severity_1_5", "overall_1_25"]).copy()
         df_h["L_bin"] = df_h["likelihood_1_5"].round().clip(1, 5).astype(int)
         df_h["S_bin"] = df_h["severity_1_5"].round().clip(1, 5).astype(int)
-        counts = (df_h.groupby(["S_bin", "L_bin"]).size()
-                      .reset_index(name="count")
-                      .pivot(index="S_bin", columns="L_bin", values="count")
-                      .reindex(index=[5, 4, 3, 2, 1], columns=[1, 2, 3, 4, 5]).fillna(0))
-        # Color each cell by its L*S bucket (not by count) so the palette matches
-        # the rest of the tool. Count is shown as text inside the cell.
-        def _bucket_of(L, S):
-            v = L * S
-            if v <= 4: return BUCKET_COLORS["Low"]
-            if v <= 9: return BUCKET_COLORS["Moderate"]
-            if v <= 14: return BUCKET_COLORS["High"]
-            return BUCKET_COLORS["Critical"]
+
+        # Exact bucket tally — computed from each row's OWN bucket (identical to the
+        # ranked table, so the two always agree). Shown as colored tiles above the matrix.
+        bucket_counts = df_h["risk_bucket"].value_counts().to_dict()
+        tiles = "".join(
+            f"<span style='display:inline-block;background:{BUCKET_COLORS[b]};color:white;"
+            f"font-weight:700;padding:6px 14px;border-radius:6px;margin-right:8px;'>"
+            f"{b}: {bucket_counts.get(b, 0)}</span>"
+            for b in ["Low", "Moderate", "High", "Critical"]
+        )
+        st.markdown("**Exact bucket counts (matches the ranked table below):** " + tiles,
+                    unsafe_allow_html=True)
+
+        # Each cell colored by the buckets of the rows ACTUALLY in it (majority bucket),
+        # so the matrix never disagrees with the per-row buckets. Count = rows in cell.
         fig = go.Figure()
-        for yi, S in enumerate([5, 4, 3, 2, 1]):
-            for xi, L in enumerate([1, 2, 3, 4, 5]):
-                cnt = int(counts.loc[S, L]) if S in counts.index and L in counts.columns else 0
+        for S in [5, 4, 3, 2, 1]:
+            for L in [1, 2, 3, 4, 5]:
+                cell_rows = df_h[(df_h["L_bin"] == L) & (df_h["S_bin"] == S)]
+                cnt = len(cell_rows)
+                if cnt:
+                    # majority (modal) bucket among rows in this cell
+                    fill = BUCKET_COLORS[cell_rows["risk_bucket"].mode().iloc[0]]
+                else:
+                    fill = "#F5F5F5"
                 fig.add_shape(type="rect", x0=L-0.5, x1=L+0.5, y0=S-0.5, y1=S+0.5,
-                              fillcolor=_bucket_of(L, S), line=dict(color="white", width=2))
-                fig.add_annotation(x=L, y=S, text=str(cnt), showarrow=False,
-                                   font=dict(color="white" if L*S >= 10 else "#222",
-                                             size=18, family="Arial Black"))
+                              fillcolor=fill, line=dict(color="white", width=2))
+                if cnt:
+                    fig.add_annotation(x=L, y=S, text=str(cnt), showarrow=False,
+                                       font=dict(color="white", size=18, family="Arial Black"))
         fig.update_xaxes(range=[0.4, 5.6], tickvals=[1, 2, 3, 4, 5],
                          title="Likelihood (1 low, 5 high)")
         fig.update_yaxes(range=[0.4, 5.6], tickvals=[1, 2, 3, 4, 5],
                          title="Severity (1 low, 5 high)", scaleanchor="x", scaleratio=1)
         fig.update_layout(height=500, margin=dict(l=60, r=40, t=20, b=60),
                           plot_bgcolor="white", showlegend=False)
-        # Legend strip
         legend_html = "".join(
             f"<span style='display:inline-block; width:14px; height:14px; background:{c}; "
             f"border-radius:3px; margin-right:4px; vertical-align:middle;'></span> "
@@ -230,9 +238,15 @@ with tab_dashboard:
         )
         st.markdown(legend_html, unsafe_allow_html=True)
         st.plotly_chart(fig, use_container_width=True)
-        st.caption("Cell color = risk bucket at that Likelihood × Severity position. "
-                   "Number inside each cell = how many risk-country-process combinations fall there. "
-                   "Worst = top-right. Same color palette as the ranked table, maps, and charts.")
+        st.caption(
+            "Each cell is positioned by **rounded** Likelihood and Severity and colored by the "
+            "**majority risk bucket of the rows in that cell** — so the matrix never disagrees with "
+            "the ranked table. The number inside each cell is how many risk-country-process "
+            "combinations fall there. For exact per-bucket totals use the colored tiles above "
+            "(they are computed from each row's own Overall = L × S, identical to the table). "
+            "Note: because cells round L and S to whole numbers, a single cell can contain rows "
+            "from two adjacent buckets; the tiles above are the authoritative count."
+        )
     else:
         st.info("Add filters to see the heatmap.")
 
@@ -288,15 +302,28 @@ with tab_dashboard:
         def _style_cahra(v):
             return "background-color: #FFD54F; font-weight: 600;" if v == "Y" else ""
 
+        _col_labels = {
+            "risk_type": "Risk", "commodity": "Commodity", "country": "Country",
+            "cahra_flag": "CAHRA", "process": "Process",
+            "country_hazard_raw": "Hazard raw (source units)",
+            "country_hazard_norm_1_5": "Hazard normalized (1-5)",
+            "likelihood_1_5": "Likelihood (1-5)", "severity_1_5": "Severity (1-5)",
+            "overall_1_25": "Overall (1-25)", "risk_bucket": "Bucket",
+            "process_intrinsic_1_5": "Process intrinsic (1-5)",
+            "ecological_sensitivity_1_5": "Eco sensitivity (1-5)",
+            "regulatory_strictness_1_5": "Regulatory strictness (1-5)",
+            "likely_supplier_types": "Supplier type (high risk categories)",
+            "country_hazard_source": "Country hazard source",
+        }
         styled = (
-            df_sorted[display_cols].style
-            .applymap(_style_bucket, subset=["risk_bucket"])
-            .applymap(_style_cahra, subset=["cahra_flag"])
+            df_sorted[display_cols].rename(columns=_col_labels).style
+            .applymap(_style_bucket, subset=["Bucket"])
+            .applymap(_style_cahra, subset=["CAHRA"])
             .format({
-                "country_hazard_raw": "{:.2f}", "country_hazard_norm_1_5": "{:.2f}",
-                "process_intrinsic_1_5": "{:.1f}", "likelihood_1_5": "{:.2f}",
-                "ecological_sensitivity_1_5": "{:.2f}", "regulatory_strictness_1_5": "{:.2f}",
-                "severity_1_5": "{:.2f}", "overall_1_25": "{:.2f}",
+                "Hazard raw (source units)": "{:.2f}", "Hazard normalized (1-5)": "{:.2f}",
+                "Process intrinsic (1-5)": "{:.1f}", "Likelihood (1-5)": "{:.2f}",
+                "Eco sensitivity (1-5)": "{:.2f}", "Regulatory strictness (1-5)": "{:.2f}",
+                "Severity (1-5)": "{:.2f}", "Overall (1-25)": "{:.2f}",
             }, na_rep="—")
         )
         st.dataframe(styled, height=500, use_container_width=True)
@@ -341,7 +368,7 @@ with tab_dashboard:
             st.markdown("### Data sources")
             st.markdown(f"- **Likelihood:** [{rk['likelihood_dataset']}]({rk['likelihood_url']}) · {rk['likelihood_indicator']}")
             st.markdown(f"- **Severity:** [{rk['severity_dataset']}]({rk['severity_url']}) · {rk['severity_indicator']}")
-            st.markdown("### Likely supplier types (from Glencore supplier type library)")
+            st.markdown("### Supplier type (high risk categories)")
             for st_ in [x.strip() for x in (row.get("likely_supplier_types") or "").split(";") if x.strip()]:
                 st.markdown(f"- {st_}")
             st.markdown("### KPIs to request in the SAQ")
@@ -796,7 +823,7 @@ with tab_risklib:
                     intensity = int(p["intrinsic_intensity_1_5"])
                     bars = "🔴" * intensity + "⚪" * (5 - intensity)
                     st.markdown(f"{PROCESS_ICONS.get(p['process'], '•')} **{p['process']}** {bars}  \n<sub>{p['rationale']}</sub>", unsafe_allow_html=True)
-                st.markdown("#### Likely supplier types")
+                st.markdown("#### Supplier type (high risk categories)")
                 for st_ in [x.strip() for x in (r.get("likely_supplier_types") or "").split(";") if x.strip()]:
                     st.markdown(f"- {st_}")
                 st.markdown("#### Public data sources")
@@ -903,7 +930,7 @@ with tab_tiers:
         "risks matter for the specific commodity + country + process combination. The Responsible "
         "Sourcing analyst can then prioritize SAQ questions by:\n"
         "1. Focusing on KPIs listed in the **Risk Library** tab for each flagged risk\n"
-        "2. Asking for evidence on the **Likely Supplier Types** column in the dashboard\n"
+        "2. Asking for evidence on the **Supplier type (high risk categories)** column in the dashboard\n"
         "3. Cross-referencing **CAHRA regions** with the supplier's declared origin/transit countries\n\n"
         "This mirrors the SCDD M&M procedure's Step 2A → 2B → 2C workflow."
     )
